@@ -1,0 +1,47 @@
+const colors = ['sky', 'teal', 'indigo', 'amber', 'emerald', 'purple', 'violet', 'slate', 'cyan', 'rose', 'orange'];
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  safelist: [
+    ...colors.map(c => `bg-${c}-50`),
+    ...colors.map(c => `bg-${c}-100`),
+    ...colors.map(c => `bg-${c}-200`),
+    ...colors.map(c => `bg-${c}-300`),
+    ...colors.map(c => `bg-${c}-400`),
+    ...colors.map(c => `bg-${c}-500`),
+    ...colors.map(c => `bg-${c}-600`),
+    ...colors.map(c => `bg-${c}-700`),
+    ...colors.map(c => `bg-${c}-800`),
+    ...colors.map(c => `bg-${c}-900`),
+    ...colors.map(c => `text-${c}-50`),
+    ...colors.map(c => `text-${c}-100`),
+    ...colors.map(c => `text-${c}-200`),
+    ...colors.map(c => `text-${c}-300`),
+    ...colors.map(c => `text-${c}-400`),
+    ...colors.map(c => `text-${c}-500`),
+    ...colors.map(c => `text-${c}-600`),
+    ...colors.map(c => `text-${c}-700`),
+    ...colors.map(c => `text-${c}-800`),
+    ...colors.map(c => `text-${c}-900`),
+    ...colors.map(c => `border-${c}-100`),
+    ...colors.map(c => `border-${c}-200`),
+    ...colors.map(c => `border-${c}-300`),
+    ...colors.map(c => `border-${c}-400`),
+    ...colors.map(c => `border-${c}-500`),
+    ...colors.map(c => `border-${c}-600`),
+    ...colors.map(c => `ring-${c}-100`),
+    ...colors.map(c => `ring-${c}-200`),
+    ...colors.map(c => `ring-${c}-300`),
+    ...colors.map(c => `ring-${c}-400`),
+    ...colors.map(c => `from-${c}-400`),
+    ...colors.map(c => `to-${c}-600`),
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
