@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
 import StyleLab from './activities/StyleLab';
@@ -62,6 +62,22 @@ function LessonViewer({ APP_DATA }) {
     });
   };
 
+  useEffect(() => {
+    const activeTabBtn = document.getElementById(`tab-${activeTab}`);
+    const tabsContainer = document.getElementById('tabs-scroll-container');
+    if (activeTabBtn && tabsContainer) {
+      const containerRect = tabsContainer.getBoundingClientRect();
+      const btnRect = activeTabBtn.getBoundingClientRect();
+      
+      const scrollPos = tabsContainer.scrollLeft + (btnRect.left - containerRect.left) - (containerRect.width / 2) + (btnRect.width / 2);
+      
+      tabsContainer.scrollTo({
+        left: scrollPos,
+        behavior: 'smooth'
+      });
+    }
+  }, [activeTab]);
+
   const activeSectionIndex = APP_DATA.sections.findIndex(s => s.id === activeTab);
   const isLast = activeSectionIndex === APP_DATA.sections.length - 1;
 
@@ -70,11 +86,11 @@ function LessonViewer({ APP_DATA }) {
     requestAnimationFrame(() => {
         setTimeout(() => {
           const stickyTabs = document.getElementById('sticky-tabs-container');
-          const contentArea = document.getElementById('section-content-wrapper');
+          const contentArea = document.getElementById('main-content-area');
           if (contentArea) {
             const headerOffset = stickyTabs ? stickyTabs.offsetHeight : 80;
             const elementPosition = contentArea.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset - 16;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
           }
         }, 10);
@@ -103,7 +119,7 @@ function LessonViewer({ APP_DATA }) {
       </div>
 
       <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-[#f8fafc]/95 backdrop-blur-md shadow-sm border-b border-slate-200">
-        <div className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
+        <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
             <div className="flex items-center gap-3 py-3 flex-nowrap">
               {APP_DATA.sections.map((section) => {
                 const isActive = activeTab === section.id;
@@ -111,7 +127,7 @@ function LessonViewer({ APP_DATA }) {
                 const activeClass = isActive ? `bg-${section.theme}-600 text-white shadow-md` : "bg-white text-slate-600 border-slate-200";
                 
                 return (
-                  <button key={section.id} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
+                  <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
                     {section.title}
                     {isDone && !isActive && <span className="text-emerald-600">✓</span>}
                   </button>
@@ -149,7 +165,8 @@ function LessonViewer({ APP_DATA }) {
             onNext={handleNextSection} 
             onReset={activeSection.type !== 'intro' ? handleResetSection : null}
             isLast={isLast}
-            showNext={activeSection.type === 'intro' || currentProgress.answered >= currentProgress.total} 
+            showNext={true} 
+            isScorable={currentProgress.isScorable}
           />
         )}
       </main>
