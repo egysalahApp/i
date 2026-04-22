@@ -105,15 +105,10 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         if (wrongAttempt) ringClass += ' shake ';
 
         const textSegments = q.text.split(/\.{3,}/);
-        const maxOptLength = Math.max(...options.map(o => o.text.length));
-        // تحسين حساب العرض ليكون أكثر مرونة مع الخط العربي وبحجم أكبر خيار
-        const calculatedWidth = `${Math.max(maxOptLength * 1.2, 5)}rem`;
+        const longestOption = options.reduce((a, b) => a.text.length > b.text.length ? a : b).text;
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
-              <style>{`
-                .gap-box-${idx} { min-width: ${calculatedWidth}; }
-              `}</style>
               <div className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-100 mb-2 w-full mx-auto">
                   <div className="flex items-center justify-between mb-4">
                       <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>السؤال {toArabicNum(idx + 1)}</span>
@@ -127,25 +122,31 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
                               {sIdx < textSegments.length - 1 && (
-                               <span className="relative inline-block mx-1.5 align-middle z-10">
+                               <span className="relative inline-block mx-1 align-baseline z-10">
                                    <button 
                                        type="button"
                                        disabled={answered}
                                        onClick={(e) => handleBlankClick(idx, e)}
-                                       className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 min-h-[2.6rem] md:min-h-[3.8rem] px-2 shadow-sm ${
+                                       className={`relative inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 px-4 py-1.5 md:py-2.5 shadow-sm ${
                                          answered 
                                            ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 border-solid') 
-                                           : `border-slate-200 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
+                                           : `border-slate-300 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
                                        }`}
                                    >
-                                       {answered && selectedOption ? (
-                                           <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300">{selectedOption.text}</span>
-                                       ) : (
-                                          <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-30 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
-                                            <span className="hidden md:inline">......</span>
-                                            <span className="inline md:hidden">....</span>
-                                          </span>
-                                       )}
+                                       {/* العنصر المخفي يحدد العرض والارتفاع بدقة، ويضبط خط الأساس (Baseline) ليتساوى مع بقية الكلمات */}
+                                       <span className="invisible opacity-0 font-bold text-[1em] leading-tight whitespace-nowrap px-2 pointer-events-none">{longestOption}</span>
+                                       
+                                       {/* المحتوى الفعلي (نقاط أو الكلمة المختارة) يتوسط الصندوق تماماً */}
+                                       <span className="absolute inset-0 flex items-center justify-center">
+                                         {answered && selectedOption ? (
+                                             <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-tight">{selectedOption.text}</span>
+                                         ) : (
+                                            <span className="text-[0.65em] md:text-[0.85em] opacity-30 whitespace-nowrap tracking-[0.1em] md:tracking-[0.2em]">
+                                              <span className="hidden md:inline">......</span>
+                                              <span className="inline md:hidden">....</span>
+                                            </span>
+                                         )}
+                                       </span>
                                    </button>
                                </span>
                               )}
