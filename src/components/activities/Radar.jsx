@@ -20,7 +20,11 @@ const Radar = ({ sectionData }) => {
 
       {/* ROOT NODE (العقدة المركزية) */}
       <div className={`relative z-20 w-full max-w-md bg-white border-[4px] md:border-[5px] border-${sectionData.theme}-500 text-slate-800 rounded-[2rem] p-6 md:p-8 text-center shadow-xl transition-transform duration-300 md:hover:scale-105`}>
-          <div className={`text-lg md:text-xl font-bold text-${sectionData.theme}-500 mb-2 uppercase tracking-widest`}>{map.center.title}</div>
+          <div className="flex justify-center mb-4">
+             <span className={`px-5 py-1.5 rounded-full bg-${sectionData.theme}-50 text-${sectionData.theme}-600 text-base md:text-lg font-bold border border-${sectionData.theme}-100 shadow-sm`}>
+                {map.center.title}
+             </span>
+          </div>
           <h3 className="text-2xl md:text-4xl font-extrabold leading-relaxed">{map.center.text}</h3>
       </div>
 
