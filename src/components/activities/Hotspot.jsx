@@ -83,30 +83,29 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                   )}
               </div>
               
-              <div className="bg-white border-2 border-slate-100 rounded-xl p-6 md:p-8 text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right text-slate-700 mx-auto w-full max-w-4xl shadow-inner">
+              <div className="bg-white border-2 border-slate-100 rounded-xl p-6 md:p-8 text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right text-slate-700 mx-auto w-full max-w-4xl shadow-inner whitespace-pre-wrap">
                   {q.paragraph.map((seg, sIdx) => {
                       if (!seg.isTarget && seg.text.length < 3) {
-                          // Very short segments like punctuation shouldn't be buttons, just text
                           return <span key={sIdx} className="text-slate-800">{seg.text}</span>;
                       }
 
                       const isSelectedTarget = selectedTargetId === seg.id;
                       const isShaking = shakeSegmentId === seg.id;
 
-                      let btnClass = "inline font-bold px-1.5 py-0.5 rounded transition-all duration-300 select-none pb-1 ";
+                      let btnClass = "inline transition-all duration-300 select-none ";
                       
                       if (!answered) {
-                          btnClass += `text-slate-800 border-b-2 border-slate-300 md:hover:bg-${sectionData.theme}-100 md:hover:border-${sectionData.theme}-400 md:hover:text-${sectionData.theme}-800 cursor-pointer `;
-                          if (isShaking) btnClass += "bg-rose-100 border-rose-400 text-rose-700 shake ";
+                          btnClass += `text-slate-800 md:hover:bg-${sectionData.theme}-100 md:hover:text-${sectionData.theme}-800 cursor-pointer rounded `;
+                          if (isShaking) btnClass += "bg-rose-100 text-rose-700 shake ";
                       } else {
-                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white border-emerald-600 shadow-md cursor-default ";
-                          else btnClass += "text-slate-500 border-slate-200 cursor-default opacity-50 ";
+                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white rounded-md px-1.5 -mx-1.5 pt-1 pb-1.5 relative z-10 shadow-sm cursor-default ";
+                          else btnClass += "text-slate-800 cursor-default ";
                       }
 
                       return (
-                          <button key={sIdx} disabled={answered} onClick={() => handleSegmentClick(idx, seg)} className={btnClass}>
+                          <span key={sIdx} onClick={() => !answered && handleSegmentClick(idx, seg)} className={btnClass}>
                               {seg.text}
-                          </button>
+                          </span>
                       );
                   })}
               </div>

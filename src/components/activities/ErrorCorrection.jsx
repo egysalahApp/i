@@ -11,7 +11,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
 
   useEffect(() => {
     setQuestions(sectionData.questions.map(q => {
-      let opts = q.options.map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
+      let opts = q.options.map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === (q.correctOptionIndex ?? q.correct) }));
       return {
         originalQuestion: q,
         options: shuffleArray(opts),
