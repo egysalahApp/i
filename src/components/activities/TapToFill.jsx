@@ -127,19 +127,19 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                        type="button"
                                        disabled={answered}
                                        onClick={(e) => handleBlankClick(idx, e)}
-                                       className={`relative inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 px-4 pt-3 pb-6 md:pt-4 md:pb-8 shadow-sm ${
+                                       className={`relative inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 px-4 pt-2 pb-5 md:pt-3 md:pb-7 shadow-sm ${
                                          answered 
                                            ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 border-solid') 
                                            : `border-slate-300 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
                                        }`}
                                    >
                                        {/* العنصر المخفي يحدد العرض والارتفاع بدقة، ويضبط خط الأساس (Baseline) ليتساوى مع بقية الكلمات */}
-                                       <span className="invisible opacity-0 font-bold text-[1em] leading-relaxed whitespace-nowrap px-2 pointer-events-none">{longestOption}</span>
+                                       <span className="invisible opacity-0 font-bold text-[1em] leading-tight whitespace-nowrap px-2 pointer-events-none">{longestOption}</span>
                                        
                                        {/* المحتوى الفعلي (نقاط أو الكلمة المختارة) يتوسط الصندوق تماماً */}
                                        <span className="absolute inset-0 flex items-center justify-center">
                                          {answered && selectedOption ? (
-                                             <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-relaxed">{selectedOption.text}</span>
+                                             <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-tight">{selectedOption.text}</span>
                                          ) : (
                                             <span className="text-[0.65em] md:text-[0.85em] opacity-30 whitespace-nowrap tracking-[0.1em] md:tracking-[0.2em]">
                                               <span className="hidden md:inline">......</span>
@@ -164,7 +164,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       <div className="mt-8 fade-in">
                           <div className="grid gap-3 md:gap-4 w-full grid-cols-1 md:grid-cols-3">
                               {options.map((opt, optIdx) => {
-                                  let btnClass = `p-4 text-center rounded-2xl font-normal text-2xl md:text-[1.75rem] transition-all border-2 flex items-center justify-center leading-relaxed `;
+                                  let btnClass = `p-4 text-center rounded-2xl font-normal text-2xl md:text-[1.75rem] transition-all border-2 flex items-center justify-center leading-snug `;
                                   if (!answered) {
                                       btnClass += `border-slate-200 bg-white text-slate-700 shadow-sm md:hover:border-${sectionData.theme}-400 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:shadow-md cursor-pointer active:scale-95`;
                                   } else {
