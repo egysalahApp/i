@@ -163,7 +163,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       <div className="mt-8 fade-in">
                           <div className="grid gap-3 md:gap-4 w-full grid-cols-1 md:grid-cols-3">
                               {options.map((opt, optIdx) => {
-                                  let btnClass = `p-4 text-center rounded-2xl font-bold text-xl md:text-2xl transition-all border-2 flex items-center justify-center leading-snug `;
+                                  let btnClass = `p-4 text-center rounded-2xl font-bold text-2xl md:text-[1.75rem] transition-all border-2 flex items-center justify-center leading-snug `;
                                   if (!answered) {
                                       btnClass += `border-slate-200 bg-white text-slate-700 shadow-sm md:hover:border-${sectionData.theme}-400 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:shadow-md cursor-pointer active:scale-95`;
                                   } else {
