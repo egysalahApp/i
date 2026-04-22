@@ -92,7 +92,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   
-                  <div className="text-xl md:text-3xl lg:text-4xl font-semibold text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
+                  <div className="text-[1.4rem] md:text-[2rem] lg:text-4xl font-semibold text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
                       {textSegments.map((seg, sIdx) => (
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
