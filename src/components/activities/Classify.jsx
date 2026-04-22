@@ -25,7 +25,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
   }, [sectionData.questions, sectionData.categories]);
 
   const handleCategoryClick = (catId) => {
-    if (status !== 'idle' || isComplete) return;
+    if ((status !== 'idle' && status !== 'incorrect') || isComplete) return;
 
     const currentQState = questions[currentIndex];
     const isCorrect = currentQState.originalQuestion.categoryId === catId;
@@ -51,9 +51,6 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       }, 600);
     } else {
       setStatus('incorrect');
-      setTimeout(() => {
-        setStatus('idle');
-      }, 500);
     }
   };
 

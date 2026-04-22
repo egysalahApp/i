@@ -162,7 +162,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
                       <div className="mt-8 mb-4 text-center font-bold text-xl text-slate-600">اختر التصويب الصحيح:</div>
                       <div className="grid gap-3 grid-cols-1 md:grid-cols-3 w-full">
                           {options.map((opt, optIdx) => {
-                              let btnClass = `p-4 rounded-xl border-2 transition-all font-semibold text-xl md:text-2xl flex items-center justify-center gap-2 `;
+                              let btnClass = `p-4 rounded-xl border-2 transition-all font-bold text-2xl md:text-3xl flex items-center justify-center gap-2 `;
                               if (step === 2) { 
                                   btnClass += `border-slate-200 bg-white text-slate-600 md:hover:bg-slate-50 active:scale-95 cursor-pointer`; 
                               } else { 
