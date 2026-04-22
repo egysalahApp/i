@@ -103,7 +103,7 @@ const Radar = ({ sectionData }) => {
                       }`}
                     >
                       <span className={`text-5xl transition-all duration-500 mb-1 ${isActive ? 'scale-110 drop-shadow-lg' : 'group-hover:scale-110 group-hover:-translate-y-2'}`}>{branch.icon}</span>
-                      <span className="font-bold text-2xl md:text-3xl text-center leading-relaxed">{branch.title}</span>
+                      <span className="font-bold text-xl md:text-2xl text-center leading-relaxed">{branch.title}</span>
                       
                       {isActive && (
                         <div className={`absolute -bottom-1.5 w-6 h-6 bg-${branch.color}-500 rotate-45 z-0 rounded-sm`}></div>
@@ -157,7 +157,7 @@ const Radar = ({ sectionData }) => {
                     }`}
                   >
                     <span className={`text-4xl shrink-0 drop-shadow-md rounded-2xl p-2 transition-colors ${isActive ? 'bg-white/20' : `bg-${branch.color}-50`}`}>{branch.icon}</span>
-                    <span className="font-bold text-2xl md:text-3xl text-right leading-relaxed flex-1">{branch.title}</span>
+                    <span className="font-bold text-xl md:text-2xl text-right leading-relaxed flex-1">{branch.title}</span>
                   </button>
                 )
             })}
@@ -175,9 +175,9 @@ const Radar = ({ sectionData }) => {
                 {map.branches[activeBranch].icon}
               </div>
               
-              <h4 className={`text-3xl md:text-5xl font-black text-${map.branches[activeBranch].color}-800 mt-6 mb-2 leading-relaxed relative z-10`}>{map.branches[activeBranch].title}</h4>
+              <h4 className={`text-2xl md:text-4xl font-black text-${map.branches[activeBranch].color}-800 mt-6 mb-2 leading-relaxed relative z-10`}>{map.branches[activeBranch].title}</h4>
               <div className={`h-1.5 w-24 bg-${map.branches[activeBranch].color}-200/50 rounded-full mb-4 relative z-10 mx-auto`}></div>
-              <p className="text-2xl md:text-4xl text-slate-800 font-medium leading-[2.1] md:leading-[2.6] relative z-10 max-w-3xl mx-auto">{map.branches[activeBranch].text}</p>
+              <p className="text-xl md:text-3xl text-slate-800 font-medium leading-[2.1] md:leading-[2.6] relative z-10 max-w-3xl mx-auto">{map.branches[activeBranch].text}</p>
           </div>
         ) : (
           <div className="border-[4px] border-dashed border-slate-200/80 rounded-[3.5rem] p-12 w-full max-w-3xl text-center text-slate-400 flex flex-col items-center justify-center fade-in bg-white/40 backdrop-blur-sm min-h-[20rem]">
