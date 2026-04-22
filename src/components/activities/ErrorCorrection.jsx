@@ -151,7 +151,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
 
                     return (
                       <button key={wIdx} disabled={step !== 1} onClick={() => handleWordClick(idx, wIdx)} className={wordClass}>
-                        {word}
+                        {isSelected && isStep3 && selectedOption ? selectedOption.text : word}
                       </button>
                     );
                   })}
