@@ -112,7 +112,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
 
               {answered && (
                   <div className="mt-6 smooth-expand w-full">
-                      <FeedbackBox isCorrect={true} explanation={q.explanation} correctLabel="أحسنت الاستخراج" />
+                      <FeedbackBox isCorrect={true} explanation={q.explanation} />
                   </div>
               )}
           </div>

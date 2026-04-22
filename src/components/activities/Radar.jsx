@@ -32,7 +32,7 @@ const Radar = ({ sectionData }) => {
           return (
             <button key={idx} onClick={() => handleRadarClick(idx)} className={`flex-1 min-w-[140px] max-w-[180px] p-4 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all duration-300 active:scale-95 ${btnClass}`}>
                 <span className="text-3xl md:text-4xl">{branch.icon}</span>
-                <span className="font-bold text-sm md:text-base text-center leading-snug">{branch.title}</span>
+                <span className="font-bold text-base md:text-lg text-center leading-snug">{branch.title}</span>
             </button>
           )
         })}

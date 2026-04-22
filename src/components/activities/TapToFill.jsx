@@ -106,8 +106,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
 
         const textSegments = q.text.split(/\.{3,}/);
         const maxOptLength = Math.max(...options.map(o => o.text.length));
-        // Use a tighter width calculation for Arabic characters
-        const calculatedWidth = `${Math.max(maxOptLength + 1, 6)}ch`;
+        // تحسين حساب العرض ليكون أكثر مرونة مع الخط العربي وبحجم أكبر خيار
+        const calculatedWidth = `${Math.max(maxOptLength * 1.2, 5)}rem`;
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
@@ -127,27 +127,27 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
                               {sIdx < textSegments.length - 1 && (
-                                   <span className="relative inline-block mx-2 align-middle z-10">
-                                       <button 
-                                           type="button"
-                                           disabled={answered}
-                                           onClick={(e) => handleBlankClick(idx, e)}
-                                           className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 ${
-                                             answered 
-                                               ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
-                                               : `border-slate-300 bg-slate-100 border-solid text-slate-700 hover:border-slate-400 hover:bg-slate-200 cursor-pointer`
-                                           }`}
-                                       >
-                                           {answered && selectedOption ? (
-                                               <span className="font-bold text-[1em] whitespace-nowrap animate-in fade-in duration-300">{selectedOption.text}</span>
-                                           ) : (
-                                              <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-50 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
-                                                <span className="hidden md:inline">......</span>
-                                                <span className="inline md:hidden">....</span>
-                                              </span>
-                                           )}
-                                       </button>
-                                   </span>
+                               <span className="relative inline-block mx-1.5 align-middle z-10">
+                                   <button 
+                                       type="button"
+                                       disabled={answered}
+                                       onClick={(e) => handleBlankClick(idx, e)}
+                                       className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 min-h-[2.6rem] md:min-h-[3.8rem] px-2 shadow-sm ${
+                                         answered 
+                                           ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 border-solid') 
+                                           : `border-slate-200 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
+                                       }`}
+                                   >
+                                       {answered && selectedOption ? (
+                                           <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300">{selectedOption.text}</span>
+                                       ) : (
+                                          <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-30 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
+                                            <span className="hidden md:inline">......</span>
+                                            <span className="inline md:hidden">....</span>
+                                          </span>
+                                       )}
+                                   </button>
+                               </span>
                               )}
                           </React.Fragment>
                       ))}

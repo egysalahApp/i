@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Trophy, RefreshCw } from 'lucide-react';
+import { toArabicNum } from '../utils';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
 import StyleLab from './activities/StyleLab';
@@ -26,6 +28,27 @@ function LessonViewer({ APP_DATA }) {
       return acc;
     }, {})
   );
+
+  const getEffectiveTheme = (currentIdx) => {
+    const currentSection = APP_DATA.sections[currentIdx];
+    if (currentIdx === 0 || currentIdx === APP_DATA.sections.length - 1) return currentSection.theme;
+    
+    const prevEffectiveTheme = getEffectiveTheme(currentIdx - 1);
+    if (currentSection.theme === prevEffectiveTheme) {
+      if (currentSection.altTheme) return currentSection.altTheme;
+      const pairs = {
+        'emerald': 'purple',
+        'cyan': 'amber',
+        'amber': 'indigo',
+        'purple': 'emerald',
+        'violet': 'cyan',
+        'slate': 'sky',
+        'indigo': 'emerald'
+      };
+      return pairs[currentSection.theme] || currentSection.theme;
+    }
+    return currentSection.theme;
+  };
 
   const activeSection = APP_DATA.sections.find(s => s.id === activeTab);
   const currentProgress = progress[activeTab];
@@ -109,6 +132,50 @@ function LessonViewer({ APP_DATA }) {
     scrollToContent();
   };
 
+  const isAllComplete = APP_DATA.sections.every(s => {
+    const p = progress[s.id];
+    return p && p.total > 0 && p.answered >= p.total;
+  });
+
+  const totalScore = Object.values(progress).reduce((acc, p) => acc + p.score, 0);
+  const maxScore = Object.values(progress).filter(p => p.isScorable).reduce((acc, p) => acc + p.total, 0);
+
+  const [globalMessage, setGlobalMessage] = useState('');
+
+  useEffect(() => {
+    if (isAllComplete && !globalMessage) {
+        const phrases = [
+            "عمل رائع! لقد أتممت جميع الأقسام بنجاح.",
+            "مجهود ممتاز! أنت في طريقك نحو التميز.",
+            "أداء استثنائي! استمر في هذا الإبداع.",
+            "أحسنت صنعاً! لقد أثبتّ جدارتك اليوم.",
+            "نهاية موفقة لدرس مفيد! واصل تقدمك."
+        ];
+        setGlobalMessage(phrases[Math.floor(Math.random() * phrases.length)]);
+    }
+  }, [isAllComplete, globalMessage]);
+
+  const handleStartOver = () => {
+    const newResetKeys = {};
+    APP_DATA.sections.forEach(s => {
+      newResetKeys[s.id] = (resetKeys[s.id] || 0) + 1;
+    });
+    setResetKeys(newResetKeys);
+
+    setProgress(APP_DATA.sections.reduce((acc, section) => {
+      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
+      const total = isScorable ? (section.questions?.length || section.pairs?.length || 0) : 1;
+      const answered = isScorable ? 0 : 1;
+      
+      acc[section.id] = { answered, total, score: 0, isScorable };
+      return acc;
+    }, {}));
+    
+    setGlobalMessage('');
+    setActiveTab(APP_DATA.sections[0].id);
+    scrollToContent();
+  };
+
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
       <div className="w-full text-center py-6 bg-transparent flex flex-col items-center">
@@ -121,10 +188,12 @@ function LessonViewer({ APP_DATA }) {
       <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-[#f8fafc]/95 backdrop-blur-md shadow-sm border-b border-slate-200">
         <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
             <div className="flex items-center gap-3 py-3 flex-nowrap">
-              {APP_DATA.sections.map((section) => {
+              {APP_DATA.sections.map((section, idx) => {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
-                const activeClass = isActive ? `bg-${section.theme}-600 text-white shadow-md` : "bg-white text-slate-600 border-slate-200";
+                const effectiveTheme = getEffectiveTheme(idx);
+                const activeBg = (effectiveTheme === 'slate') ? 'bg-slate-400' : `bg-${effectiveTheme}-600`;
+                const activeClass = isActive ? `${activeBg} text-white shadow-md` : "bg-white text-slate-600 border-slate-200";
                 
                 return (
                   <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
@@ -137,7 +206,7 @@ function LessonViewer({ APP_DATA }) {
         </div>
         {currentProgress?.isScorable && (
           <div className="w-full h-[4px] bg-slate-200">
-            <div className={`h-full transition-all duration-500 ease-out bg-${activeSection.theme}-500`} style={{ width: `${progressPercent}%` }}></div>
+            <div className={`h-full transition-all duration-500 ease-out bg-${getEffectiveTheme(activeSectionIndex)}-500`} style={{ width: `${progressPercent}%` }}></div>
           </div>
         )}
       </div>
@@ -145,29 +214,50 @@ function LessonViewer({ APP_DATA }) {
       <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
         <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 pt-6 mb-6 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
         
-        <div id="section-content-wrapper" className="fade-in" key={`${activeTab}-${resetKeys[activeTab] || 0}`}>
-          {activeSection.type === 'intro' && <Intro sectionData={activeSection} />}
-          {activeSection.type === 'radar' && <Radar sectionData={activeSection} />}
-          {activeSection.type === 'style_lab' && <StyleLab sectionData={activeSection} />}
-          {activeSection.type === 'contrast_cards' && <ContrastCards sectionData={activeSection} />}
-          {activeSection.type === 'classify' && <Classify sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'spotting' && <Spotting sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'mcq' && <MCQ sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'error_correction' && <ErrorCorrection sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'hotspot' && <Hotspot sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'tap_to_fill' && <TapToFill sectionData={activeSection} progress={currentProgress} onUpdateProgress={handleUpdateProgress} />}
-          {activeSection.type === 'golden_envelope' && <GoldenEnvelope sectionData={activeSection} />}
+        <div id="section-content-wrapper" className="fade-in">
+          {APP_DATA.sections.map((section) => {
+            const isActive = activeTab === section.id;
+            const secProgress = progress[section.id];
+            return (
+              <div key={`${section.id}-${resetKeys[section.id] || 0}`} className={isActive ? 'block' : 'hidden'}>
+                {section.type === 'intro' && <Intro sectionData={section} />}
+                {section.type === 'radar' && <Radar sectionData={section} />}
+                {section.type === 'style_lab' && <StyleLab sectionData={section} />}
+                {section.type === 'contrast_cards' && <ContrastCards sectionData={section} />}
+                {section.type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
+              </div>
+            );
+          })}
         </div>
         
         {activeSection.type !== 'golden_envelope' && (
           <SectionFooter 
-            theme={activeSection.theme} 
+            theme={getEffectiveTheme(activeSectionIndex)} 
             onNext={handleNextSection} 
             onReset={activeSection.type !== 'intro' ? handleResetSection : null}
             isLast={isLast}
             showNext={true} 
             isScorable={currentProgress.isScorable}
           />
+        )}
+
+        {isAllComplete && (
+          <div className="mt-12 bg-gradient-to-br from-indigo-50 to-purple-50 p-8 md:p-10 rounded-[2.5rem] border-2 border-indigo-100 shadow-lg text-center fade-in">
+             <Trophy className="w-20 h-20 mx-auto text-indigo-500 mb-6 drop-shadow-md" />
+             <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4 leading-snug">{globalMessage}</h2>
+             <div className="text-2xl md:text-3xl text-indigo-700 font-bold mb-10 bg-white inline-block px-6 py-3 rounded-2xl shadow-sm border border-indigo-50">
+               النتيجة الإجمالية: {toArabicNum(totalScore)} من {toArabicNum(maxScore)}
+             </div>
+             <button onClick={handleStartOver} className="mx-auto px-8 md:px-12 py-4 md:py-5 rounded-full font-bold text-xl md:text-2xl text-white bg-indigo-600 md:hover:bg-indigo-700 shadow-md md:hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3">
+                <RefreshCw className="w-6 h-6 md:w-8 md:h-8" /> ابدأ من جديد
+             </button>
+          </div>
         )}
       </main>
 

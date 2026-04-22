@@ -95,7 +95,7 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
                     let wordClass = "px-4 md:px-6 py-3 md:py-4 text-2xl md:text-3xl font-normal rounded-xl transition-all duration-300 select-none ";
                     if (!answered) {
                         wordClass += `bg-white border-2 border-slate-200 text-slate-700 md:hover:border-${sectionData.theme}-300 md:hover:bg-${sectionData.theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer `;
-                        if (isShaking) wordClass += "bg-orange-100 border-orange-400 text-orange-700 shake ";
+                        if (isShaking) wordClass += "bg-rose-100 border-rose-400 text-rose-700 shake ";
                     } else {
                         if (isSelectedCorrect) wordClass += `bg-emerald-500 text-white border-2 border-emerald-600 shadow-md cursor-default `;
                         else wordClass += "bg-white border-2 border-slate-200 text-slate-700 cursor-default ";
@@ -111,7 +111,7 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
 
               {answered && (
                   <div className="mt-6 smooth-expand w-full">
-                      <FeedbackBox isCorrect={true} explanation={q.explanation} correctLabel="أحسنت الاختيار" />
+                      <FeedbackBox isCorrect={true} explanation={q.explanation} />
                   </div>
               )}
           </div>

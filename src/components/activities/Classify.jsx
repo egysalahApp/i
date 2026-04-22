@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
+import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
 import { Inbox } from 'lucide-react';
 
@@ -10,6 +11,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
   const [status, setStatus] = useState('idle'); // idle, correct, incorrect
   const [placedItems, setPlacedItems] = useState({});
   const [animatingOut, setAnimatingOut] = useState(false);
+  const [maxContentHeight, setMaxContentHeight] = useState('auto');
 
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
@@ -22,6 +24,30 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
     let initialPlaced = {};
     sectionData.categories.forEach(c => initialPlaced[c.id] = []);
     setPlacedItems(initialPlaced);
+
+    // قياس ديناميكي لأكبر محتوى (نص + تلميح)
+    const measureMaxHeight = () => {
+      const tempDiv = document.createElement('div');
+      tempDiv.style.visibility = 'hidden';
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.width = '100%';
+      tempDiv.style.maxWidth = '40rem'; // مطابق لـ max-w-2xl
+      tempDiv.className = 'text-2xl md:text-3xl leading-[2.2] px-8';
+      document.body.appendChild(tempDiv);
+
+      let maxH = 0;
+      sectionData.questions.forEach(q => {
+        // نص السؤال + مساحة تقديرية للتلميح (حوالي 80px)
+        tempDiv.innerText = q.text;
+        const h = tempDiv.offsetHeight + 120; // 120px كخزان أمان للنص والتلميح
+        if (h > maxH) maxH = h;
+      });
+
+      document.body.removeChild(tempDiv);
+      setMaxContentHeight(`${Math.max(maxH, 200)}px`);
+    };
+
+    setTimeout(measureMaxHeight, 100);
   }, [sectionData.questions, sectionData.categories]);
 
   const handleCategoryClick = (catId) => {
@@ -81,22 +107,21 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                     💡 تلميح
                   </button>
               </div>
-              <span className="block mb-4 text-slate-500 text-sm md:text-base font-normal text-center">إلى أي صندوق تنتمي هذه البطاقة؟</span>
-              <div className="w-full min-h-[8rem] md:min-h-[10rem] flex flex-col items-center justify-center mb-2">
+              <span className="block mb-4 text-slate-500 text-sm md:text-base font-normal text-center">انقر على الصندوق المناسب لتصنيف هذه الجملة</span>
+              <div style={{ minHeight: maxContentHeight }} className="w-full flex flex-col items-center justify-center mb-2 transition-all duration-300">
                  <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
                    «{questions[currentIndex].originalQuestion.text}»
                  </h3>
+                 
+                 {questions[currentIndex].showHint && (
+                    <div className="mt-4 smooth-expand w-full">
+                      <HintBox hintText={questions[currentIndex].originalQuestion.hint} />
+                    </div>
+                  )}
               </div>
-              {questions[currentIndex].showHint && (
-                <div className="mt-4 smooth-expand">
-                  <HintBox hintText={questions[currentIndex].originalQuestion.hint} />
-                </div>
-              )}
               {status === 'incorrect' && (
-                <div className="mt-5 smooth-expand">
-                  <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl text-center text-orange-700 text-lg md:text-xl font-bold shadow-sm">
-                    ⚠️ إجابة خاطئة! {questions[currentIndex].originalQuestion.explanation || 'حاول مرة أخرى'}
-                  </div>
+                <div className="mt-5 smooth-expand w-full text-right">
+                  <FeedbackBox isCorrect={false} explanation={questions[currentIndex].originalQuestion.explanation || 'حاول مرة أخرى'} />
                 </div>
               )}
             </div>

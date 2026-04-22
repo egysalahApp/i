@@ -136,7 +136,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
                     
                     if (step === 1) {
                         wordClass += `bg-white border-slate-200 text-slate-700 md:hover:border-${sectionData.theme}-300 md:hover:bg-${sectionData.theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer `;
-                        if (isShaking) wordClass += "bg-orange-100 border-orange-400 text-orange-700 shake ";
+                        if (isShaking) wordClass += "bg-rose-100 border-rose-400 text-rose-700 shake ";
                     } else {
                         if (isSelected) {
                             if (isStep3) {

@@ -1,4 +1,4 @@
-const colors = ['sky', 'teal', 'indigo', 'amber', 'emerald', 'purple', 'violet', 'slate', 'cyan', 'rose', 'orange'];
+const colors = ['sky', 'indigo', 'amber', 'emerald', 'purple', 'violet', 'slate', 'cyan', 'rose', 'orange', 'zinc'];
 
 /** @type {import('tailwindcss').Config} */
 export default {

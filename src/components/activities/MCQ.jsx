@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
+import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
 
 const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
@@ -11,9 +12,23 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
     // Initialize if empty
     setQuestions(sectionData.questions.map(q => {
       let opts = q.options.map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
+      
+      let isTF = false;
+      if (opts.length === 2 && opts.some(o => ['صواب', 'صح'].includes(o.text.trim())) && opts.some(o => ['خطأ'].includes(o.text.trim()))) {
+        isTF = true;
+        opts.sort((a, b) => {
+          if (['صواب', 'صح'].includes(a.text.trim())) return -1;
+          if (['صواب', 'صح'].includes(b.text.trim())) return 1;
+          return 0;
+        });
+      } else {
+        opts = shuffleArray(opts);
+      }
+
       return {
         originalQuestion: q,
-        options: shuffleArray(opts),
+        options: opts,
+        isTF: isTF,
         answered: false,
         selectedOption: null,
         showHint: false,
@@ -70,7 +85,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
       )}
 
       {questions.map((qState, idx) => {
-        const { originalQuestion: q, options, answered, selectedOption, showHint, wrongAttempt } = qState;
+        const { originalQuestion: q, options, isTF, answered, selectedOption, showHint, wrongAttempt } = qState;
         const isSelectedCorrect = selectedOption && selectedOption.isCorrect;
         let ringClass = answered ? (isSelectedCorrect ? 'ring-2 ring-emerald-400' : 'ring-2 ring-rose-400') : '';
         if (wrongAttempt) ringClass += ' shake ';
@@ -92,9 +107,9 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                   )}
               </div>
 
-              <div className="grid gap-3 mx-auto w-full max-w-md flex-grow grid-cols-1 content-start">
+              <div className={`grid gap-3 mx-auto w-full ${isTF ? 'max-w-[280px]' : 'max-w-md'} flex-grow grid-cols-1 content-start`}>
                   {options.map((opt, optIdx) => {
-                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 justify-start `;
+                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 ${isTF ? 'justify-center' : 'justify-start'} `;
                     if (!answered) { 
                       btnClass += `border-slate-200 bg-white text-slate-600 active:scale-95 md:hover:bg-slate-50 cursor-pointer`; 
                     } else {
@@ -109,8 +124,8 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                     
                     return (
                       <button key={optIdx} disabled={answered} onClick={() => handleAnswer(idx, optIdx)} className={btnClass}>
-                        <div className={numClass}>{toArabicNum(optIdx + 1)}</div>
-                        <span className="relative z-10 flex-grow text-right">{opt.text}</span>
+                        {!isTF && <div className={numClass}>{toArabicNum(optIdx + 1)}</div>}
+                        <span className={`relative z-10 flex-grow ${isTF ? 'text-center' : 'text-right'}`}>{opt.text}</span>
                         {answered && opt.isCorrect && <span className="text-emerald-600">✓</span>}
                         {answered && selectedOption === opt && !opt.isCorrect && <span className="text-rose-600">✗</span>}
                       </button>
@@ -120,14 +135,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
 
               {answered && (
                   <div className="mt-6 smooth-expand w-full">
-                      <div className={`p-5 rounded-xl border text-right ${isSelectedCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-orange-50 border-orange-200'}`}>
-                        <div className={`flex items-center justify-start gap-2 mb-3 font-bold text-xl md:text-2xl ${isSelectedCorrect ? 'text-emerald-700' : 'text-orange-700'}`}>
-                           {isSelectedCorrect ? 'إجابة صحيحة ✓' : 'إجابة خاطئة ✗'}
-                        </div>
-                        <div className={`text-xl md:text-2xl font-normal leading-relaxed pr-1 ${isSelectedCorrect ? 'text-emerald-800' : 'text-orange-800'}`}>
-                          {q.explanation}
-                        </div>
-                      </div>
+                      <FeedbackBox isCorrect={isSelectedCorrect} explanation={q.explanation} />
                   </div>
               )}
           </div>

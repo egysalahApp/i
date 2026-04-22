@@ -2,9 +2,9 @@ import React from 'react';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 export const FeedbackBox = ({ isCorrect, explanation, correctLabel = 'إجابة صحيحة', incorrectLabel = 'إجابة خاطئة' }) => {
-  const bgClass = isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-orange-50 border-orange-200';
-  const textClass = isCorrect ? 'text-emerald-700' : 'text-orange-700';
-  const expClass = isCorrect ? 'text-emerald-800' : 'text-orange-800';
+  const bgClass = isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200';
+  const textClass = isCorrect ? 'text-emerald-700' : 'text-rose-700';
+  const expClass = isCorrect ? 'text-emerald-800' : 'text-rose-800';
 
   return (
     <div className={`mt-6 p-5 rounded-xl border text-right smooth-expand ${bgClass}`}>
