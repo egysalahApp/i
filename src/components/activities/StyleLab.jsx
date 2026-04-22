@@ -43,14 +43,14 @@ const StyleLab = ({ sectionData }) => {
       )}
 
       <div className="w-full relative min-h-[300px]">
-        <div id="stylelab-card-area" className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-10 transition-all duration-300">
+        <div id="stylelab-card-area" className="bg-white rounded-3xl border border-slate-200 shadow-sm px-4 py-6 md:p-10 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
               <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>
                 القطعة {toArabicNum(currentIdx + 1)} من {toArabicNum(total)}
               </span>
           </div>
           
-          <div className="text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right font-normal text-slate-800 mb-8 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
+          <div className="text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right font-normal text-slate-800 mb-8 bg-slate-50 px-4 py-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
             {excerpt.segments.map((seg, i) => {
               if (seg.isHighlight) {
                 const isSelected = selectedId === seg.id;
