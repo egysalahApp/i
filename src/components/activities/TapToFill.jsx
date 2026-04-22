@@ -17,42 +17,68 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         answered: false,
         selectedOption: null,
         showHint: false,
-        wrongAttempt: false
+        wrongAttempt: false,
+        isOptionsOpen: false
       };
     }));
   }, [sectionData.questions]);
 
-  const handleOptionClick = (qIdx, optIdx, e) => {
-    if (e) e.stopPropagation();
-    const qState = questions[qIdx];
-    if (qState.answered) return;
-
-    const opt = qState.options[optIdx];
-    const isCorrect = opt.isCorrect;
-
-    const newQuestions = [...questions];
-    newQuestions[qIdx] = {
-      ...newQuestions[qIdx],
-      answered: true,
-      selectedOption: opt,
-      wrongAttempt: !isCorrect
-    };
-    
-    setQuestions(newQuestions);
-
-    const newAnswered = progress.answered + 1;
-    const newScore = progress.score + (isCorrect ? 1 : 0);
-    onUpdateProgress(sectionData.id, newAnswered, newScore);
-
-    if (!isCorrect) {
-      setTimeout(() => {
-        setQuestions(prev => {
-          const reset = [...prev];
-          if (reset[qIdx]) reset[qIdx].wrongAttempt = false;
-          return reset;
-        });
-      }, 500);
+  const handleBlankClick = (qIdx, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
+    setQuestions(prev => {
+      if (!prev[qIdx]) return prev;
+      const updated = [...prev];
+      updated[qIdx] = { 
+        ...updated[qIdx], 
+        isOptionsOpen: !updated[qIdx].isOptionsOpen 
+      };
+      return updated;
+    });
+  };
+
+  const handleOptionClick = (qIdx, optIdx, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setQuestions(prev => {
+      const qState = prev[qIdx];
+      if (!qState || qState.answered) return prev;
+
+      const opt = qState.options[optIdx];
+      const isCorrect = opt.isCorrect;
+
+      const updated = [...prev];
+      updated[qIdx] = {
+        ...updated[qIdx],
+        answered: true,
+        selectedOption: opt,
+        wrongAttempt: !isCorrect,
+        isOptionsOpen: false // Close options on selection
+      };
+
+      // Handle progress update outside state setter
+      setTimeout(() => {
+        const newAnswered = progress.answered + 1;
+        const newScore = progress.score + (isCorrect ? 1 : 0);
+        onUpdateProgress(sectionData.id, newAnswered, newScore);
+      }, 0);
+
+      if (!isCorrect) {
+        setTimeout(() => {
+          setQuestions(current => {
+            const reset = [...current];
+            if (reset[qIdx]) reset[qIdx] = { ...reset[qIdx], wrongAttempt: false };
+            return reset;
+          });
+        }, 500);
+      }
+
+      return updated;
+    });
   };
 
   const toggleHint = (qIdx) => {
@@ -80,13 +106,13 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
 
         const textSegments = q.text.split(/\.{3,}/);
         const maxOptLength = Math.max(...options.map(o => o.text.length));
-        const desktopMinWidth = `${Math.max(maxOptLength + 3, 11)}ch`;
+        // Use a more generous width calculation for Arabic characters (approx 1.2ch per char + padding)
+        const calculatedWidth = `${Math.max(maxOptLength * 1.5 + 2, 8)}ch`;
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
               <style>{`
-                .gap-box-${idx} { min-width: 5ch; }
-                @media (min-width: 768px) { .gap-box-${idx} { min-width: ${desktopMinWidth}; } }
+                .gap-box-${idx} { min-width: ${calculatedWidth}; }
               `}</style>
               <div className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-100 mb-2 w-full mx-auto">
                   <div className="flex items-center justify-between mb-4">
@@ -101,24 +127,27 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
                               {sIdx < textSegments.length - 1 && (
-                                  <span className="relative inline-block mx-2 align-middle z-10">
-                                      <span 
-                                          className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
-                                            answered 
-                                              ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
-                                              : `border-slate-400 bg-slate-100 border-dashed text-slate-700 shadow-inner`
-                                          }`}
-                                      >
-                                          {answered && selectedOption ? (
-                                              <span className="font-bold text-[1em] whitespace-nowrap animate-in fade-in zoom-in-75 duration-300">{selectedOption.text}</span>
-                                          ) : (
+                                   <span className="relative inline-block mx-2 align-middle z-10">
+                                       <button 
+                                           type="button"
+                                           disabled={answered}
+                                           onClick={(e) => handleBlankClick(idx, e)}
+                                           className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
+                                             answered 
+                                               ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
+                                               : `border-slate-300 bg-slate-100 border-solid text-slate-700 hover:border-slate-400 hover:bg-slate-200 cursor-pointer`
+                                           }`}
+                                       >
+                                           {answered && selectedOption ? (
+                                               <span className="font-bold text-[1em] whitespace-nowrap animate-in fade-in duration-300">{selectedOption.text}</span>
+                                           ) : (
                                               <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-50 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
                                                 <span className="hidden md:inline">......</span>
                                                 <span className="inline md:hidden">....</span>
                                               </span>
-                                          )}
-                                      </span>
-                                  </span>
+                                           )}
+                                       </button>
+                                   </span>
                               )}
                           </React.Fragment>
                       ))}
@@ -129,28 +158,32 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                           <HintBox hintText={q.hint} />
                       </div>
                   )}
+
+                  {(qState.isOptionsOpen || answered) && (
+                      <div className="mt-8 fade-in">
+                          <div className="grid gap-3 md:gap-4 w-full grid-cols-1 md:grid-cols-3">
+                              {options.map((opt, optIdx) => {
+                                  let btnClass = `p-4 text-center rounded-2xl font-bold text-xl md:text-2xl transition-all border-2 flex items-center justify-center leading-snug `;
+                                  if (!answered) {
+                                      btnClass += `border-slate-200 bg-white text-slate-700 shadow-sm md:hover:border-${sectionData.theme}-400 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:shadow-md cursor-pointer active:scale-95`;
+                                  } else {
+                                      if (opt.isCorrect) btnClass += "bg-emerald-500 border-emerald-600 text-white shadow-md";
+                                      else if (selectedOption === opt) btnClass += "bg-rose-500 border-rose-600 text-white shadow-md";
+                                      else btnClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
+                                      btnClass += " cursor-default";
+                                  }
+                                  
+                                  return (
+                                      <button key={optIdx} disabled={answered} onClick={(e) => handleOptionClick(idx, optIdx, e)} className={btnClass}>
+                                          {opt.text}
+                                      </button>
+                                  );
+                              })}
+                          </div>
+                      </div>
+                  )}
               </div>
 
-              {/* Bottom Options Grid */}
-              <div className="grid gap-3 md:gap-4 w-full grid-cols-1 md:grid-cols-3 mt-6">
-                  {options.map((opt, optIdx) => {
-                      let btnClass = `p-5 text-center rounded-2xl font-bold text-2xl md:text-3xl transition-all border-2 flex items-center justify-center leading-snug `;
-                      if (!answered) {
-                          btnClass += `border-slate-200 bg-white text-slate-700 shadow-sm md:hover:border-${sectionData.theme}-400 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:shadow-md cursor-pointer active:scale-95`;
-                      } else {
-                          if (opt.isCorrect) btnClass += "bg-emerald-500 border-emerald-600 text-white shadow-md scale-[1.02]";
-                          else if (selectedOption === opt) btnClass += "bg-rose-500 border-rose-600 text-white shadow-md";
-                          else btnClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
-                          btnClass += " cursor-default";
-                      }
-                      
-                      return (
-                          <button key={optIdx} disabled={answered} onClick={(e) => handleOptionClick(idx, optIdx, e)} className={btnClass}>
-                              {opt.text}
-                          </button>
-                      );
-                  })}
-              </div>
 
               {answered && (
                   <div className="mt-6 smooth-expand w-full">
