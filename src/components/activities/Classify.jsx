@@ -25,26 +25,26 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
     sectionData.categories.forEach(c => initialPlaced[c.id] = []);
     setPlacedItems(initialPlaced);
 
-    // قياس ديناميكي لأكبر محتوى (نص + تلميح)
+    // قياس ديناميكي لأكبر نص سؤال لتوحيد الارتفاع الأساسي للبطاقة
     const measureMaxHeight = () => {
       const tempDiv = document.createElement('div');
       tempDiv.style.visibility = 'hidden';
       tempDiv.style.position = 'absolute';
       tempDiv.style.width = '100%';
-      tempDiv.style.maxWidth = '40rem'; // مطابق لـ max-w-2xl
-      tempDiv.className = 'text-2xl md:text-3xl leading-[2.2] px-8';
+      tempDiv.style.maxWidth = '36rem'; // مطابق للمساحة الداخلية لـ max-w-2xl
+      tempDiv.className = 'text-2xl md:text-3xl leading-[2.2] px-8 text-center font-normal';
       document.body.appendChild(tempDiv);
 
       let maxH = 0;
       sectionData.questions.forEach(q => {
-        // نص السؤال + مساحة تقديرية للتلميح (حوالي 80px)
-        tempDiv.innerText = q.text;
-        const h = tempDiv.offsetHeight + 120; // 120px كخزان أمان للنص والتلميح
+        tempDiv.innerText = `«${q.text}»`;
+        const h = tempDiv.offsetHeight;
         if (h > maxH) maxH = h;
       });
 
       document.body.removeChild(tempDiv);
-      setMaxContentHeight(`${Math.max(maxH, 200)}px`);
+      // نترك مساحة بسيطة كحد أدنى ولكن نعتمد الارتفاع الأكبر للنصوص
+      setMaxContentHeight(`${Math.max(maxH, 100)}px`);
     };
 
     setTimeout(measureMaxHeight, 100);
@@ -108,12 +108,16 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                   </button>
               </div>
               <span className="block mb-4 text-slate-500 text-sm md:text-base font-normal text-center">انقر على الصندوق المناسب لتصنيف هذه الجملة</span>
-              <div style={{ minHeight: maxContentHeight }} className="w-full flex flex-col items-center justify-center mb-2 transition-all duration-300">
-                 <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
-                   «{questions[currentIndex].originalQuestion.text}»
-                 </h3>
+              <div className="w-full flex flex-col transition-all duration-300">
+                  {/* حاوية نص السؤال: تحتفظ بارتفاع ثابت بناءً على أطول نص */}
+                  <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
+                    <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
+                      «{questions[currentIndex].originalQuestion.text}»
+                    </h3>
+                  </div>
                  
-                 {questions[currentIndex].showHint && (
+                  {/* التلميح: يظهر أسفل النص ويتمدد الصندوق معه ديناميكياً */}
+                  {questions[currentIndex].showHint && (
                     <div className="mt-4 smooth-expand w-full">
                       <HintBox hintText={questions[currentIndex].originalQuestion.hint} />
                     </div>
