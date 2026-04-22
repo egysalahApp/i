@@ -20,7 +20,7 @@ const Radar = ({ sectionData }) => {
 
       {/* ROOT NODE (العقدة المركزية) */}
       <div className={`relative z-20 w-full max-w-md bg-white border-[4px] md:border-[5px] border-${sectionData.theme}-500 text-slate-800 rounded-[2rem] p-6 md:p-8 text-center shadow-xl transition-transform duration-300 md:hover:scale-105`}>
-          <div className={`text-base md:text-lg font-bold text-${sectionData.theme}-500 mb-2 uppercase tracking-widest`}>{map.center.title}</div>
+          <div className={`text-lg md:text-xl font-bold text-${sectionData.theme}-500 mb-2 uppercase tracking-widest`}>{map.center.title}</div>
           <h3 className="text-2xl md:text-4xl font-extrabold leading-relaxed">{map.center.text}</h3>
       </div>
 
@@ -63,7 +63,7 @@ const Radar = ({ sectionData }) => {
                       }`}
                     >
                       <span className={`text-5xl transition-transform duration-300 drop-shadow-sm ${isActive ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-1'}`}>{branch.icon}</span>
-                      <span className="font-bold text-xl md:text-2xl text-center leading-snug">{branch.title}</span>
+                      <span className="font-bold text-2xl md:text-3xl text-center leading-snug">{branch.title}</span>
                     </button>
                   </div>
                 )
@@ -94,7 +94,7 @@ const Radar = ({ sectionData }) => {
                   >
                     {/* أيقونة الفرع */}
                     <span className={`text-4xl shrink-0 drop-shadow-md rounded-2xl p-2 ${isActive ? 'bg-white/20' : `bg-${branch.color}-50`}`}>{branch.icon}</span>
-                    <span className="font-bold text-xl md:text-2xl text-right leading-tight flex-1">{branch.title}</span>
+                    <span className="font-bold text-2xl md:text-3xl text-right leading-tight flex-1">{branch.title}</span>
                   </button>
                 )
             })}
