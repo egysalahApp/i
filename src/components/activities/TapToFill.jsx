@@ -92,7 +92,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   
-                  <div className="text-2xl md:text-3xl lg:text-4xl font-semibold text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
+                  <div className="text-xl md:text-3xl lg:text-4xl font-semibold text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
                       {textSegments.map((seg, sIdx) => (
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
@@ -100,7 +100,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                   <span className="relative inline-block mx-2 align-middle z-10">
                                       <span 
                                           style={blankStyle}
-                                          className={`inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.5rem] md:min-h-[3.5rem] px-4 ${
+                                          className={`inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
                                             answered 
                                               ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
                                               : `border-slate-400 bg-slate-100 border-dashed text-slate-700 shadow-inner`
@@ -109,7 +109,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                           {answered && selectedOption ? (
                                               <span className="font-bold text-[1em] whitespace-nowrap animate-in fade-in zoom-in-75 duration-300">{selectedOption.text}</span>
                                           ) : (
-                                              <span className="text-[0.75em] md:text-[0.85em] px-2 opacity-50 whitespace-nowrap flex items-center gap-1.5 tracking-[0.2em]">
+                                              <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-50 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
                                                 <span>......</span>
                                               </span>
                                           )}
