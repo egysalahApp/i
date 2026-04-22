@@ -27,11 +27,19 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
     // قياس ديناميكي لأكبر نص سؤال لتوحيد الارتفاع الأساسي للبطاقة
     const measureMaxHeight = () => {
+      const container = document.querySelector('.classify-card-container');
+      if (!container) return;
+
       const tempDiv = document.createElement('div');
       tempDiv.style.visibility = 'hidden';
       tempDiv.style.position = 'absolute';
-      tempDiv.style.width = '100%';
-      tempDiv.style.maxWidth = '36rem'; // مطابق للمساحة الداخلية لـ max-w-2xl
+      tempDiv.style.top = '-9999px';
+      
+      // نستخدم العرض الفعلي للحاوية لضمان دقة القياس على مختلف أحجام الشاشات
+      const containerWidth = container.offsetWidth;
+      const padding = window.innerWidth < 768 ? 40 : 64; // p-5 (20px*2) vs p-8 (32px*2)
+      tempDiv.style.width = `${containerWidth - padding}px`;
+      
       tempDiv.className = 'text-2xl md:text-3xl leading-[2.2] px-8 text-center font-normal';
       document.body.appendChild(tempDiv);
 
@@ -43,11 +51,12 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       });
 
       document.body.removeChild(tempDiv);
-      // نترك مساحة بسيطة كحد أدنى ولكن نعتمد الارتفاع الأكبر للنصوص
-      setMaxContentHeight(`${Math.max(maxH, 100)}px`);
+      setMaxContentHeight(`${Math.max(maxH, 80)}px`);
     };
 
-    setTimeout(measureMaxHeight, 100);
+    measureMaxHeight();
+    window.addEventListener('resize', measureMaxHeight);
+    return () => window.removeEventListener('resize', measureMaxHeight);
   }, [sectionData.questions, sectionData.categories]);
 
   const handleCategoryClick = (catId) => {
@@ -100,7 +109,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       <div className="flex flex-col items-center w-full gap-6">
         <div className="relative w-full min-h-[12rem] bg-slate-50 rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center p-4 md:p-6 transition-all duration-500">
           {!isComplete && questions[currentIndex] ? (
-            <div className={`w-full max-w-2xl bg-white p-5 md:p-8 rounded-2xl shadow-lg border-2 border-slate-200 transition-all transform leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'opacity-0 translate-y-4' : 'fade-in'} ${status === 'incorrect' ? 'shake' : ''}`}>
+            <div className={`classify-card-container w-full max-w-2xl bg-white p-5 md:p-8 rounded-2xl shadow-lg border-2 border-slate-200 transition-all transform leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'opacity-0 translate-y-4' : 'fade-in'} ${status === 'incorrect' ? 'shake' : ''}`}>
               <div className="flex items-center justify-between mb-4">
                   <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>البطاقة {toArabicNum(currentIndex + 1)}</span>
                   <button onClick={toggleHint} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 hover:bg-amber-50">
