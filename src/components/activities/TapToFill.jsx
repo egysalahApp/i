@@ -80,10 +80,14 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
 
         const textSegments = q.text.split(/\.{3,}/);
         const maxOptLength = Math.max(...options.map(o => o.text.length));
-        const blankStyle = { minWidth: `${Math.max(maxOptLength + 3, 11)}ch` };
+        const desktopMinWidth = `${Math.max(maxOptLength + 3, 11)}ch`;
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
+              <style>{`
+                .gap-box-${idx} { min-width: 5ch; }
+                @media (min-width: 768px) { .gap-box-${idx} { min-width: ${desktopMinWidth}; } }
+              `}</style>
               <div className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-100 mb-2 w-full mx-auto">
                   <div className="flex items-center justify-between mb-4">
                       <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>السؤال {toArabicNum(idx + 1)}</span>
@@ -99,8 +103,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                               {sIdx < textSegments.length - 1 && (
                                   <span className="relative inline-block mx-2 align-middle z-10">
                                       <span 
-                                          style={blankStyle}
-                                          className={`inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
+                                          className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
                                             answered 
                                               ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
                                               : `border-slate-400 bg-slate-100 border-dashed text-slate-700 shadow-inner`
@@ -110,7 +113,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                               <span className="font-bold text-[1em] whitespace-nowrap animate-in fade-in zoom-in-75 duration-300">{selectedOption.text}</span>
                                           ) : (
                                               <span className="text-[0.65em] md:text-[0.85em] px-1 md:px-2 opacity-50 whitespace-nowrap flex items-center justify-center tracking-[0.1em] md:tracking-[0.2em]">
-                                                <span>......</span>
+                                                <span className="hidden md:inline">......</span>
+                                                <span className="inline md:hidden">....</span>
                                               </span>
                                           )}
                                       </span>
