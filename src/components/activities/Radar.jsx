@@ -45,12 +45,12 @@ const Radar = ({ sectionData }) => {
                 {map.branches[activeBranch].icon}
               </div>
               <h4 className={`text-2xl font-bold text-${map.branches[activeBranch].color}-800 mb-4`}>{map.branches[activeBranch].title}</h4>
-              <p className="text-xl md:text-2xl text-slate-700 font-medium leading-relaxed">{map.branches[activeBranch].text}</p>
+              <p className="text-xl md:text-2xl text-slate-700 font-normal leading-relaxed">{map.branches[activeBranch].text}</p>
           </div>
         ) : (
           <div className="border-2 border-dashed border-slate-300 rounded-3xl p-8 w-full max-w-2xl text-center text-slate-400 flex flex-col items-center justify-center fade-in bg-slate-50/50 min-h-[14rem]">
               <span className="text-4xl md:text-5xl mb-3 opacity-60">👆</span>
-              <span className="text-lg md:text-xl font-medium">انقر على أحد الأذرع بالأعلى لعرض تفاصيله</span>
+              <span className="text-lg md:text-xl font-normal">انقر على أحد الأذرع بالأعلى لعرض تفاصيله</span>
           </div>
         )}
       </div>

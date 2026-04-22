@@ -50,11 +50,11 @@ const StyleLab = ({ sectionData }) => {
               </span>
           </div>
           
-          <div className="text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right font-medium text-slate-800 mb-8 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
+          <div className="text-2xl md:text-3xl leading-[2.5] md:leading-[3] text-right font-normal text-slate-800 mb-8 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
             {excerpt.segments.map((seg, i) => {
               if (seg.isHighlight) {
                 const isSelected = selectedId === seg.id;
-                let classes = `inline font-bold px-1.5 py-0.5 rounded cursor-pointer transition-all duration-300 select-none `;
+                let classes = `inline font-bold px-3 py-1 md:py-2 mx-1 rounded-lg cursor-pointer transition-all duration-300 select-none `;
                 if (isSelected) {
                     classes += `bg-${sectionData.theme}-500 text-white shadow-md`;
                 } else {
@@ -72,7 +72,7 @@ const StyleLab = ({ sectionData }) => {
                   <h4 className={`text-${sectionData.theme}-800 font-bold text-xl md:text-2xl mb-3 flex items-center gap-2`}>
                     <span className="text-2xl">💡</span> التفسير:
                   </h4>
-                  <p className="text-lg md:text-xl text-slate-700 font-medium leading-relaxed">{selectedSeg.explanation}</p>
+                  <p className="text-xl md:text-2xl text-slate-700 font-normal leading-relaxed">{selectedSeg.explanation}</p>
               </div>
               ) : (
               <div className="flex items-center justify-center h-full text-slate-400 font-medium text-lg md:text-xl border-2 border-dashed border-slate-200 rounded-2xl p-6 min-h-[8rem]">

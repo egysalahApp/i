@@ -14,26 +14,26 @@ const GoldenEnvelope = ({ sectionData }) => {
         <div className="mb-10 relative">
           <div className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-100 relative">
             <span className="absolute -top-6 right-4 text-5xl text-slate-300 font-bold leading-none select-none pointer-events-none">"</span>
-            <h4 className="text-slate-500 font-bold text-sm md:text-base mb-4 uppercase tracking-wider flex items-center justify-center gap-2">
+            <h4 className="text-slate-500 font-bold text-lg md:text-xl mb-4 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-slate-200 text-slate-600 px-2 py-1 rounded text-xs">📌</span> اقتباس الدرس
             </h4>
-            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-xl md:text-2xl font-medium text-slate-800 leading-[2.2]" />
+            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-xl md:text-2xl font-normal text-slate-800 leading-[2.8]" />
             <span className="absolute -bottom-10 left-4 text-5xl text-slate-300 font-bold leading-none select-none pointer-events-none">"</span>
           </div>
         </div>
 
         <div className="mb-10 px-2">
-          <h4 className="text-slate-500 font-bold text-sm md:text-base mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
+          <h4 className="text-slate-500 font-bold text-lg md:text-xl mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-slate-200 text-slate-600 px-2 py-1 rounded text-xs">💡</span> الخلاصة
           </h4>
-          <p dangerouslySetInnerHTML={{ __html: sectionData.summary }} className="text-lg md:text-xl font-medium text-slate-700 leading-relaxed" />
+          <p dangerouslySetInnerHTML={{ __html: sectionData.summary }} className="text-lg md:text-xl font-normal text-slate-700 leading-[2.4]" />
         </div>
 
         <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-6 md:p-8 border border-amber-100 shadow-sm transform transition-transform md:hover:-translate-y-1">
-          <h4 className="text-amber-600 font-bold text-sm md:text-base mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
+          <h4 className="text-amber-600 font-bold text-lg md:text-xl mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-amber-100 text-amber-600 px-2 py-1 rounded text-xs">🤔</span> سؤال للتأمل
           </h4>
-          <p dangerouslySetInnerHTML={{ __html: sectionData.question }} className="text-lg md:text-xl font-medium text-slate-800 leading-relaxed" />
+          <p dangerouslySetInnerHTML={{ __html: sectionData.question }} className="text-lg md:text-xl font-normal text-slate-800 leading-[2.4]" />
         </div>
 
       </div>

@@ -12,7 +12,7 @@ export const FeedbackBox = ({ isCorrect, explanation, correctLabel = 'إجابة
         {isCorrect ? <CheckCircle2 className="w-7 h-7" /> : <XCircle className="w-7 h-7" />}
         <span>{isCorrect ? correctLabel : incorrectLabel}</span>
       </div>
-      <div className={`text-xl md:text-2xl font-semibold leading-relaxed pr-1 ${expClass}`}>
+      <div className={`text-xl md:text-2xl font-normal leading-relaxed pr-1 ${expClass}`}>
         {explanation}
       </div>
     </div>

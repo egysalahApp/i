@@ -106,8 +106,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
 
         const textSegments = q.text.split(/\.{3,}/);
         const maxOptLength = Math.max(...options.map(o => o.text.length));
-        // Use a more generous width calculation for Arabic characters (approx 1.2ch per char + padding)
-        const calculatedWidth = `${Math.max(maxOptLength * 1.5 + 2, 8)}ch`;
+        // Use a tighter width calculation for Arabic characters
+        const calculatedWidth = `${Math.max(maxOptLength + 1, 6)}ch`;
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
@@ -122,7 +122,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   
-                  <div className="text-[1.4rem] md:text-[2rem] lg:text-4xl font-semibold text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
+                  <div className="text-[1.4rem] md:text-[2rem] lg:text-4xl font-normal text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
                       {textSegments.map((seg, sIdx) => (
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>
@@ -132,7 +132,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                            type="button"
                                            disabled={answered}
                                            onClick={(e) => handleBlankClick(idx, e)}
-                                           className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 md:px-4 ${
+                                           className={`gap-box-${idx} inline-flex items-center justify-center border-2 md:border-[3px] rounded-xl transition-all duration-300 min-h-[2.25rem] md:min-h-[3.5rem] px-2 ${
                                              answered 
                                                ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 shadow-sm border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 shadow-sm border-solid') 
                                                : `border-slate-300 bg-slate-100 border-solid text-slate-700 hover:border-slate-400 hover:bg-slate-200 cursor-pointer`
@@ -163,7 +163,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       <div className="mt-8 fade-in">
                           <div className="grid gap-3 md:gap-4 w-full grid-cols-1 md:grid-cols-3">
                               {options.map((opt, optIdx) => {
-                                  let btnClass = `p-4 text-center rounded-2xl font-bold text-2xl md:text-[1.75rem] transition-all border-2 flex items-center justify-center leading-snug `;
+                                  let btnClass = `p-4 text-center rounded-2xl font-normal text-2xl md:text-[1.75rem] transition-all border-2 flex items-center justify-center leading-snug `;
                                   if (!answered) {
                                       btnClass += `border-slate-200 bg-white text-slate-700 shadow-sm md:hover:border-${sectionData.theme}-400 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:shadow-md cursor-pointer active:scale-95`;
                                   } else {

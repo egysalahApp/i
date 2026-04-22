@@ -81,9 +81,9 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                     💡 تلميح
                   </button>
               </div>
-              <span className="block mb-4 text-slate-500 text-sm md:text-base font-medium text-center">إلى أي صندوق تنتمي هذه البطاقة؟</span>
+              <span className="block mb-4 text-slate-500 text-sm md:text-base font-normal text-center">إلى أي صندوق تنتمي هذه البطاقة؟</span>
               <div className="w-full min-h-[8rem] md:min-h-[10rem] flex flex-col items-center justify-center mb-2">
-                 <h3 className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 text-center">
+                 <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
                    «{questions[currentIndex].originalQuestion.text}»
                  </h3>
               </div>
@@ -148,7 +148,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
             
             <div className="flex flex-col gap-3 w-full relative z-10 mt-2 pb-4">
               {placedItems[cat.id]?.map((item, i) => (
-                 <div key={i} className={`bg-white border-2 border-${cat.theme}-200 text-slate-700 text-xl font-bold py-3 px-4 rounded-xl text-center shadow-sm smooth-expand w-full`}>
+                 <div key={i} className={`bg-white border-2 border-${cat.theme}-200 text-slate-700 text-xl font-normal py-3 px-4 rounded-xl text-center shadow-sm smooth-expand w-full`}>
                     {item.text}
                  </div>
               ))}

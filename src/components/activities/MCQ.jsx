@@ -84,7 +84,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-semibold text-slate-800 leading-snug whitespace-pre-line text-right">{q.text}</h3>
+                  <h3 className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right">{q.text}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />
@@ -94,7 +94,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
 
               <div className="grid gap-3 mx-auto w-full max-w-md flex-grow grid-cols-1 content-start">
                   {options.map((opt, optIdx) => {
-                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-semibold text-xl md:text-2xl flex items-center gap-3 justify-start `;
+                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 justify-start `;
                     if (!answered) { 
                       btnClass += `border-slate-200 bg-white text-slate-600 active:scale-95 md:hover:bg-slate-50 cursor-pointer`; 
                     } else {
@@ -124,7 +124,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                         <div className={`flex items-center justify-start gap-2 mb-3 font-bold text-xl md:text-2xl ${isSelectedCorrect ? 'text-emerald-700' : 'text-orange-700'}`}>
                            {isSelectedCorrect ? 'إجابة صحيحة ✓' : 'إجابة خاطئة ✗'}
                         </div>
-                        <div className={`text-xl md:text-2xl font-semibold leading-relaxed pr-1 ${isSelectedCorrect ? 'text-emerald-800' : 'text-orange-800'}`}>
+                        <div className={`text-xl md:text-2xl font-normal leading-relaxed pr-1 ${isSelectedCorrect ? 'text-emerald-800' : 'text-orange-800'}`}>
                           {q.explanation}
                         </div>
                       </div>
