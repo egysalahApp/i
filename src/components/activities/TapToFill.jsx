@@ -127,7 +127,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                        type="button"
                                        disabled={answered}
                                        onClick={(e) => handleBlankClick(idx, e)}
-                                       className={`relative inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 px-4 pt-1.5 pb-3 md:pt-2 md:pb-4 shadow-sm ${
+                                       className={`relative inline-flex items-center justify-center border-2 md:border-[2.5px] rounded-xl transition-all duration-300 px-4 pt-2 pb-5 md:pt-3 md:pb-7 shadow-sm ${
                                          answered 
                                            ? (isSelectedCorrect ? 'border-emerald-500 bg-emerald-100 text-emerald-800 border-solid' : 'border-rose-500 bg-rose-100 text-rose-800 border-solid') 
                                            : `border-slate-300 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
