@@ -145,7 +145,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
                                 wordClass += "bg-rose-500 text-white border-rose-600 ";
                             }
                         } else {
-                            wordClass += "bg-white border-slate-200 text-slate-700 cursor-default opacity-50 ";
+                            wordClass += "bg-white border-slate-200 text-slate-700 cursor-default ";
                         }
                     }
 
