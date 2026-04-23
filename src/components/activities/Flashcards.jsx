@@ -89,7 +89,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
             <div className={`w-20 h-20 md:w-24 md:h-24 rounded-full bg-${theme}-50 flex items-center justify-center mb-6 md:mb-8`}>
               <RefreshCw className={`w-10 h-10 md:w-12 md:h-12 text-${theme}-400`} />
             </div>
-            <h3 className={`text-5xl md:text-6xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
+            <h3 className={`text-4xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
               {card.front}
             </h3>
             <p className="mt-6 md:mt-8 text-slate-400 text-sm md:text-base font-medium">انقر لقلب البطاقة</p>
@@ -101,19 +101,21 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
               البطاقة {toArabicNum(currentIndex + 1)}
             </div>
             
-            <div className="flex-grow flex flex-col items-center justify-center w-full overflow-y-auto no-scrollbar py-2 px-2 mt-4 md:mt-0">
-              <h3 className={`text-4xl md:text-5xl font-bold text-${theme}-600 mb-4 text-center leading-relaxed shrink-0`}>
-                {card.front}
-              </h3>
-              <div className="w-full">
-                <p className={`text-3xl md:text-4xl text-slate-600 font-bold text-center leading-relaxed`}>
-                  {card.back}
-                </p>
-                {card.explanation && (
-                  <p className="mt-3 text-2xl md:text-3xl text-slate-500 font-medium text-center leading-relaxed">
-                    {card.explanation}
+            <div className="flex-grow flex flex-col items-center justify-start w-full overflow-y-auto no-scrollbar py-2 px-2 mt-4 md:mt-0">
+              <div className="w-full my-auto flex flex-col items-center">
+                <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-600 mb-4 text-center leading-relaxed shrink-0`}>
+                  {card.front}
+                </h3>
+                <div className="w-full">
+                  <p className={`text-2xl md:text-3xl text-slate-600 font-bold text-center leading-relaxed`}>
+                    {card.back}
                   </p>
-                )}
+                  {card.explanation && (
+                    <p className="mt-3 text-xl md:text-2xl text-slate-500 font-medium text-center leading-relaxed">
+                      {card.explanation}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
