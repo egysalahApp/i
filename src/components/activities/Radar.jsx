@@ -114,7 +114,7 @@ const Radar = ({ sectionData }) => {
       {/* 2. MOBILE CURVED TREE & ACCORDION */}
       <div className={`md:hidden flex w-full relative pt-8 pb-4 transition-all duration-700 smooth-expand ${isRevealed ? 'block' : 'hidden'}`}>
           
-          <div className="flex flex-col gap-6 w-full items-start relative z-10 pr-6 pl-2">
+          <div className="flex flex-col gap-6 w-full items-center relative z-10 px-4">
             {map.branches.map((branch, idx) => {
                 const isActive = activeMobileBranches.includes(idx);
                 const isDimmed = activeMobileBranches.length > 0 && !isActive;
