@@ -120,9 +120,9 @@ const Radar = ({ sectionData }) => {
                   >
                     <button 
                       onClick={() => handleRadarClick(isActive ? null : idx)}
-                      className={`w-full max-w-[300px] p-5 rounded-[2.2rem] flex items-center gap-4 transition-all duration-300 active:scale-95 relative shadow-md z-10 ${
+                      className={`w-full max-w-[320px] p-5 rounded-[2.2rem] flex items-center gap-4 transition-all duration-300 active:scale-95 relative shadow-md z-10 ${
                           isActive 
-                          ? `bg-${branch.color}-500 text-white transform scale-[1.02] ring-4 ring-${branch.color}-100 ring-offset-2` 
+                          ? `bg-${branch.color}-500 text-white ring-4 ring-${branch.color}-100 ring-offset-2` 
                           : `bg-white/90 backdrop-blur-sm text-slate-700 border-[3px] border-white`
                       }`}
                     >
@@ -132,7 +132,7 @@ const Radar = ({ sectionData }) => {
                     
                     {/* Accordion Content */}
                     {isActive && (
-                      <div className="w-full max-w-[320px] -mr-2 smooth-expand mt-3">
+                      <div className="w-full max-w-[320px] smooth-expand mt-3">
                         <div className={`bg-white border-[3px] border-${branch.color}-200 rounded-[2rem] p-6 shadow-sm relative`}>
                           <p className="text-lg text-slate-800 font-medium leading-[2.2]">{branch.text}</p>
                         </div>
