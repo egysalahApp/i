@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Radar = ({ sectionData }) => {
   const [activeBranch, setActiveBranch] = useState(null);
+  const [activeMobileBranches, setActiveMobileBranches] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const map = sectionData.mapData;
@@ -26,6 +27,12 @@ const Radar = ({ sectionData }) => {
 
   const handleRadarClick = (idx) => {
     setActiveBranch(idx);
+  };
+
+  const handleMobileRadarClick = (idx) => {
+    setActiveMobileBranches(prev => 
+      prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
+    );
   };
 
   return (
@@ -109,8 +116,8 @@ const Radar = ({ sectionData }) => {
           
           <div className="flex flex-col gap-6 w-full items-start relative z-10 pr-6 pl-2">
             {map.branches.map((branch, idx) => {
-                const isActive = activeBranch === idx;
-                const isDimmed = activeBranch !== null && !isActive;
+                const isActive = activeMobileBranches.includes(idx);
+                const isDimmed = activeMobileBranches.length > 0 && !isActive;
                 
                 return (
                   <div 
@@ -119,7 +126,7 @@ const Radar = ({ sectionData }) => {
                     className={`w-full flex flex-col transition-opacity duration-500 ${isDimmed ? 'opacity-50' : ''}`}
                   >
                     <button 
-                      onClick={() => handleRadarClick(isActive ? null : idx)}
+                      onClick={() => handleMobileRadarClick(idx)}
                       className={`w-full max-w-[320px] p-5 rounded-[2.2rem] flex items-center gap-4 transition-all duration-300 active:scale-95 relative shadow-md z-10 ${
                           isActive 
                           ? `bg-${branch.color}-500 text-white ring-4 ring-${branch.color}-100 ring-offset-2` 
