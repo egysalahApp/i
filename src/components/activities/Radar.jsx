@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Radar = ({ sectionData }) => {
   const [activeBranch, setActiveBranch] = useState(null);
+  const [isRevealed, setIsRevealed] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const map = sectionData.mapData;
 
@@ -42,7 +43,10 @@ const Radar = ({ sectionData }) => {
       )}
 
       {/* ROOT NODE */}
-      <div className={`relative z-20 w-full max-w-[320px] md:max-w-md bg-white border-[4px] md:border-[5px] border-${sectionData.theme}-500 text-slate-800 rounded-[2.5rem] p-6 md:p-8 text-center shadow-2xl transition-all duration-500 md:hover:scale-[1.02] group`}>
+      <div 
+        onClick={() => !isRevealed && setIsRevealed(true)}
+        className={`relative z-20 w-full max-w-[320px] md:max-w-md bg-white border-[4px] md:border-[5px] border-${sectionData.theme}-500 text-slate-800 rounded-[2.5rem] p-6 md:p-8 text-center shadow-2xl transition-all duration-500 group ${!isRevealed ? 'cursor-pointer hover:scale-105 hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] ring-8 ring-white/50 mb-28 md:mb-32' : 'cursor-default md:hover:scale-[1.02] mb-0'}`}
+      >
           <div className="flex justify-center mb-3">
              <span className={`px-6 py-2 rounded-full bg-${sectionData.theme}-50 text-${sectionData.theme}-600 text-xl md:text-2xl font-bold border border-${sectionData.theme}-100 shadow-sm transition-colors duration-300 group-hover:bg-${sectionData.theme}-100`}>
                 {map.center.title}
@@ -53,10 +57,19 @@ const Radar = ({ sectionData }) => {
           {activeBranch !== null && (
             <div className={`absolute -inset-2 bg-${map.branches[activeBranch].color}-400/10 blur-3xl rounded-[3rem] -z-10 animate-pulse`}></div>
           )}
+
+          {!isRevealed && (
+            <>
+              <div className={`absolute -inset-4 bg-${sectionData.theme}-400/20 blur-xl rounded-[3.5rem] -z-10 animate-pulse pointer-events-none`}></div>
+              <div className="absolute -bottom-20 left-0 right-0 mx-auto w-max flex items-center gap-2 text-slate-600 font-bold fade-in bg-white/90 px-6 py-3 rounded-full shadow-md text-sm md:text-base whitespace-nowrap border border-slate-100">
+                <span className="animate-bounce text-2xl">👆</span> انقر هنا لاكتشاف الخريطة
+              </div>
+            </>
+          )}
       </div>
 
       {/* 1. DESKTOP CURVED TREE */}
-      <div className="hidden md:flex flex-col items-center w-full relative h-[220px]">
+      <div className={`hidden md:flex flex-col items-center w-full relative transition-all duration-700 overflow-hidden ${isRevealed ? 'h-[220px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}>
 
 
           <div className="absolute bottom-0 left-0 w-full flex justify-around px-2">
@@ -65,7 +78,11 @@ const Radar = ({ sectionData }) => {
                 const isDimmed = activeBranch !== null && !isActive;
 
                 return (
-                  <div key={`desk-node-${idx}`} className={`flex-1 flex flex-col items-center transition-all duration-500 ${isDimmed ? 'opacity-30 scale-90 grayscale-[40%]' : 'opacity-100'}`}>
+                  <div 
+                    key={`desk-node-${idx}`} 
+                    style={isRevealed ? { opacity: 0, animation: `fadeIn 0.6s ease-out ${idx * 150}ms forwards` } : { opacity: 0 }}
+                    className={`flex-1 flex flex-col items-center transition-all duration-500 ${isDimmed ? 'opacity-30 scale-90 grayscale-[40%]' : ''}`}
+                  >
                     <button 
                       onClick={() => handleRadarClick(idx)}
                       className={`group relative z-10 w-[92%] max-w-[210px] p-6 rounded-[2.5rem] flex flex-col items-center justify-center gap-3 transition-all duration-300 active:scale-95 shadow-lg border-[3px] ${
@@ -87,39 +104,52 @@ const Radar = ({ sectionData }) => {
           </div>
       </div>
 
-      {/* 2. MOBILE CURVED TREE */}
-      <div className="md:hidden flex w-full relative pt-8 pb-4 min-h-[480px]">
-
+      {/* 2. MOBILE CURVED TREE & ACCORDION */}
+      <div className={`md:hidden flex w-full relative pt-8 pb-4 transition-all duration-700 smooth-expand ${isRevealed ? 'block' : 'hidden'}`}>
           
-          <div className="flex flex-col gap-12 w-full items-start relative z-10 pr-12 pl-1">
+          <div className="flex flex-col gap-6 w-full items-start relative z-10 pr-6 pl-2">
             {map.branches.map((branch, idx) => {
                 const isActive = activeBranch === idx;
                 const isDimmed = activeBranch !== null && !isActive;
                 
                 return (
-                  <button 
-                    key={`mobile-${idx}`}
-                    onClick={() => handleRadarClick(idx)}
-                    className={`w-full max-w-[280px] p-5 rounded-[2.2rem] flex items-center gap-4 transition-all duration-300 active:scale-95 relative shadow-md ${
-                        isActive 
-                        ? `bg-${branch.color}-500 text-white transform scale-[1.05] ring-4 ring-${branch.color}-100 ring-offset-2` 
-                        : `bg-white/90 backdrop-blur-sm text-slate-700 border-[3px] border-white ${isDimmed ? 'opacity-40 scale-95' : ''}`
-                    }`}
+                  <div 
+                    key={`mobile-${idx}`} 
+                    style={isRevealed ? { opacity: 0, animation: `fadeIn 0.6s ease-out ${idx * 150}ms forwards` } : { opacity: 0 }}
+                    className={`w-full flex flex-col transition-opacity duration-500 ${isDimmed ? 'opacity-50' : ''}`}
                   >
-                    <span className={`text-4xl shrink-0 drop-shadow-md rounded-2xl p-2 transition-colors ${isActive ? 'bg-white/20' : `bg-${branch.color}-50`}`}>{branch.icon}</span>
-                    <span className="font-bold text-xl md:text-2xl text-right leading-relaxed flex-1">{branch.title}</span>
-                  </button>
+                    <button 
+                      onClick={() => handleRadarClick(isActive ? null : idx)}
+                      className={`w-full max-w-[300px] p-5 rounded-[2.2rem] flex items-center gap-4 transition-all duration-300 active:scale-95 relative shadow-md z-10 ${
+                          isActive 
+                          ? `bg-${branch.color}-500 text-white transform scale-[1.02] ring-4 ring-${branch.color}-100 ring-offset-2` 
+                          : `bg-white/90 backdrop-blur-sm text-slate-700 border-[3px] border-white`
+                      }`}
+                    >
+                      <span className={`text-4xl shrink-0 drop-shadow-md rounded-2xl p-2 transition-colors ${isActive ? 'bg-white/20' : `bg-${branch.color}-50`}`}>{branch.icon}</span>
+                      <span className="font-bold text-xl md:text-2xl text-right leading-relaxed flex-1">{branch.title}</span>
+                    </button>
+                    
+                    {/* Accordion Content */}
+                    {isActive && (
+                      <div className="w-full max-w-[320px] -mr-2 smooth-expand mt-3">
+                        <div className={`bg-white border-[3px] border-${branch.color}-200 rounded-[2rem] p-6 shadow-sm relative`}>
+                          <p className="text-lg text-slate-800 font-medium leading-[2.2]">{branch.text}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )
             })}
           </div>
       </div>
 
-      {/* 3. DETAIL BOX */}
-      <div className="w-full mt-4 mb-8 flex items-center justify-center transition-all duration-700 min-h-[16rem]">
+      {/* 3. DETAIL BOX (DESKTOP ONLY) */}
+      <div className={`hidden md:flex w-full items-center justify-center transition-all duration-700 ${isRevealed ? 'mt-4 mb-8 min-h-[16rem] opacity-100 fade-in' : 'h-0 opacity-0 overflow-hidden pointer-events-none'}`}>
         {activeBranch !== null ? (
           <div className={`bg-white/60 backdrop-blur-xl border-[4px] border-${map.branches[activeBranch].color}-200/50 rounded-[3.5rem] p-8 md:p-14 shadow-2xl w-full max-w-4xl text-center fade-in flex flex-col items-center justify-center relative overflow-visible`}>
               
-              {/* Background glows (clipped to prevent mobile horizontal scroll) */}
+              {/* Background glows */}
               <div className="absolute inset-0 overflow-hidden rounded-[3rem] -z-10 pointer-events-none">
                 <div className={`absolute -bottom-32 -right-32 w-80 h-80 bg-${map.branches[activeBranch].color}-200/30 rounded-full blur-[100px]`}></div>
                 <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>

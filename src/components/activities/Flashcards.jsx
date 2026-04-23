@@ -79,7 +79,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
       >
         <div 
           onClick={handleFlip}
-          className={`relative aspect-[16/10] w-full transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
+          className={`relative h-[28rem] md:h-[24rem] w-full max-w-[30rem] mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
         >
           {/* Front */}
           <div className={`absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem]`}>
@@ -96,13 +96,13 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
           </div>
 
           {/* Back */}
-          <div className={`absolute inset-0 backface-hidden rotate-y-180 flex flex-col items-center justify-between p-8 md:p-10 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem] shadow-2xl`} onClick={(e) => e.stopPropagation()}>
-            <div className="absolute top-8 right-10 text-slate-400 font-bold text-lg">
+          <div className={`absolute inset-0 backface-hidden rotate-y-180 flex flex-col items-center justify-between p-6 md:p-10 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem] shadow-2xl`} onClick={(e) => e.stopPropagation()}>
+            <div className="absolute top-6 right-8 text-slate-400 font-bold text-lg hidden md:block">
               البطاقة {toArabicNum(currentIndex + 1)}
             </div>
             
-            <div className="flex-grow flex flex-col items-center justify-center w-full">
-              <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-600 mb-6 text-center leading-relaxed`}>
+            <div className="flex-grow flex flex-col items-center justify-center w-full overflow-y-auto no-scrollbar py-4 px-2 mt-4 md:mt-0">
+              <h3 className={`text-2xl md:text-3xl font-bold text-${theme}-600 mb-4 text-center leading-relaxed shrink-0`}>
                 {card.front}
               </h3>
               <div className="w-full">
@@ -110,7 +110,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
                   {card.back}
                 </p>
                 {card.explanation && (
-                  <p className="mt-4 text-lg md:text-xl text-slate-500 font-medium text-center leading-relaxed">
+                  <p className="mt-3 text-lg md:text-xl text-slate-500 font-medium text-center leading-relaxed">
                     {card.explanation}
                   </p>
                 )}
