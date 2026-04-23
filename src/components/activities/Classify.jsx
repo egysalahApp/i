@@ -151,7 +151,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
             {sectionData.categories.map((cat, idx) => {
               const btnClass = (status !== 'correct' && !animatingOut) 
                 ? `md:hover:border-${cat.theme}-400 md:hover:bg-${cat.theme}-100 md:hover:-translate-y-1 cursor-pointer shadow-sm md:hover:shadow-md active:scale-95`
-                : `opacity-60 cursor-default grayscale-[30%]`;
+                : `cursor-default pointer-events-none`;
                 
               return (
                 <button key={idx} disabled={status === 'correct' || animatingOut} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 border-${cat.theme}-200 text-${cat.theme}-700 bg-${cat.theme}-50 min-w-[120px] ${btnClass}`}>

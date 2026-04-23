@@ -69,7 +69,7 @@ const Radar = ({ sectionData }) => {
       </div>
 
       {/* 1. DESKTOP CURVED TREE */}
-      <div className={`hidden md:flex flex-col items-center w-full relative transition-all duration-700 overflow-hidden ${isRevealed ? 'h-[220px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}>
+      <div className={`hidden md:flex flex-col items-center w-full relative transition-all duration-700 overflow-visible ${isRevealed ? 'h-[220px] opacity-100 z-20' : 'h-0 opacity-0 pointer-events-none -z-10'}`}>
 
 
           <div className="absolute bottom-0 left-0 w-full flex justify-around px-2">
