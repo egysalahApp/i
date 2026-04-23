@@ -62,7 +62,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
         >
         <div 
           onClick={handleFlip}
-          className={`relative h-[22rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
+          className={`relative h-[24rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
         >
           {/* Front */}
           <div className={`absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 bg-white border-[3px] border-slate-200 rounded-[2.5rem]`}>
@@ -120,7 +120,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
 
         {/* Layer 2: Success Message */}
         <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-8 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
-          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-12 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[22rem] md:h-[26rem]`}>
+          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-12 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[24rem] md:h-[26rem]`}>
             <Trophy className={`w-20 h-20 md:w-24 md:h-24 text-${theme}-500`} />
             <span className="text-center px-6">انتهت البطاقات بنجاح!</span>
             <div className="text-2xl md:text-3xl text-slate-500 font-bold">
