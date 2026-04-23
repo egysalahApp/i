@@ -118,8 +118,12 @@ const Radar = ({ sectionData }) => {
       <div className="w-full mt-4 mb-8 flex items-center justify-center transition-all duration-700 min-h-[16rem]">
         {activeBranch !== null ? (
           <div className={`bg-white/60 backdrop-blur-xl border-[4px] border-${map.branches[activeBranch].color}-200/50 rounded-[3.5rem] p-8 md:p-14 shadow-2xl w-full max-w-4xl text-center fade-in flex flex-col items-center justify-center relative overflow-visible`}>
-              <div className={`absolute -bottom-32 -right-32 w-80 h-80 bg-${map.branches[activeBranch].color}-200/30 rounded-full blur-[100px]`}></div>
-              <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>
+              
+              {/* Background glows (clipped to prevent mobile horizontal scroll) */}
+              <div className="absolute inset-0 overflow-hidden rounded-[3rem] -z-10 pointer-events-none">
+                <div className={`absolute -bottom-32 -right-32 w-80 h-80 bg-${map.branches[activeBranch].color}-200/30 rounded-full blur-[100px]`}></div>
+                <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>
+              </div>
               
               <div className={`absolute -top-12 left-1/2 -translate-x-1/2 text-5xl md:text-7xl bg-white p-5 rounded-full shadow-xl border-4 border-white shrink-0 transform transition-transform duration-500 z-10`}>
                 {map.branches[activeBranch].icon}

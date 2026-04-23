@@ -97,12 +97,13 @@ const Story = ({ sectionData, progress, onUpdateProgress, onNextSection, isLastS
             {slide.text}
           </p>
         </div>
-        
-        <div className="absolute bottom-5 w-full flex justify-center items-center opacity-40 md:hidden pointer-events-none z-0 text-slate-400 gap-3 text-sm font-semibold">
-          <ArrowRight className="w-5 h-5" strokeWidth={2} />
-          <span>اسحب للتنقل</span>
-          <ArrowLeft className="w-5 h-5" strokeWidth={2} />
-        </div>
+      </div>
+
+      {/* Swipe Instruction (Moved below card) */}
+      <div className="mt-6 w-full flex justify-center items-center opacity-50 text-slate-500 gap-3 text-sm md:text-base font-semibold pointer-events-none fade-in">
+        <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
+        <span>اسحب أو انقر على أطراف البطاقة للتنقل</span>
+        <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
       </div>
 
       {/* Next Section Button */}
