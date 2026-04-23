@@ -115,7 +115,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
 
         {/* Left Column (Usually definitions) */}
-        <div className="flex flex-col gap-4 w-full md:w-1/2 bg-slate-50/50 p-4 rounded-[2.5rem] border border-slate-100">
+        <div className="flex flex-col gap-4 w-full md:w-1/2 bg-slate-50/50 md:bg-transparent p-4 md:p-0 rounded-[2.5rem] md:rounded-none border border-slate-100 md:border-transparent">
           <div className="text-center text-slate-400 font-bold text-xs uppercase tracking-widest mb-2 opacity-80">المجموعة الثانية</div>
 
           {leftItems.map((item) => {
