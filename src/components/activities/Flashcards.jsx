@@ -44,7 +44,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
   const isFlipped = isComplete ? flipped[sectionData.cards.length - 1] : flipped[currentIndex];
 
   return (
-    <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center min-h-[600px]">
+    <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center min-h-[500px]">
       {sectionData.description && (
         <div className="text-center mb-8 w-full px-4">
           <p className={`text-lg md:text-xl text-${theme}-800 font-semibold bg-${theme}-50 bg-opacity-60 p-4 rounded-2xl shadow-sm inline-block w-full`}>
@@ -62,15 +62,12 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
         >
         <div 
           onClick={handleFlip}
-          className={`relative h-[28rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
+          className={`relative h-[20rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
         >
           {/* Front */}
           <div className={`absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem]`}>
-            <div className="absolute top-8 right-10 text-slate-400 font-bold text-lg">
-              البطاقة {toArabicNum(currentIndex + 1)}
-            </div>
-            <div className={`w-20 h-20 md:w-24 md:h-24 rounded-full bg-${theme}-50 flex items-center justify-center mb-6 md:mb-8`}>
-              <RefreshCw className={`w-10 h-10 md:w-12 md:h-12 text-${theme}-400`} />
+            <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full bg-${theme}-50 flex items-center justify-center mb-4 md:mb-8`}>
+              <RefreshCw className={`w-8 h-8 md:w-12 md:h-12 text-${theme}-400`} />
             </div>
             <h3 className={`text-4xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
               {card.front}
@@ -80,9 +77,6 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
 
           {/* Back */}
           <div className={`absolute inset-0 backface-hidden rotate-y-180 flex flex-col items-center justify-between p-6 md:p-10 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem] shadow-2xl`} onClick={(e) => e.stopPropagation()}>
-            <div className="absolute top-6 right-8 text-slate-400 font-bold text-lg hidden md:block">
-              البطاقة {toArabicNum(currentIndex + 1)}
-            </div>
             
             <div className="flex-grow flex flex-col items-center justify-start w-full overflow-y-auto no-scrollbar py-2 px-2 mt-4 md:mt-0">
               <div className="w-full my-auto flex flex-col items-center">
@@ -126,8 +120,8 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
 
         {/* Layer 2: Success Message */}
         <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-8 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
-          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-16 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[28rem] md:h-[26rem]`}>
-            <Trophy className={`w-24 h-24 text-${theme}-500`} />
+          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-12 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[20rem] md:h-[26rem]`}>
+            <Trophy className={`w-20 h-20 md:w-24 md:h-24 text-${theme}-500`} />
             <span className="text-center px-6">انتهت البطاقات بنجاح!</span>
             <div className="text-2xl md:text-3xl text-slate-500 font-bold">
               النتيجة: {toArabicNum(progress.score)} من {toArabicNum(sectionData.cards.length)}
