@@ -123,7 +123,7 @@ const Radar = ({ sectionData }) => {
                   <div 
                     key={`mobile-${idx}`} 
                     style={isRevealed ? { opacity: 0, animation: `fadeIn 0.6s ease-out ${idx * 150}ms forwards` } : { opacity: 0 }}
-                    className={`w-full flex flex-col transition-opacity duration-500 ${isDimmed ? 'opacity-50' : ''}`}
+                    className={`w-full flex flex-col items-center transition-opacity duration-500 ${isDimmed ? 'opacity-50' : ''}`}
                   >
                     <button 
                       onClick={() => handleMobileRadarClick(idx)}
