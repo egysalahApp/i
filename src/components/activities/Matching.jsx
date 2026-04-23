@@ -2,25 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 
 const Matching = ({ sectionData, progress, onUpdateProgress }) => {
-  const [leftItems, setLeftItems] = useState([]);
-  const [rightItems, setRightItems] = useState([]);
+  const theme = sectionData.theme;
+  const isComplete = progress.total > 0 && progress.answered === progress.total;
+
+  const shuffle = (array) => array.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+  const [leftItems, setLeftItems] = useState(() => shuffle([...(sectionData.pairs || [])]));
+  const [rightItems, setRightItems] = useState(() => shuffle([...(sectionData.pairs || [])]));
   const [selectedLeft, setSelectedLeft] = useState(null);
   const [selectedRight, setSelectedRight] = useState(null);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [wrongAttempt, setWrongAttempt] = useState(false);
-
-  const theme = sectionData.theme;
-  const isComplete = progress.total > 0 && progress.answered === progress.total;
-
-  useEffect(() => {
-    // Initialize items and shuffle them independently
-    const shuffle = (array) => array.map(value => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-
-    setLeftItems(shuffle([...sectionData.pairs]));
-    setRightItems(shuffle([...sectionData.pairs]));
-  }, [sectionData.pairs]);
 
   useEffect(() => {
     if (selectedLeft && selectedRight) {
@@ -97,7 +91,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
             let btnClass = `w-full min-h-[4.5rem] md:min-h-[5rem] px-5 py-3 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-relaxed `;
             
             if (isMatched) {
-              btnClass += `bg-emerald-50 border-emerald-500 text-emerald-800 opacity-60 shadow-inner translate-y-1 cursor-default pointer-events-none`;
+              btnClass += `bg-emerald-50 border-emerald-500 text-emerald-800 shadow-inner translate-y-1 cursor-default pointer-events-none`;
             } else if (isWrong) {
               btnClass += `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
             } else if (isSelected) {
@@ -128,13 +122,13 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
             let btnClass = `w-full min-h-[4.5rem] md:min-h-[5rem] px-5 py-3 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-relaxed `;
             
             if (isMatched) {
-              btnClass += `bg-emerald-50 border-emerald-500 text-emerald-800 opacity-60 shadow-inner translate-y-1 cursor-default pointer-events-none`;
+              btnClass += `bg-emerald-50 border-emerald-500 text-emerald-800 shadow-inner translate-y-1 cursor-default pointer-events-none`;
             } else if (isWrong) {
               btnClass += `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
             } else if (isSelected) {
               btnClass += `bg-${theme}-100 border-${theme}-500 text-${theme}-900 shadow-md transform scale-[1.02]`;
             } else {
-              btnClass += `bg-white border-slate-200 text-slate-700 md:hover:border-${theme}-300 md:hover:bg-${theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer`;
+              btnClass += `bg-${theme}-50/30 border-${theme}-200/60 text-slate-700 md:hover:border-${theme}-400 md:hover:bg-${theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer`;
             }
 
             return (

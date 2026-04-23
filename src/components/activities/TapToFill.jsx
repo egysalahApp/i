@@ -5,12 +5,11 @@ import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
 
 const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
-  const [questions, setQuestions] = useState([]);
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
-  useEffect(() => {
-    setQuestions(sectionData.questions.map(q => {
-      let opts = q.options.map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
+  const [questions, setQuestions] = useState(() => {
+    return (sectionData.questions || []).map(q => {
+      let opts = (q.options || []).map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
       return {
         originalQuestion: q,
         options: shuffleArray(opts),
@@ -20,8 +19,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         wrongAttempt: false,
         isOptionsOpen: false
       };
-    }));
-  }, [sectionData.questions]);
+    });
+  });
 
   const handleBlankClick = (qIdx, e) => {
     if (e) {

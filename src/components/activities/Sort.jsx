@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResultBox } from '../ui/ResultBox';
+
 import { HintBox } from '../ui/HintBox';
 import { toArabicNum } from '../../utils';
 import { Lightbulb, AlertTriangle, PartyPopper } from 'lucide-react';
@@ -92,7 +92,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
       <div className="flex flex-col items-center w-full gap-6 fade-in">
         <div className="relative w-full min-h-[15rem] transition-all duration-500 ease-in-out flex flex-col items-center justify-start pt-4 px-4 pb-8 md:px-6">
           
-          <div className={`sort-card-container w-full max-w-2xl bg-white p-5 md:p-8 rounded-[2rem] shadow-lg border-2 border-slate-200 leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'fly-out' : 'fade-in'} ${shakeClass}`}>
+          <div className={`sort-card-container w-full max-w-2xl bg-white p-5 md:p-8 rounded-[2rem] shadow-lg border-2 border-slate-200 leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'fly-out' : (!isComplete ? 'fade-in' : '')} ${shakeClass}`}>
             
             <div className="grid w-full relative">
               {/* Layer 1: Question Content */}
@@ -145,7 +145,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
           {/* Options (Categories) */}
           <div className="w-full max-w-4xl mt-8">
             <div className={`flex flex-wrap justify-center gap-4 ${disablePanelClass} ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
-              {(isComplete ? sectionData.questions[0].options : currentQuestion.options).map((opt, optIdx) => {
+              {currentQuestion.options.map((opt, optIdx) => {
                 const colors = ['emerald', 'sky', 'amber', 'rose', 'indigo', 'violet', 'orange', 'cyan'];
                 const btnColor = colors[optIdx % colors.length];
                 

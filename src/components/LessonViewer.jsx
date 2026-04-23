@@ -17,6 +17,7 @@ import Flashcards from './activities/Flashcards';
 import Sort from './activities/Sort';
 import Matching from './activities/Matching';
 import SectionFooter from './ui/SectionFooter';
+import ErrorBoundary from './ui/ErrorBoundary';
 
 function LessonViewer({ APP_DATA }) {
   useEffect(() => {
@@ -231,21 +232,23 @@ function LessonViewer({ APP_DATA }) {
             const secProgress = progress[section.id];
             return (
               <div key={`${section.id}-${resetKeys[section.id] || 0}`} className={isActive ? 'block' : 'hidden'}>
-                {section.type === 'intro' && <Intro sectionData={section} />}
-                {section.type === 'radar' && <Radar sectionData={section} />}
-                {section.type === 'style_lab' && <StyleLab sectionData={section} />}
-                {section.type === 'contrast_cards' && <ContrastCards sectionData={section} />}
-                {section.type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
-                {section.type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
+                <ErrorBoundary>
+                  {section.type === 'intro' && <Intro sectionData={section} />}
+                  {section.type === 'radar' && <Radar sectionData={section} />}
+                  {section.type === 'style_lab' && <StyleLab sectionData={section} />}
+                  {section.type === 'contrast_cards' && <ContrastCards sectionData={section} />}
+                  {section.type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
+                  {section.type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
+                </ErrorBoundary>
               </div>
             );
           })}

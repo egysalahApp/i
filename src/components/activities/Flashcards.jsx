@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { RefreshCw, CheckCircle2, XCircle, Trophy } from 'lucide-react';
 import { toArabicNum } from '../../utils';
-import { ResultBox } from '../ui/ResultBox';
 
 const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

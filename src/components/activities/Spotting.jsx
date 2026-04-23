@@ -5,18 +5,17 @@ import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum } from '../../utils';
 
 const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
-  const [questions, setQuestions] = useState([]);
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
-  useEffect(() => {
-    setQuestions(sectionData.questions.map(q => ({
+  const [questions, setQuestions] = useState(() => {
+    return (sectionData.questions || []).map(q => ({
       originalQuestion: q,
       answered: false,
       selectedWordIndex: null,
       showHint: false,
       shakeWordIndex: null
-    })));
-  }, [sectionData.questions]);
+    }));
+  });
 
   const handleWordClick = (qIdx, wIdx) => {
     const qState = questions[qIdx];

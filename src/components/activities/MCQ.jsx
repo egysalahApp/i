@@ -5,13 +5,11 @@ import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
 
 const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
-  const [questions, setQuestions] = useState([]);
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
-  useEffect(() => {
-    // Initialize if empty
-    setQuestions(sectionData.questions.map(q => {
-      let opts = q.options.map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
+  const [questions, setQuestions] = useState(() => {
+    return (sectionData.questions || []).map(q => {
+      let opts = (q.options || []).map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
       
       let isTF = false;
       if (opts.length === 2 && opts.some(o => ['صواب', 'صح'].includes(o.text.trim())) && opts.some(o => ['خطأ'].includes(o.text.trim()))) {
@@ -34,8 +32,8 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
         showHint: false,
         wrongAttempt: false
       };
-    }));
-  }, [sectionData.questions]);
+    });
+  });
 
   const handleAnswer = (qIdx, optIdx) => {
     const qState = questions[qIdx];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResultBox } from '../ui/ResultBox';
+
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
@@ -109,7 +109,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
       <div className="flex flex-col items-center w-full gap-6">
         <div className="relative w-full min-h-[12rem] transition-all duration-500 flex flex-col items-center justify-center p-4 md:p-6">
-          <div className={`classify-card-container w-full max-w-2xl bg-white p-5 md:p-8 rounded-2xl shadow-lg border-2 border-slate-200 transition-all transform leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'opacity-0 translate-y-4' : 'fade-in'} ${status === 'incorrect' ? 'shake' : ''}`}>
+          <div className={`classify-card-container w-full max-w-2xl bg-white p-5 md:p-8 rounded-2xl shadow-lg border-2 border-slate-200 transition-all transform leading-snug flex flex-col justify-start z-10 ${animatingOut ? 'fly-out' : (!isComplete ? 'fade-in' : '')} ${status === 'incorrect' ? 'shake' : ''}`}>
             <div className="grid w-full relative">
               {/* Layer 1: Question Content */}
               <div className={`col-start-1 row-start-1 w-full flex flex-col transition-opacity duration-500 ${isComplete || !currentQState ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
