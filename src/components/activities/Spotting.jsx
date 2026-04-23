@@ -79,6 +79,7 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
+                  <h3 className="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed mb-2">{q.text}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />

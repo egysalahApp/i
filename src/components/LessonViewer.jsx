@@ -12,17 +12,27 @@ import ErrorCorrection from './activities/ErrorCorrection';
 import Hotspot from './activities/Hotspot';
 import TapToFill from './activities/TapToFill';
 import GoldenEnvelope from './activities/GoldenEnvelope';
+import Story from './activities/Story';
+import Flashcards from './activities/Flashcards';
+import Sort from './activities/Sort';
+import Matching from './activities/Matching';
 import SectionFooter from './ui/SectionFooter';
 
 function LessonViewer({ APP_DATA }) {
+  useEffect(() => {
+    if (APP_DATA.pageTitle) {
+      document.title = APP_DATA.pageTitle;
+    }
+  }, [APP_DATA.pageTitle]);
+
   const [activeTab, setActiveTab] = useState(APP_DATA.sections[0].id);
   const [resetKeys, setResetKeys] = useState({});
   const [progress, setProgress] = useState(
     APP_DATA.sections.reduce((acc, section) => {
       // Scorable generic logic
       const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
-      const total = isScorable ? (section.questions?.length || section.pairs?.length || 0) : 1;
-      const answered = isScorable ? 0 : 1;
+      const total = isScorable ? (section.questions?.length || section.pairs?.length || section.cards?.length || 0) : (section.slides?.length || section.cards?.length || 1);
+      const answered = isScorable ? 0 : (section.type === 'story' ? 0 : 1);
       
       acc[section.id] = { answered, total, score: 0, isScorable };
       return acc;
@@ -74,11 +84,12 @@ function LessonViewer({ APP_DATA }) {
     // Also reset progress for this section
     setProgress(prev => {
       const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(activeSection.type);
+      const answered = isScorable ? 0 : (activeSection.type === 'story' ? 0 : 1);
       return {
         ...prev,
         [activeTab]: {
           ...prev[activeTab],
-          answered: isScorable ? 0 : 1,
+          answered: answered,
           score: isScorable ? 0 : 1
         }
       }
@@ -164,8 +175,8 @@ function LessonViewer({ APP_DATA }) {
 
     setProgress(APP_DATA.sections.reduce((acc, section) => {
       const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
-      const total = isScorable ? (section.questions?.length || section.pairs?.length || 0) : 1;
-      const answered = isScorable ? 0 : 1;
+      const total = isScorable ? (section.questions?.length || section.pairs?.length || section.cards?.length || 0) : (section.slides?.length || section.cards?.length || 1);
+      const answered = isScorable ? 0 : (section.type === 'story' ? 0 : 1);
       
       acc[section.id] = { answered, total, score: 0, isScorable };
       return acc;
@@ -192,8 +203,8 @@ function LessonViewer({ APP_DATA }) {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const effectiveTheme = getEffectiveTheme(idx);
-                const activeBg = (effectiveTheme === 'slate') ? 'bg-slate-400' : `bg-${effectiveTheme}-600`;
-                const activeClass = isActive ? `${activeBg} text-white shadow-md` : "bg-white text-slate-600 border-slate-200";
+                const activeBg = (effectiveTheme === 'slate') ? 'bg-slate-500' : `bg-${effectiveTheme}-700`;
+                const activeClass = isActive ? `${activeBg} text-white shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
                 
                 return (
                   <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
@@ -230,6 +241,10 @@ function LessonViewer({ APP_DATA }) {
                 {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                 {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                 {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
+                {section.type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                {section.type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                 {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
               </div>
             );

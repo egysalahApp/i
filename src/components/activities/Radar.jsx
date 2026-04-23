@@ -48,7 +48,7 @@ const Radar = ({ sectionData }) => {
                 {map.center.title}
              </span>
           </div>
-          <h3 className="text-4xl md:text-6xl font-black leading-relaxed text-slate-800 tracking-tight">{map.center.text}</h3>
+          <h3 className={`leading-relaxed text-slate-800 tracking-tight ${map.center.text.length > 25 ? 'text-2xl md:text-3xl font-semibold' : 'text-3xl md:text-4xl font-bold'}`}>{map.center.text}</h3>
           
           {activeBranch !== null && (
             <div className={`absolute -inset-2 bg-${map.branches[activeBranch].color}-400/10 blur-3xl rounded-[3rem] -z-10 animate-pulse`}></div>
@@ -57,35 +57,7 @@ const Radar = ({ sectionData }) => {
 
       {/* 1. DESKTOP CURVED TREE */}
       <div className="hidden md:flex flex-col items-center w-full relative h-[220px]">
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible" preserveAspectRatio="none">
-              {map.branches.map((branch, idx) => {
-                  const total = map.branches.length;
-                  const step = 100 / total;
-                  const startX = 50; 
-                  const endX = (idx * step) + (step / 2);
-                  const isActive = activeBranch === idx;
-                  const isDimmed = activeBranch !== null && !isActive;
-                  const color = colorMap[branch.color] || '#e2e8f0';
-                  
-                  const d = `M ${startX}% 0 C ${startX}% 80, ${endX}% 40, ${endX}% 100%`;
-                  
-                  return (
-                    <path 
-                      key={`path-${idx}`}
-                      d={d}
-                      fill="none"
-                      stroke={isActive ? color : (isDimmed ? '#f1f5f9' : '#e2e8f0')}
-                      strokeWidth={isActive ? 6 : 3.5}
-                      strokeLinecap="round"
-                      className="transition-all duration-700"
-                      style={{
-                        filter: isActive ? `drop-shadow(0 0 12px ${color}66)` : 'none',
-                        opacity: isDimmed ? 0.15 : 1
-                      }}
-                    />
-                  );
-              })}
-          </svg>
+
 
           <div className="absolute bottom-0 left-0 w-full flex justify-around px-2">
             {map.branches.map((branch, idx) => {
@@ -117,29 +89,7 @@ const Radar = ({ sectionData }) => {
 
       {/* 2. MOBILE CURVED TREE */}
       <div className="md:hidden flex w-full relative pt-8 pb-4 min-h-[480px]">
-          <svg className="absolute top-0 right-4 bottom-0 w-20 h-full pointer-events-none z-0" preserveAspectRatio="none">
-              {map.branches.map((branch, idx) => {
-                  const total = map.branches.length;
-                  const step = 100 / total;
-                  const endY = (idx * step) + (step / 2);
-                  const isActive = activeBranch === idx;
-                  const isDimmed = activeBranch !== null && !isActive;
-                  const color = colorMap[branch.color] || '#e2e8f0';
-                  
-                  return (
-                    <path 
-                      key={`mpath-${idx}`}
-                      d={`M 70,0 C 70,${endY}% 70,${endY}% 0,${endY}%`}
-                      fill="none"
-                      stroke={isActive ? color : (isDimmed ? '#f8fafc' : '#f1f5f9')}
-                      strokeWidth={isActive ? 5 : 3}
-                      strokeLinecap="round"
-                      className="transition-all duration-500"
-                    />
-                  );
-              })}
-              <line x1="70" y1="0" x2="70" y2="100%" stroke={activeBranch !== null ? colorMap[map.branches[activeBranch].color] : "#f1f5f9"} strokeWidth="4" strokeLinecap="round" className="transition-all duration-500 opacity-60" />
-          </svg>
+
           
           <div className="flex flex-col gap-12 w-full items-start relative z-10 pr-12 pl-1">
             {map.branches.map((branch, idx) => {
@@ -167,7 +117,7 @@ const Radar = ({ sectionData }) => {
       {/* 3. DETAIL BOX */}
       <div className="w-full mt-4 mb-8 flex items-center justify-center transition-all duration-700 min-h-[16rem]">
         {activeBranch !== null ? (
-          <div className={`bg-white/60 backdrop-blur-xl border-[4px] border-${map.branches[activeBranch].color}-200/50 rounded-[3.5rem] p-8 md:p-14 shadow-2xl w-full max-w-4xl text-center fade-in flex flex-col items-center justify-center relative overflow-hidden`}>
+          <div className={`bg-white/60 backdrop-blur-xl border-[4px] border-${map.branches[activeBranch].color}-200/50 rounded-[3.5rem] p-8 md:p-14 shadow-2xl w-full max-w-4xl text-center fade-in flex flex-col items-center justify-center relative overflow-visible`}>
               <div className={`absolute -bottom-32 -right-32 w-80 h-80 bg-${map.branches[activeBranch].color}-200/30 rounded-full blur-[100px]`}></div>
               <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>
               

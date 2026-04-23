@@ -33,8 +33,22 @@
   animation: fadeIn 0.4s ease-out forwards;
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fly-out {
+  animation: flyOut 0.4s ease-in forwards;
+}
+@keyframes flyOut {
+  0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+  }
+  100% {
+      transform: translateY(120px) scale(0.5);
+      opacity: 0;
+  }
 }
 .shake {
   animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
@@ -61,4 +75,20 @@
 @keyframes float-center {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(-15px); }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }
