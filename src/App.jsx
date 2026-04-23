@@ -1,16 +1,96 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, Navigate } from 'react-router-dom';
+import { supabase } from './lib/supabase';
 import LessonViewer from './components/LessonViewer';
-import { lessonsData } from './lessons';
+
+// Admin Components
+import Login from './components/admin/Login';
+import Dashboard from './components/admin/Dashboard';
+import LessonEditor from './components/admin/LessonEditor';
+
+// Protected Route Wrapper
+const ProtectedRoute = ({ children }) => {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">جاري التحقق...</div>;
+  }
+
+  if (!session) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return children;
+};
 
 function LessonWrapper() {
   const { lessonId } = useParams();
+  const [appData, setAppData] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
   
-  // Look up the lesson data from the registry
-  const appData = lessonsData[lessonId];
+  React.useEffect(() => {
+    async function fetchLesson() {
+      setLoading(true);
+      setError(null);
+      
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*')
+        .eq('id', lessonId)
+        .single();
+        
+      if (error) {
+        console.error("Error fetching lesson:", error);
+        setError(error);
+      } else if (data) {
+        // Convert snake_case back to camelCase for the components
+        const formattedData = {
+          id: data.id,
+          pageTitle: data.page_title,
+          headerTitle: data.header_title,
+          headerSubtitle: data.header_subtitle,
+          youtubeLink: data.youtube_link,
+          copyright: data.copyright,
+          sections: data.sections
+        };
+        setAppData(formattedData);
+      }
+      setLoading(false);
+    }
+    
+    fetchLesson();
+  }, [lessonId]);
   
-  // If the lesson ID is not found, we can navigate to a default lesson or show a 404
-  if (!appData) {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <h1 className="text-xl font-bold text-slate-600">جاري تحميل الدرس...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  // If the lesson ID is not found or error
+  if (error || !appData) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
         <div className="text-center">
@@ -29,8 +109,27 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<Login />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/lessons/:id" 
+          element={
+            <ProtectedRoute>
+              <LessonEditor />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Public Routes */}
         <Route path="/:lessonId" element={<LessonWrapper />} />
-        {/* Optional fallback if they visit the root directly */}
         <Route path="/" element={
            <div className="flex items-center justify-center min-h-screen bg-slate-50">
              <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-200">

@@ -1,0 +1,393 @@
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ArrowRight, Save, AlertCircle, Layout, Code, Trash2, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import RawSectionEditor from './RawSectionEditor';
+import VisualIntroEditor from './VisualIntroEditor';
+import VisualMcqEditor from './VisualMcqEditor';
+import VisualStoryEditor from './VisualStoryEditor';
+import VisualClassifyEditor from './VisualClassifyEditor';
+import VisualFlashcardsEditor from './VisualFlashcardsEditor';
+import VisualRadarEditor from './VisualRadarEditor';
+import VisualStyleLabEditor from './VisualStyleLabEditor';
+import VisualMatchingEditor from './VisualMatchingEditor';
+import VisualHotspotEditor from './VisualHotspotEditor';
+import VisualGoldenEnvelopeEditor from './VisualGoldenEnvelopeEditor';
+import VisualSortEditor from './VisualSortEditor';
+
+const LessonEditor = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isNew = id === 'new';
+
+  const [loading, setLoading] = useState(!isNew);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // Form State
+  const [lessonId, setLessonId] = useState(isNew ? '' : id);
+  const [pageTitle, setPageTitle] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
+  const [headerSubtitle, setHeaderSubtitle] = useState('');
+  const [youtubeLink, setYoutubeLink] = useState('');
+  const [copyright, setCopyright] = useState('');
+  const [sections, setSections] = useState([]);
+  
+  // UI State
+  const [editingSectionIndex, setEditingSectionIndex] = useState(null);
+
+  useEffect(() => {
+    if (!isNew) {
+      fetchLesson();
+    } else {
+      document.title = "إضافة درس جديد | لوحة التحكم";
+    }
+  }, [id]);
+
+  const fetchLesson = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .eq('id', id)
+      .single();
+      
+    if (error) {
+      setError('تعذر تحميل الدرس');
+    } else if (data) {
+      document.title = `تعديل: ${data.page_title} | لوحة التحكم`;
+      setPageTitle(data.page_title || '');
+      setHeaderTitle(data.header_title || '');
+      setHeaderSubtitle(data.header_subtitle || '');
+      setYoutubeLink(data.youtube_link || '');
+      setCopyright(data.copyright || '');
+      // Ensure sections is always an array
+      setSections(Array.isArray(data.sections) ? data.sections : []);
+    }
+    setLoading(false);
+  };
+
+  const handleSaveLesson = async (e) => {
+    e.preventDefault();
+    if (editingSectionIndex !== null) {
+        alert("يرجى حفظ أو إغلاق محرر القسم المفتوح أولاً.");
+        return;
+    }
+    
+    setSaving(true);
+    setError(null);
+
+    const lessonData = {
+      id: lessonId,
+      page_title: pageTitle,
+      header_title: headerTitle,
+      header_subtitle: headerSubtitle,
+      youtube_link: youtubeLink,
+      copyright: copyright,
+      sections: sections
+    };
+
+    let saveError;
+
+    if (isNew) {
+      const { error } = await supabase.from('lessons').insert([lessonData]);
+      saveError = error;
+    } else {
+      const { error } = await supabase.from('lessons').update(lessonData).eq('id', lessonId);
+      saveError = error;
+    }
+
+    if (saveError) {
+      setError(saveError.message);
+    } else {
+      alert('تم حفظ الدرس بأكمله بنجاح!');
+      if (isNew) {
+        navigate('/admin');
+      }
+    }
+    setSaving(false);
+  };
+
+  const saveSection = (updatedSection) => {
+    const newSections = [...sections];
+    newSections[editingSectionIndex] = updatedSection;
+    setSections(newSections);
+    setEditingSectionIndex(null);
+  };
+
+  const cancelEditSection = () => {
+    setEditingSectionIndex(null);
+  };
+
+  const deleteSection = (index) => {
+    if (window.confirm('هل أنت متأكد من حذف هذا القسم نهائياً؟')) {
+      const newSections = sections.filter((_, i) => i !== index);
+      setSections(newSections);
+    }
+  };
+
+  const moveSection = (index, direction) => {
+    if ((direction === -1 && index === 0) || (direction === 1 && index === sections.length - 1)) return;
+    const newSections = [...sections];
+    const targetIndex = index + direction;
+    [newSections[index], newSections[targetIndex]] = [newSections[targetIndex], newSections[index]];
+    setSections(newSections);
+  };
+
+  const addNewSection = (type) => {
+    const newSection = {
+      id: `section_${Date.now()}`,
+      type: type,
+      title: type === 'intro' ? 'مقدمة جديدة' : 'نشاط جديد',
+      theme: 'sky'
+    };
+    if (type === 'intro') {
+      newSection.content = [];
+      newSection.description = '';
+    }
+    setSections([...sections, newSection]);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 pb-12" dir="rtl">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+        <div className="flex items-center gap-4">
+          <Link to="/admin" className="text-slate-500 hover:text-slate-800 transition-colors bg-slate-100 hover:bg-slate-200 p-2 rounded-full">
+            <ArrowRight size={20} />
+          </Link>
+          <h1 className="text-xl font-bold text-slate-800">
+            {isNew ? 'إضافة درس جديد' : `تعديل الدرس: ${pageTitle || id}`}
+          </h1>
+        </div>
+        <button
+          onClick={handleSaveLesson}
+          disabled={saving || editingSectionIndex !== null}
+          className={`bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2 ${saving || editingSectionIndex !== null ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {saving ? (
+             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : (
+            <>
+              <Save size={18} />
+              حفظ الدرس كاملاً
+            </>
+          )}
+        </button>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto p-6 md:p-8">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="w-10 h-10 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-slate-500">جاري التحميل...</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            
+            {error && (
+              <div className="bg-rose-50 border-r-4 border-rose-500 p-4 rounded-lg flex items-start gap-3">
+                <AlertCircle className="text-rose-500 mt-0.5" size={20} />
+                <p className="text-rose-700 font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Basic Info Form */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <h2 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2">البيانات الأساسية</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">معرف الدرس (URL بالإنجليزية)</label>
+                  <input
+                    type="text"
+                    value={lessonId}
+                    onChange={(e) => setLessonId(e.target.value)}
+                    disabled={!isNew}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:text-slate-500"
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">عنوان الصفحة</label>
+                  <input
+                    type="text"
+                    value={pageTitle}
+                    onChange={(e) => setPageTitle(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sections List */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+              <h2 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2 flex justify-between items-center">
+                <span>أقسام وأنشطة الدرس ({sections.length})</span>
+                <div className="flex gap-2">
+                   <button onClick={() => addNewSection('intro')} className="text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 flex items-center gap-1">
+                     <Plus size={14} /> إضافة مقدمة
+                   </button>
+                   <button onClick={() => addNewSection('mcq')} className="text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 flex items-center gap-1">
+                     <Plus size={14} /> إضافة نشاط
+                   </button>
+                </div>
+              </h2>
+              
+              <div className="space-y-3">
+                {sections.map((section, index) => {
+                  const isEditing = editingSectionIndex === index;
+                  
+                  return (
+                    <div key={index}>
+                      {/* Section Card (only shown if NOT editing this specific section) */}
+                      {!isEditing && (
+                        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors group">
+                          <div className="flex items-center gap-3">
+                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                               <button onClick={() => moveSection(index, -1)} disabled={index === 0} className="text-slate-400 hover:text-indigo-600 disabled:opacity-20"><ArrowUp size={16} /></button>
+                               <button onClick={() => moveSection(index, 1)} disabled={index === sections.length - 1} className="text-slate-400 hover:text-indigo-600 disabled:opacity-20"><ArrowDown size={16} /></button>
+                            </div>
+                            <div className="bg-white p-2 rounded-md border border-slate-200 text-indigo-500">
+                              {section.type === 'intro' ? <Layout size={20} /> : <Code size={20} />}
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-slate-800">{section.title || `نشاط: ${section.type}`}</h4>
+                              <p className="text-xs text-slate-500 font-mono" dir="ltr">{index + 1}. type: {section.type}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setEditingSectionIndex(index)}
+                              className="text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 px-4 py-2 rounded-lg transition-colors"
+                            >
+                              {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
+                            </button>
+                            <button
+                              onClick={() => deleteSection(index)}
+                              className="p-2 text-slate-300 hover:text-rose-600 transition-colors"
+                              title="حذف القسم"
+                            >
+                              <Trash2 size={20} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Editor (only shown if IS editing this specific section) */}
+                      {isEditing && section.type === 'intro' && (
+                        <VisualIntroEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && ['mcq', 'tap_to_fill'].includes(section.type) && (
+                        <VisualMcqEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'story' && (
+                        <VisualStoryEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'classify' && (
+                        <VisualClassifyEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'flashcards' && (
+                        <VisualFlashcardsEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'radar' && (
+                        <VisualRadarEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'style_lab' && (
+                        <VisualStyleLabEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'matching' && (
+                        <VisualMatchingEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'hotspot' && (
+                        <VisualHotspotEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'golden_envelope' && (
+                        <VisualGoldenEnvelopeEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+
+                      {isEditing && section.type === 'sort' && (
+                        <VisualSortEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+                      
+                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort'].includes(section.type) && (
+                        <RawSectionEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+                
+                {sections.length === 0 && (
+                  <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-xl">
+                    <p className="text-slate-400">لا توجد أقسام في هذا الدرس بعد. ابدأ بإضافة مقدمة!</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default LessonEditor;
