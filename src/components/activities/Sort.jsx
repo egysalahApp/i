@@ -107,7 +107,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
                   </button>
                 </div>
                 
-                <span className="block mb-4 text-slate-500 text-sm md:text-base font-medium text-center">قم بفرز العبارة التالية:</span>
+
                 
                 <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2 transition-all duration-300">
                   <h3 className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 text-center">

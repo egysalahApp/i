@@ -75,7 +75,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
             <h3 className={`text-4xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
               {card.front}
             </h3>
-            <p className="mt-6 md:mt-8 text-slate-400 text-sm md:text-base font-medium">انقر لقلب البطاقة</p>
+
           </div>
 
           {/* Back */}

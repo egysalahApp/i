@@ -119,7 +119,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                       💡 تلميح
                     </button>
                 </div>
-                <span className="block mb-4 text-slate-500 text-sm md:text-base font-normal text-center">انقر على الصندوق المناسب لتصنيف هذه الجملة</span>
+
                 <div className="w-full flex flex-col transition-all duration-300">
                     <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
                       <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
