@@ -69,7 +69,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
             <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full bg-${theme}-50 flex items-center justify-center mb-4 md:mb-8`}>
               <RefreshCw className={`w-8 h-8 md:w-12 md:h-12 text-${theme}-400`} />
             </div>
-            <h3 className={`text-4xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
+            <h3 className={`text-3xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
               {card.front}
             </h3>
 
@@ -80,15 +80,15 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
             
             <div className="flex-grow flex flex-col items-center justify-start w-full overflow-y-auto no-scrollbar py-2 px-2 mt-4 md:mt-0">
               <div className="w-full my-auto flex flex-col items-center">
-                <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-600 mb-4 text-center leading-relaxed shrink-0`}>
+                <h3 className={`text-2xl md:text-4xl font-bold text-${theme}-600 mb-2 md:mb-4 text-center leading-relaxed shrink-0`}>
                   {card.front}
                 </h3>
                 <div className="w-full">
-                  <p className={`text-2xl md:text-3xl text-slate-600 font-bold text-center leading-relaxed`}>
+                  <p className={`text-xl md:text-3xl text-slate-600 font-bold text-center leading-relaxed`}>
                     {card.back}
                   </p>
                   {card.explanation && (
-                    <p className="mt-3 text-xl md:text-2xl text-slate-500 font-medium text-center leading-relaxed">
+                    <p className="mt-2 md:mt-3 text-lg md:text-2xl text-slate-500 font-medium text-center leading-relaxed">
                       {card.explanation}
                     </p>
                   )}
@@ -97,21 +97,21 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
             </div>
 
             {/* Buttons inside card */}
-            <div className="w-full flex gap-4 mt-8">
+            <div className="w-full flex gap-3 mt-4 md:mt-8">
               <button 
                 onClick={(e) => { e.stopPropagation(); handleAnswer(true); }}
-                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-bold text-xl flex items-center justify-center gap-3 shadow-lg transition-all active:scale-95"
+                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 md:py-4 rounded-2xl font-bold text-lg md:text-xl flex items-center justify-center gap-2 md:gap-3 shadow-lg transition-all active:scale-95"
               >
                 <span>عرفتها</span>
-                <CheckCircle2 className="w-6 h-6" />
+                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6" />
               </button>
-
+              
               <button 
                 onClick={(e) => { e.stopPropagation(); handleAnswer(false); }}
-                className="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-4 rounded-2xl font-bold text-xl flex items-center justify-center gap-3 shadow-lg transition-all active:scale-95"
+                className="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-3 md:py-4 rounded-2xl font-bold text-lg md:text-xl flex items-center justify-center gap-2 md:gap-3 shadow-lg transition-all active:scale-95"
               >
                 <span>أخطأت</span>
-                <XCircle className="w-6 h-6" />
+                <XCircle className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
           </div>
