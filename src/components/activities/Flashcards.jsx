@@ -120,12 +120,12 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
 
         {/* Layer 2: Success Message */}
         <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-8 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
-          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-12 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[24rem] md:h-[26rem]`}>
-            <Trophy className={`w-20 h-20 md:w-24 md:h-24 text-${theme}-500`} />
-            <span className="text-center px-6">انتهت البطاقات بنجاح!</span>
-            <div className="text-2xl md:text-3xl text-slate-500 font-bold">
-              النتيجة: {toArabicNum(progress.score)} من {toArabicNum(sectionData.cards.length)}
+          <div className={`flex flex-col items-center justify-center gap-4 py-12 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[24rem] md:h-[26rem]`}>
+            <div className={`text-2xl md:text-3xl font-bold text-slate-400 mb-2`}>النتيجة النهائية</div>
+            <div className={`text-5xl md:text-6xl font-black text-${theme}-600`}>
+              {toArabicNum(progress.score)} / {toArabicNum(sectionData.cards.length)}
             </div>
+            <div className="text-xl md:text-2xl text-slate-400 font-bold mt-4 italic">أحسنت محاولة إنهاء النشاط</div>
           </div>
         </div>
       </div>

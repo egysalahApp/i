@@ -141,12 +141,12 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
               </div>
 
               {/* Layer 2: Success Message */}
-              <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-2 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
-                <span className="text-6xl mb-2">🎉</span>
-                <span className="text-3xl md:text-4xl font-bold text-emerald-500 text-center">اكتمل التصنيف بنجاح!</span>
-                <div className="text-2xl md:text-3xl text-slate-500 font-bold mt-2 text-center">
-                  النتيجة: {toArabicNum(progress.score)} من {toArabicNum(progress.total)}
+              <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-4 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
+                <div className="text-2xl md:text-3xl font-bold text-slate-400 mb-2">النتيجة النهائية</div>
+                <div className={`text-5xl md:text-6xl font-black text-${sectionData.theme || 'emerald'}-500`}>
+                  {toArabicNum(progress.score)} / {toArabicNum(progress.total)}
                 </div>
+                <div className="text-xl md:text-2xl text-slate-400 font-bold mt-2 italic">تم إتمام التصنيف</div>
               </div>
             </div>
           </div>
