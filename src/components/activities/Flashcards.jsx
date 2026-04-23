@@ -65,9 +65,9 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
           className={`relative h-[22rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
         >
           {/* Front */}
-          <div className={`absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem]`}>
-            <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full bg-${theme}-50 flex items-center justify-center mb-4 md:mb-8`}>
-              <RefreshCw className={`w-8 h-8 md:w-12 md:h-12 text-${theme}-400`} />
+          <div className={`absolute inset-0 backface-hidden flex flex-col items-center justify-center p-8 bg-white border-[3px] border-slate-200 rounded-[2.5rem]`}>
+            <div className={`w-16 h-16 md:w-24 md:h-24 rounded-full bg-slate-50 flex items-center justify-center mb-4 md:mb-8`}>
+              <RefreshCw className={`w-8 h-8 md:w-12 md:h-12 text-slate-400`} />
             </div>
             <h3 className={`text-3xl md:text-5xl font-bold text-slate-700 text-center leading-relaxed px-4`}>
               {card.front}
