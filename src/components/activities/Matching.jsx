@@ -80,9 +80,11 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full fade-in justify-center">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full fade-in justify-center items-start">
         {/* Right Column (Usually concepts) */}
         <div className="flex flex-col gap-4 w-full md:w-1/2">
+          <div className="text-center text-slate-400 font-bold text-xs uppercase tracking-widest mb-2 opacity-80">المجموعة الأولى</div>
+
           {rightItems.map((item) => {
             const isMatched = matchedPairs.includes(item.id);
             const isSelected = selectedRight === item.id;
@@ -113,7 +115,9 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
 
         {/* Left Column (Usually definitions) */}
-        <div className="flex flex-col gap-4 w-full md:w-1/2">
+        <div className="flex flex-col gap-4 w-full md:w-1/2 bg-slate-50/50 p-4 rounded-[2.5rem] border border-slate-100">
+          <div className="text-center text-slate-400 font-bold text-xs uppercase tracking-widest mb-2 opacity-80">المجموعة الثانية</div>
+
           {leftItems.map((item) => {
             const isMatched = matchedPairs.includes(item.id);
             const isSelected = selectedLeft === item.id;
@@ -128,7 +132,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
             } else if (isSelected) {
               btnClass += `bg-${theme}-100 border-${theme}-500 text-${theme}-900 shadow-md transform scale-[1.02]`;
             } else {
-              btnClass += `bg-${theme}-50/30 border-${theme}-200/60 text-slate-700 md:hover:border-${theme}-400 md:hover:bg-${theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer`;
+              btnClass += `bg-white border-slate-200 text-slate-700 md:hover:border-${theme}-300 md:hover:bg-${theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer`;
             }
 
             return (
