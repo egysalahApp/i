@@ -73,13 +73,12 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
               <div className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-100 mb-6 w-full mx-auto">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-2">
                       <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>السؤال {toArabicNum(idx + 1)}</span>
                       <button onClick={() => toggleHint(idx)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50">
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed mb-2">{q.text}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />
