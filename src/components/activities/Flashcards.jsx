@@ -78,17 +78,17 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
           {/* Back */}
           <div className={`absolute inset-0 backface-hidden rotate-y-180 flex flex-col items-center justify-between p-6 md:p-10 bg-white border-[3px] border-${theme}-400 rounded-[2.5rem] shadow-2xl`} onClick={(e) => e.stopPropagation()}>
             
-            <div className="flex-grow flex flex-col items-center justify-start w-full overflow-y-auto no-scrollbar py-2 px-2 mt-4 md:mt-0">
-              <div className="w-full my-auto flex flex-col items-center">
-                <h3 className={`text-2xl md:text-4xl font-bold text-${theme}-600 mb-2 md:mb-4 text-center leading-relaxed shrink-0`}>
+            <div className="flex-grow flex flex-col items-center justify-start w-full overflow-y-auto no-scrollbar py-2 px-2 mt-2 md:mt-0">
+              <div className="w-full mt-2 md:my-auto flex flex-col items-center">
+                <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-600 mb-3 md:mb-4 text-center leading-relaxed shrink-0`}>
                   {card.front}
                 </h3>
                 <div className="w-full">
-                  <p className={`text-xl md:text-3xl text-slate-600 font-bold text-center leading-relaxed`}>
+                  <p className={`text-2xl md:text-3xl text-slate-600 font-bold text-center leading-relaxed`}>
                     {card.back}
                   </p>
                   {card.explanation && (
-                    <p className="mt-2 md:mt-3 text-lg md:text-2xl text-slate-500 font-medium text-center leading-relaxed">
+                    <p className="mt-2 md:mt-3 text-xl md:text-2xl text-slate-500 font-medium text-center leading-relaxed">
                       {card.explanation}
                     </p>
                   )}
