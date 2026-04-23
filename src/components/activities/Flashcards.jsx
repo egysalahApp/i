@@ -23,47 +23,29 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
     }
   };
 
+  const isLast = currentIndex === sectionData.cards.length - 1;
+
   const handleAnswer = (knewIt) => {
     if (isAnimating || animatingOut || isComplete) return;
     
-    // In Flashcards, score is purely informational if we want to track 'knew it'
     const newScore = progress.score + (knewIt ? 1 : 0);
     onUpdateProgress(sectionData.id, Math.max(progress.answered, currentIndex + 1), newScore);
     
     if (currentIndex < sectionData.cards.length) {
-      setAnimatingOut(true);
+      if (!isLast) setAnimatingOut(true);
       
       setTimeout(() => {
         setCurrentIndex(prev => prev + 1);
         setAnimatingOut(false);
-      }, 400); // 400ms duration for fly-out animation
+      }, isLast ? 300 : 400); 
     }
   };
 
-  if (isComplete) {
-    return (
-      <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center gap-8">
-        <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center gap-4 py-10 bg-white border-2 border-${theme}-200 w-full max-w-lg rounded-3xl shadow-lg`}>
-          <Trophy className={`w-16 h-16 text-${theme}-500`} />
-          <span>انتهت البطاقات!</span>
-        </div>
-        <div className="w-full max-w-2xl">
-          <ResultBox 
-            title={sectionData.title} 
-            theme={theme} 
-            score={progress.score} 
-            total={sectionData.cards.length} 
-          />
-        </div>
-      </div>
-    );
-  }
-
-  const card = sectionData.cards[currentIndex];
-  const isFlipped = flipped[currentIndex];
+  const card = isComplete ? sectionData.cards[sectionData.cards.length - 1] : sectionData.cards[currentIndex];
+  const isFlipped = isComplete ? flipped[sectionData.cards.length - 1] : flipped[currentIndex];
 
   return (
-    <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center">
+    <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center min-h-[600px]">
       {sectionData.description && (
         <div className="text-center mb-8 w-full px-4">
           <p className={`text-lg md:text-xl text-${theme}-800 font-semibold bg-${theme}-50 bg-opacity-60 p-4 rounded-2xl shadow-sm inline-block w-full`}>
@@ -72,11 +54,13 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
       )}
 
-      {/* Card Container */}
-      <div 
-        key={currentIndex}
-        className={`w-full max-w-2xl px-4 perspective-1000 ${animatingOut ? 'fly-out' : 'fade-in'}`}
-      >
+      {/* Grid Container for Card and Success Message */}
+      <div className="grid w-full max-w-2xl px-4 relative">
+        {/* Layer 1: The Card */}
+        <div 
+          key={Math.min(currentIndex, sectionData.cards.length - 1)}
+          className={`col-start-1 row-start-1 w-full transition-all duration-500 perspective-1000 ${animatingOut ? 'fly-out' : (!isComplete ? 'fade-in' : '')} ${isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}
+        >
         <div 
           onClick={handleFlip}
           className={`relative h-[28rem] md:h-[26rem] w-full max-w-2xl mx-auto transition-transform duration-700 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''} shadow-xl rounded-[2.5rem]`}
@@ -136,6 +120,18 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
                 <span>أخطأت</span>
                 <XCircle className="w-6 h-6" />
               </button>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        {/* Layer 2: Success Message */}
+        <div className={`col-start-1 row-start-1 w-full flex flex-col items-center justify-center gap-8 transition-opacity duration-500 ${!isComplete ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
+          <div className={`text-3xl md:text-4xl font-bold text-${theme}-600 flex flex-col items-center justify-center gap-6 py-16 bg-white border-2 border-${theme}-200 w-full rounded-[2.5rem] shadow-xl h-[28rem] md:h-[26rem]`}>
+            <Trophy className={`w-24 h-24 text-${theme}-500`} />
+            <span className="text-center px-6">انتهت البطاقات بنجاح!</span>
+            <div className="text-2xl md:text-3xl text-slate-500 font-bold">
+              النتيجة: {toArabicNum(progress.score)} من {toArabicNum(sectionData.cards.length)}
             </div>
           </div>
         </div>
