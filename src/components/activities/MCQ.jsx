@@ -105,7 +105,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   <h3 
-                    className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right"
+                    className="text-2xl md:text-3xl font-normal text-slate-800 leading-relaxed whitespace-pre-line text-right"
                     dangerouslySetInnerHTML={{ 
                       __html: q.text
                         .replace(/«([^»]+)»/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
