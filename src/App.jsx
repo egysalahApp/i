@@ -120,6 +120,14 @@ function App() {
           } 
         />
         <Route 
+          path="/admin/lessons" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
           path="/admin/lessons/:id" 
           element={
             <ProtectedRoute>

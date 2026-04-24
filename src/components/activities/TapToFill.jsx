@@ -139,9 +139,12 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                        <span className="invisible opacity-0 font-bold text-[1em] leading-tight whitespace-nowrap px-2 pointer-events-none">{longestOption}</span>
                                        
                                        {/* المحتوى الفعلي (نقاط أو الكلمة المختارة) يتوسط الصندوق تماماً */}
-                                       <span className="absolute inset-0 flex items-center justify-center">
+                                       <span className="absolute inset-0 flex items-center justify-center gap-1">
                                          {answered && selectedOption ? (
-                                             <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-tight">{selectedOption.text}</span>
+                                             <>
+                                               <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-tight">{selectedOption.text}</span>
+                                               {isSelectedCorrect ? <CheckCircle2 size={24} className="text-emerald-600" /> : <XCircle size={24} className="text-rose-600" />}
+                                             </>
                                          ) : (
                                             <span className="text-[0.65em] md:text-[0.85em] opacity-30 whitespace-nowrap tracking-[0.1em] md:tracking-[0.2em]">
                                               <span className="hidden md:inline">......</span>
