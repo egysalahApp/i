@@ -71,13 +71,18 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm(`هل أنت متأكد من حذف الدرس ${id}؟`)) {
+    const userInput = window.prompt(`لحذف الدرس "${id}" نهائياً، يرجى كتابة معرف الدرس (ID) للتأكيد:`);
+    
+    if (userInput === id) {
       const { error } = await supabase.from('lessons').delete().eq('id', id);
       if (!error) {
         setLessons(lessons.filter(l => l.id !== id));
+        alert('تم حذف الدرس بنجاح');
       } else {
         alert('حدث خطأ أثناء الحذف');
       }
+    } else if (userInput !== null) {
+      alert('المعرف غير متطابق، تم إلغاء عملية الحذف.');
     }
   };
 
