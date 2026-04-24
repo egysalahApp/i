@@ -211,8 +211,8 @@ function LessonViewer({ APP_DATA }) {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const effectiveTheme = getEffectiveTheme(idx);
-                const activeBg = `bg-${effectiveTheme}-500`;
-                const activeText = (['amber', 'sky', 'cyan', 'slate'].includes(effectiveTheme)) ? 'text-slate-900' : 'text-white';
+                const activeBg = `bg-${effectiveTheme}-600`;
+                const activeText = 'text-white';
                 const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
                 
                 return (
