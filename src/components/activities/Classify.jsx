@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
-import { Inbox, CircleHelp } from 'lucide-react';
+import { Inbox } from 'lucide-react';
 
 const Classify = ({ sectionData, progress, onUpdateProgress }) => {
   const [questions, setQuestions] = useState([]);
@@ -74,7 +74,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       setTimeout(() => {
         setPlacedItems(prev => ({
           ...prev,
-          [catId]: [...prev[catId], { text: currentQState.originalQuestion.text || currentQState.originalQuestion.question, theme }]
+          [catId]: [...prev[catId], { text: currentQState.originalQuestion.text, theme }]
         }));
         
         setStatus('idle');
@@ -116,15 +116,14 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 <div className="flex items-center justify-between mb-4">
                     <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>البطاقة {toArabicNum(isComplete ? questions.length : currentIndex + 1)}</span>
                     <button onClick={toggleHint} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 hover:bg-amber-50">
-                      <CircleHelp size={20} />
-                      تلميح
+                      💡 تلميح
                     </button>
                 </div>
 
                 <div className="w-full flex flex-col transition-all duration-300">
                     <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
                       <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
-                        «{currentQState?.originalQuestion.text || currentQState?.originalQuestion.question}»
+                        «{currentQState?.originalQuestion.text}»
                       </h3>
                     </div>
                    
@@ -136,7 +135,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 </div>
                 {status === 'incorrect' && currentQState && (
                   <div className="mt-5 smooth-expand w-full text-right">
-                    <FeedbackBox isCorrect={false} explanation={currentQState.originalQuestion.explanation || currentQState.originalQuestion.feedback || 'حاول مرة أخرى'} />
+                    <FeedbackBox isCorrect={false} explanation={currentQState.originalQuestion.explanation || 'حاول مرة أخرى'} />
                   </div>
                 )}
               </div>
@@ -160,8 +159,8 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
               : `cursor-default pointer-events-none`;
               
             return (
-              <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 border-${cat.theme || sectionData.theme}-200 text-${cat.theme || sectionData.theme}-700 bg-${cat.theme || sectionData.theme}-50 min-w-[120px] ${btnClass}`}>
-                <span className="font-bold text-lg md:text-xl text-center leading-snug">{cat.title || cat.label}</span>
+              <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 border-${cat.theme}-200 text-${cat.theme}-700 bg-${cat.theme}-50 min-w-[120px] ${btnClass}`}>
+                <span className="font-bold text-lg md:text-xl text-center leading-snug">{cat.label}</span>
               </button>
             );
           })}
@@ -183,7 +182,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                     <div className="bg-white shadow-sm rounded-full p-2 border border-slate-100 flex items-center justify-center shrink-0">
                         <Inbox className={`w-6 h-6 md:w-8 md:h-8 text-${cat.theme}-600 shrink-0`} />
                     </div>
-                    <h3 className="font-bold text-2xl md:text-3xl text-slate-900 text-center">{cat.title || cat.label}</h3>
+                    <h3 className="font-bold text-2xl md:text-3xl text-slate-900 text-center">{cat.label}</h3>
                 </div>
             </div>
 
