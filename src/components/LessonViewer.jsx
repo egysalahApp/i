@@ -30,10 +30,11 @@ function LessonViewer({ APP_DATA }) {
   const [resetKeys, setResetKeys] = useState({});
   const [progress, setProgress] = useState(
     APP_DATA.sections.reduce((acc, section) => {
-      // Scorable generic logic
-      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
+      // Case-insensitive type check
+      const type = (section.type || '').toLowerCase();
+      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(type);
       const total = isScorable ? (section.questions?.length || section.pairs?.length || section.cards?.length || 0) : (section.slides?.length || section.cards?.length || 1);
-      const answered = isScorable ? 0 : (section.type === 'story' ? 0 : 1);
+      const answered = isScorable ? 0 : (type === 'story' ? 0 : 1);
       
       acc[section.id] = { answered, total, score: 0, isScorable };
       return acc;
@@ -204,6 +205,7 @@ function LessonViewer({ APP_DATA }) {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const getIcon = (type) => {
+                  const t = (type || '').toLowerCase();
                   const icons = {
                     'intro': <BookOpen size={20} />,
                     'mcq': <CircleHelp size={20} />,
@@ -217,7 +219,7 @@ function LessonViewer({ APP_DATA }) {
                     'golden_envelope': <Mail size={20} />,
                     'style_lab': <Microscope size={20} />
                   };
-                  return icons[type] || <Star size={20} />;
+                  return icons[t] || <Star size={20} />;
                 };
 
                 const theme = getEffectiveTheme(idx);
@@ -249,24 +251,25 @@ function LessonViewer({ APP_DATA }) {
           {APP_DATA.sections.map((section) => {
             const isActive = activeTab === section.id;
             const secProgress = progress[section.id];
+            const type = (section.type || '').toLowerCase();
             return (
               <div key={`${section.id}-${resetKeys[section.id] || 0}`} className={isActive ? 'block' : 'hidden'}>
                 <ErrorBoundary>
-                  {section.type === 'intro' && <Intro sectionData={section} />}
-                  {section.type === 'radar' && <Radar sectionData={section} />}
-                  {section.type === 'style_lab' && <StyleLab sectionData={section} />}
-                  {section.type === 'contrast_cards' && <ContrastCards sectionData={section} />}
-                  {section.type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
-                  {section.type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
+                  {type === 'intro' && <Intro sectionData={section} />}
+                  {type === 'radar' && <Radar sectionData={section} />}
+                  {type === 'style_lab' && <StyleLab sectionData={section} />}
+                  {type === 'contrast_cards' && <ContrastCards sectionData={section} />}
+                  {type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
+                  {type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
                 </ErrorBoundary>
               </div>
             );
