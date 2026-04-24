@@ -135,6 +135,10 @@ const LessonEditor = () => {
   };
 
   const addNewSection = (type) => {
+    if (editingSectionIndex !== null) {
+      alert('يرجى حفظ أو إغلاق المحرر المفتوح حالياً قبل إضافة قسم جديد.');
+      return;
+    }
     const newSection = {
       id: `section_${Date.now()}`,
       type: type,
@@ -145,7 +149,10 @@ const LessonEditor = () => {
       newSection.content = [];
       newSection.description = '';
     }
-    setSections([...sections, newSection]);
+    const updatedSections = [...sections, newSection];
+    setSections(updatedSections);
+    // Auto-open the newly added section for editing
+    setEditingSectionIndex(updatedSections.length - 1);
   };
 
   return (
@@ -259,7 +266,13 @@ const LessonEditor = () => {
                           </div>
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => setEditingSectionIndex(index)}
+                              onClick={() => {
+                                if (editingSectionIndex !== null && editingSectionIndex !== index) {
+                                  alert('يرجى حفظ أو إغلاق المحرر المفتوح حالياً قبل الانتقال لتعديل قسم آخر.');
+                                  return;
+                                }
+                                setEditingSectionIndex(index);
+                              }}
                               className="text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 px-4 py-2 rounded-lg transition-colors"
                             >
                               {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
