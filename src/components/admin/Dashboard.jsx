@@ -177,46 +177,48 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50" dir="rtl">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-4 py-3 md:px-6 md:py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
-        <h1 className="text-xl font-bold text-slate-800">لوحة تحكم المعلم</h1>
-        <div className="flex items-center gap-4">
-          <button onClick={handleDownloadBackup} className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 transition-colors font-medium text-sm">
+      <header className="bg-white border-b border-slate-200 px-3 py-3 md:px-6 md:py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+        <h1 className="text-base md:text-xl font-bold text-slate-800 truncate max-w-[150px] sm:max-w-none">لوحة التحكم</h1>
+        <div className="flex items-center gap-2 md:gap-4">
+          <button onClick={handleDownloadBackup} className="flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 transition-colors font-medium text-xs md:text-sm bg-indigo-50 p-1.5 md:bg-transparent md:p-0 rounded-lg">
             <Download size={18} />
-            نسخة احتياطية
+            <span className="hidden sm:inline">نسخة احتياطية</span>
           </button>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-slate-600 hover:text-rose-600 transition-colors font-medium">
+          <button onClick={handleLogout} className="flex items-center gap-1.5 text-slate-600 hover:text-rose-600 transition-colors font-medium text-xs md:text-sm bg-slate-50 p-1.5 md:bg-transparent md:p-0 rounded-lg">
             <LogOut size={18} />
-            خروج
+            <span className="hidden sm:inline">خروج</span>
           </button>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto p-4 md:p-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
-          <h2 className="text-2xl font-bold text-slate-800">الدروس الحالية</h2>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-slate-800">الدروس الحالية</h2>
           
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="relative flex-grow md:w-80">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+            <div className="relative w-full sm:w-64 md:w-80">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
                 placeholder="ابحث عن درس..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white shadow-sm transition-all"
+                className="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white shadow-sm transition-all text-sm"
               />
             </div>
             
-            <label className="shrink-0 flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95 cursor-pointer">
-              <Upload size={20} />
-              استيراد ملف JSON
-              <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
-            </label>
-            <Link to="/admin/lessons/new" className="shrink-0 flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95">
-              <PlusCircle size={20} />
-              درس جديد
-            </Link>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <label className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95 cursor-pointer text-sm">
+                <Upload size={18} />
+                <span className="whitespace-nowrap">استيراد JSON</span>
+                <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
+              </label>
+              <Link to="/admin/lessons/new" className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95 text-sm">
+                <PlusCircle size={18} />
+                <span className="whitespace-nowrap">درس جديد</span>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -236,24 +238,24 @@ const Dashboard = () => {
                   </span>
                 </div>
                 
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:flex items-center gap-2 w-full md:w-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:flex items-center gap-2 w-full md:w-auto">
                   <button 
                     onClick={() => handleDuplicate(lesson)} 
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-lg font-medium transition-colors border border-slate-100"
+                    className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-lg font-medium transition-colors border border-slate-100 text-xs md:text-sm"
                     title="نسخ الدرس"
                   >
-                    <Copy size={18} />
-                    نسخ
+                    <Copy size={16} />
+                    <span>نسخ</span>
                   </button>
-                  <Link to={`/admin/lessons/${lesson.id}`} className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors border border-slate-100">
-                    <Edit size={18} />
-                    تعديل
+                  <Link to={`/admin/lessons/${lesson.id}`} className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 px-3 py-2 rounded-lg font-medium transition-colors border border-slate-100 text-xs md:text-sm">
+                    <Edit size={16} />
+                    <span>تعديل</span>
                   </Link>
-                  <button onClick={() => handleDelete(lesson.id)} className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 px-4 py-2 rounded-lg font-medium transition-colors">
-                    <Trash2 size={18} />
-                    حذف
+                  <button onClick={() => handleDelete(lesson.id)} className="flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-2 rounded-lg font-medium transition-colors text-xs md:text-sm">
+                    <Trash2 size={16} />
+                    <span>حذف</span>
                   </button>
-                  <Link to={`/${lesson.id}`} target="_blank" className="flex-1 md:flex-none flex items-center justify-center text-indigo-600 font-medium px-4 py-2 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors text-sm md:text-base">
+                  <Link to={`/${lesson.id}`} target="_blank" className="flex items-center justify-center text-indigo-600 font-bold px-3 py-2 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors text-xs md:text-sm">
                     معاينة
                   </Link>
                 </div>

@@ -51,7 +51,11 @@ export default {
     ...colors.map(c => `md:hover:border-${c}-500`),
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xs': '375px',
+      },
+    },
   },
   plugins: [],
 }
