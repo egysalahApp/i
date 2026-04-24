@@ -103,8 +103,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         let ringClass = answered ? (isSelectedCorrect ? 'ring-2 ring-emerald-400' : 'ring-2 ring-rose-400') : '';
         if (wrongAttempt) ringClass += ' shake ';
 
-        const textSegments = q.text.split(/\.{3,}/);
-        const longestOption = options.reduce((a, b) => a.text.length > b.text.length ? a : b).text;
+        const textSegments = (q.text || q.question || '').split(/_{3,}|\.{3,}/);
+        const longestOption = options.length > 0 ? options.reduce((a, b) => a.text.length > b.text.length ? a : b).text : '........';
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
