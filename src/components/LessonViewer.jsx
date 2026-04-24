@@ -44,23 +44,28 @@ function LessonViewer({ APP_DATA }) {
 
   const getEffectiveTheme = (currentIdx) => {
     const currentSection = APP_DATA.sections[currentIdx];
-    if (currentIdx === 0 || currentIdx === APP_DATA.sections.length - 1) return currentSection.theme;
+    // Use the same auto-theme logic
+    const themePalette = APP_CONFIG.themePalette;
+    const autoTheme = currentIdx === 0 ? APP_CONFIG.firstSectionTheme : themePalette[(currentIdx - 1) % themePalette.length];
+    const sectionTheme = currentSection.theme || autoTheme;
+
+    if (currentIdx === 0 || currentIdx === APP_DATA.sections.length - 1) return sectionTheme;
     
     const prevEffectiveTheme = getEffectiveTheme(currentIdx - 1);
-    if (currentSection.theme === prevEffectiveTheme) {
-      if (currentSection.altTheme) return currentSection.altTheme;
+    if (sectionTheme === prevEffectiveTheme) {
       const pairs = {
         'emerald': 'purple',
         'cyan': 'amber',
         'amber': 'indigo',
         'purple': 'emerald',
         'violet': 'cyan',
+        'indigo': 'emerald',
         'slate': 'sky',
-        'indigo': 'emerald'
+        'sky': 'indigo'
       };
-      return pairs[currentSection.theme] || currentSection.theme;
+      return pairs[sectionTheme] || sectionTheme;
     }
-    return currentSection.theme;
+    return sectionTheme;
   };
 
   const activeSection = APP_DATA.sections.find(s => s.id === activeTab);
@@ -233,9 +238,9 @@ function LessonViewer({ APP_DATA }) {
             const isActive = activeTab === section.id;
             const secProgress = progress[section.id];
             
-            // Unified Theme System: Automatically assign a premium theme based on section index
-            const themePalette = ['indigo', 'rose', 'amber', 'purple', 'emerald', 'sky', 'orange', 'cyan'];
-            const autoTheme = themePalette[index % themePalette.length];
+            // Unified Theme System: Automatically assign a premium theme based on APP_CONFIG
+            const themePalette = APP_CONFIG.themePalette;
+            const autoTheme = index === 0 ? APP_CONFIG.firstSectionTheme : themePalette[(index - 1) % themePalette.length];
             
             // Override section theme if it's not specified or just to enforce global consistency
             const sectionWithTheme = { 
