@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, Edit, Trash2, PlusCircle, Search, Copy } from 'lucide-react';
+import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download } from 'lucide-react';
 
 const Dashboard = () => {
   const [lessons, setLessons] = useState([]);
@@ -35,6 +35,26 @@ const Dashboard = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/admin/login');
+  };
+
+  const handleDownloadBackup = async () => {
+    try {
+      const { data, error } = await supabase.from('lessons').select('*');
+      if (error) throw error;
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `lessons_backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      alert('حدث خطأ أثناء تحميل النسخة الاحتياطية');
+    }
   };
 
   const handleDuplicate = async (lesson) => {
@@ -91,10 +111,16 @@ const Dashboard = () => {
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-4 py-3 md:px-6 md:py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
         <h1 className="text-xl font-bold text-slate-800">لوحة تحكم المعلم</h1>
-        <button onClick={handleLogout} className="flex items-center gap-2 text-slate-600 hover:text-rose-600 transition-colors font-medium">
-          <LogOut size={18} />
-          خروج
-        </button>
+        <div className="flex items-center gap-4">
+          <button onClick={handleDownloadBackup} className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 transition-colors font-medium text-sm">
+            <Download size={18} />
+            نسخة احتياطية
+          </button>
+          <button onClick={handleLogout} className="flex items-center gap-2 text-slate-600 hover:text-rose-600 transition-colors font-medium">
+            <LogOut size={18} />
+            خروج
+          </button>
+        </div>
       </header>
 
       {/* Main Content */}
