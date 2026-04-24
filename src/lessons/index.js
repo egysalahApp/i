@@ -1,6 +1,6 @@
-import { APP_DATA as sarfe3rabData } from "./sarfe3rab.js";
-import { APP_DATA as ayam15_17Data } from "./ayam15-17.js";
-import { APP_DATA as parisData } from "./paris.js";
+import sarfe3rabData from "./sarfe3rab.json";
+import ayam15_17Data from "./ayam15-17.json";
+import parisData from "./paris.json";
 
 export const lessonsData = {
   "sarfe3rab": sarfe3rabData,
