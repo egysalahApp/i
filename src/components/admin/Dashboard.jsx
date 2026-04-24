@@ -91,15 +91,19 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    const userInput = window.prompt(`لحذف الدرس "${id}" نهائياً، يرجى كتابة معرف الدرس (ID) للتأكيد:`);
+    const userInput = window.prompt(`تنبيه: سيتم حذف الدرس نهائياً.
+لتأكيد الحذف، يرجى كتابة المعرف التالي بالضبط:
+${id}`);
     
     if (userInput === id) {
       const { error } = await supabase.from('lessons').delete().eq('id', id);
       if (!error) {
-        setLessons(lessons.filter(l => l.id !== id));
+        // Re-fetch lessons from server to ensure UI is perfectly synced
+        await fetchLessons();
         alert('تم حذف الدرس بنجاح');
       } else {
-        alert('حدث خطأ أثناء الحذف');
+        console.error("Delete error:", error);
+        alert('حدث خطأ أثناء الحذف: ' + error.message);
       }
     } else if (userInput !== null) {
       alert('المعرف غير متطابق، تم إلغاء عملية الحذف.');
