@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download } from 'lucide-react';
+import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download, Upload } from 'lucide-react';
 
 const Dashboard = () => {
   const [lessons, setLessons] = useState([]);
@@ -126,6 +126,54 @@ const Dashboard = () => {
     }
   };
 
+  const handleImportFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = '';
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      if (!data.id || !data.sections) {
+        alert('ملف غير صالح: يجب أن يحتوي على id و sections');
+        return;
+      }
+
+      const lessonData = {
+        id: data.id,
+        page_title: data.pageTitle,
+        header_title: data.headerTitle,
+        header_subtitle: data.headerSubtitle,
+        youtube_link: data.youtubeLink,
+        copyright: data.copyright,
+        sections: data.sections
+      };
+
+      setLoading(true);
+      const { data: existing } = await supabase.from('lessons').select('id').eq('id', data.id).single();
+
+      let saveError;
+      if (existing) {
+        const { error } = await supabase.from('lessons').update(lessonData).eq('id', data.id);
+        saveError = error;
+      } else {
+        const { error } = await supabase.from('lessons').insert([lessonData]);
+        saveError = error;
+      }
+
+      if (saveError) {
+        alert('فشل الرفع: ' + saveError.message);
+      } else {
+        alert(`تم ${existing ? 'تحديث' : 'إضافة'} الدرس "${data.pageTitle}" بنجاح!`);
+        await fetchLessons();
+      }
+    } catch (err) {
+      alert('خطأ في قراءة الملف: ' + err.message);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50" dir="rtl">
       {/* Header */}
@@ -160,6 +208,11 @@ const Dashboard = () => {
               />
             </div>
             
+            <label className="shrink-0 flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95 cursor-pointer">
+              <Upload size={20} />
+              استيراد ملف JSON
+              <input type="file" accept=".json" onChange={handleImportFile} className="hidden" />
+            </label>
             <Link to="/admin/lessons/new" className="shrink-0 flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95">
               <PlusCircle size={20} />
               درس جديد
