@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, Save, AlertCircle, Layout, Code, Trash2, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download, ArrowRight, Save, Layout, Code, Plus, AlertCircle, FileJson } from 'lucide-react';
 import RawSectionEditor from './RawSectionEditor';
 import VisualIntroEditor from './VisualIntroEditor';
 import VisualMcqEditor from './VisualMcqEditor';
@@ -35,6 +35,9 @@ const LessonEditor = () => {
   
   // UI State
   const [editingSectionIndex, setEditingSectionIndex] = useState(null);
+
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importJson, setImportJson] = useState('');
 
   useEffect(() => {
     if (!isNew) {
@@ -153,6 +156,27 @@ const LessonEditor = () => {
     setSections(newSections);
   };
 
+  const handleImportJson = () => {
+    try {
+      const data = JSON.parse(importJson);
+      if (!data.sections) throw new Error('الملف غير متوافق (يجب أن يحتوي على sections)');
+      
+      if (data.id) setLessonId(data.id);
+      if (data.pageTitle) setPageTitle(data.pageTitle);
+      if (data.headerTitle) setHeaderTitle(data.headerTitle);
+      if (data.headerSubtitle) setHeaderSubtitle(data.headerSubtitle);
+      if (data.youtubeLink) setYoutubeLink(data.youtubeLink);
+      if (data.copyright) setCopyright(data.copyright);
+      if (data.sections) setSections(data.sections);
+      
+      setShowImportModal(false);
+      setImportJson('');
+      alert('تم استيراد بيانات الدرس بنجاح!');
+    } catch (err) {
+      alert('خطأ في تنسيق الكود: ' + err.message);
+    }
+  };
+
   const addNewSection = (type) => {
     if (editingSectionIndex !== null) {
       alert('يرجى حفظ أو إغلاق المحرر المفتوح حالياً قبل إضافة قسم جديد.');
@@ -241,11 +265,20 @@ const LessonEditor = () => {
             {isNew ? 'إضافة درس جديد' : `تعديل الدرس: ${pageTitle || id}`}
           </h1>
         </div>
-        <button
-          onClick={handleSaveLesson}
-          disabled={saving || editingSectionIndex !== null}
-          className={`bg-indigo-600 hover:bg-indigo-700 text-white px-4 md:px-6 py-2 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2 text-sm md:text-base ${saving || editingSectionIndex !== null ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-lg text-sm font-medium"
+            title="استيراد درس كامل من كود JSON"
+          >
+            <FileJson size={18} />
+            استيراد JSON
+          </button>
+          <button
+            onClick={handleSaveLesson}
+            disabled={saving || editingSectionIndex !== null}
+            className={`bg-indigo-600 hover:bg-indigo-700 text-white px-4 md:px-6 py-2 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2 text-sm md:text-base ${saving || editingSectionIndex !== null ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
           {saving ? (
              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
           ) : (
@@ -491,6 +524,41 @@ const LessonEditor = () => {
           </div>
         )}
       </main>
+      {/* Import JSON Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <FileJson className="text-indigo-600" /> استيراد درس من كود JSON
+              </h3>
+              <button onClick={() => setShowImportModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6">
+              <p className="text-sm text-slate-500 mb-4">قم بلصق الكود الخاص بالدرس أدناه وسيتم ملء جميع البيانات تلقائياً.</p>
+              <textarea
+                value={importJson}
+                onChange={(e) => setImportJson(e.target.value)}
+                placeholder='{ "pageTitle": "...", "sections": [...] }'
+                className="w-full h-80 p-4 font-mono text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50"
+                dir="ltr"
+              ></textarea>
+              <div className="flex justify-end gap-3 mt-6">
+                <button onClick={() => setShowImportModal(false)} className="px-6 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">إلغاء</button>
+                <button 
+                  onClick={handleImportJson}
+                  disabled={!importJson.trim()}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2 rounded-xl font-bold shadow-lg disabled:opacity-50"
+                >
+                  تطبيق البيانات
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
