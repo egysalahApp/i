@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, RefreshCw } from 'lucide-react';
+import { Trophy, RefreshCw, Layout, HelpCircle, CheckCircle2, BookOpen, Layers, Target, RotateCw, ListOrdered, Share2, Mail, Microscope, HelpCircle as DefaultIcon } from 'lucide-react';
 import { toArabicNum } from '../utils';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
@@ -203,12 +203,30 @@ function LessonViewer({ APP_DATA }) {
               {APP_DATA.sections.map((section, idx) => {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
-                const effectiveTheme = getEffectiveTheme(idx);
-                const activeBg = (effectiveTheme === 'slate') ? 'bg-slate-500' : `bg-${effectiveTheme}-700`;
-                const activeClass = isActive ? `${activeBg} text-white shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
-                
+                const getIcon = (type) => {
+                  const icons = {
+                    'intro': <Layout size={18} />,
+                    'mcq': <HelpCircle size={18} />,
+                    'tap_to_fill': <CheckCircle2 size={18} />,
+                    'story': <BookOpen size={18} />,
+                    'classify': <Layers size={18} />,
+                    'hotspot': <Target size={18} />,
+                    'flashcards': <RotateCw size={18} />,
+                    'sort': <ListOrdered size={18} />,
+                    'radar': <Share2 size={18} />,
+                    'golden_envelope': <Mail size={18} />,
+                    'style_lab': <Microscope size={18} />
+                  };
+                  return icons[type] || <DefaultIcon size={18} />;
+                };
+                const theme = getEffectiveTheme(idx);
+                const activeClass = isActive 
+                    ? `bg-${theme}-100 border-${theme}-500 text-${theme}-800` 
+                    : "bg-white border-transparent text-slate-500 hover:bg-slate-100";
+
                 return (
                   <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
+                    {getIcon(section.type)}
                     {section.title}
                     {isDone && !isActive && <span className="text-emerald-600">✓</span>}
                   </button>

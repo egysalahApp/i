@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Lightbulb, CheckCircle2, XCircle, LogIn } from 'lucide-react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
@@ -9,7 +10,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
 
   const [questions, setQuestions] = useState(() => {
     return (sectionData.questions || []).map(q => {
-      let opts = (q.options || []).map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === q.correct }));
+      let opts = (q.options || []).map((opt, oIdx) => ({ text: opt, isCorrect: oIdx === (q.correct ?? 0) }));
       return {
         originalQuestion: q,
         options: shuffleArray(opts),
@@ -56,10 +57,9 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         answered: true,
         selectedOption: opt,
         wrongAttempt: !isCorrect,
-        isOptionsOpen: false // Close options on selection
+        isOptionsOpen: false
       };
 
-      // Handle progress update outside state setter
       setTimeout(() => {
         const newAnswered = progress.answered + 1;
         const newScore = progress.score + (isCorrect ? 1 : 0);
@@ -103,8 +103,10 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         let ringClass = answered ? (isSelectedCorrect ? 'ring-2 ring-emerald-400' : 'ring-2 ring-rose-400') : '';
         if (wrongAttempt) ringClass += ' shake ';
 
-        const textSegments = q.text.split(/\.{3,}/);
-        const longestOption = options.reduce((a, b) => a.text.length > b.text.length ? a : b).text;
+        // Support both ___ and ... as blanks
+        const questionText = q.text || q.question || '';
+        const textSegments = questionText.split(/_{3,}|\.{3,}/);
+        const longestOption = options.length > 0 ? options.reduce((a, b) => a.text.length > b.text.length ? a : b).text : '........';
 
         return (
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
@@ -112,7 +114,8 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                   <div className="flex items-center justify-between mb-4">
                       <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>السؤال {toArabicNum(idx + 1)}</span>
                       <button onClick={() => toggleHint(idx)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50">
-                        💡 تلميح
+                        <Lightbulb size={20} />
+                        تلميح
                       </button>
                   </div>
                   
