@@ -38,7 +38,7 @@ const VisualStoryEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-rose-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-emerald-900 flex items-center gap-2">
@@ -75,7 +75,7 @@ const VisualStoryEditor = ({ section, onSave, onCancel }) => {
 
           {slides.map((slide, index) => (
             <div key={index} className="bg-white p-5 rounded-xl border-2 border-slate-100 shadow-sm relative group hover:border-emerald-200 transition-colors">
-              <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                 <button onClick={() => moveSlide(index, -1)} disabled={index === 0} className="text-slate-300 hover:text-emerald-600 disabled:opacity-0"><ArrowUp size={20} /></button>
                 <button onClick={() => moveSlide(index, 1)} disabled={index === slides.length - 1} className="text-slate-300 hover:text-emerald-600 disabled:opacity-0"><ArrowDown size={20} /></button>
                 <button onClick={() => removeSlide(index)} className="text-slate-300 hover:text-rose-500 transition-colors"><Trash2 size={20} /></button>

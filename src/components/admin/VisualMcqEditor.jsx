@@ -45,7 +45,7 @@ const VisualMcqEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-purple-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-purple-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-purple-900">محرر الأسئلة (واجهة مرئية)</h3>
@@ -84,7 +84,7 @@ const VisualMcqEditor = ({ section, onSave, onCancel }) => {
 
           {questions.map((q, qIdx) => (
             <div key={qIdx} className="bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm relative group hover:border-purple-200 transition-colors">
-              <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                 <button onClick={() => moveQuestion(qIdx, -1)} disabled={qIdx === 0} className="text-slate-300 hover:text-purple-600 disabled:opacity-0" title="تحريك لأعلى"><ArrowUp size={20} /></button>
                 <button onClick={() => moveQuestion(qIdx, 1)} disabled={qIdx === questions.length - 1} className="text-slate-300 hover:text-purple-600 disabled:opacity-0" title="تحريك لأسفل"><ArrowDown size={20} /></button>
                 <button onClick={() => removeQuestion(qIdx)} className="text-slate-300 hover:text-rose-500 transition-colors" title="حذف السؤال"><Trash2 size={20} /></button>
@@ -140,7 +140,7 @@ const VisualMcqEditor = ({ section, onSave, onCancel }) => {
 
       <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-slate-100">
         <button onClick={onCancel} className="px-6 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium">إلغاء</button>
-        <button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700 text-white px-10 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95">اعتماد التغييرات</button>
+        <button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700 text-white px-6 md:px-10 py-2 rounded-xl font-bold shadow-md transition-all active:scale-95 text-sm md:text-base">اعتماد التغييرات</button>
       </div>
     </div>
   );

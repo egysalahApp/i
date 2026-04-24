@@ -36,7 +36,7 @@ const VisualFlashcardsEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-violet-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-amber-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-violet-900 flex items-center gap-2">
@@ -78,7 +78,7 @@ const VisualFlashcardsEditor = ({ section, onSave, onCancel }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {cards.map((card, index) => (
               <div key={index} className="bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm relative group hover:border-violet-200 transition-all flex flex-col gap-4">
-                <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                   <button onClick={() => moveCard(index, -1)} disabled={index === 0} className="bg-white/80 p-1 rounded border text-slate-400 hover:text-violet-600 disabled:opacity-0 shadow-sm"><ArrowUp size={18} /></button>
                   <button onClick={() => moveCard(index, 1)} disabled={index === cards.length - 1} className="bg-white/80 p-1 rounded border text-slate-400 hover:text-violet-600 disabled:opacity-0 shadow-sm"><ArrowDown size={18} /></button>
                   <button onClick={() => removeCard(index)} className="bg-white/80 p-1 rounded border text-slate-400 hover:text-rose-500 shadow-sm"><Trash2 size={18} /></button>

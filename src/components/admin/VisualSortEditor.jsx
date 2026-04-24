@@ -80,7 +80,7 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-blue-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-emerald-900 flex items-center gap-2">
@@ -149,7 +149,7 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
           <div className="space-y-4">
             {questions.map((q, qIdx) => (
               <div key={qIdx} className="bg-white p-5 rounded-xl border-2 border-slate-100 shadow-sm relative group hover:border-emerald-300 transition-all">
-                <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                    <button onClick={() => moveQuestion(qIdx, -1)} disabled={qIdx === 0} className="text-slate-300 hover:text-emerald-600 disabled:opacity-0"><ArrowUp size={20} /></button>
                    <button onClick={() => moveQuestion(qIdx, 1)} disabled={qIdx === questions.length - 1} className="text-slate-300 hover:text-emerald-600 disabled:opacity-0"><ArrowDown size={20} /></button>
                    <button onClick={() => removeQuestion(qIdx)} className="text-slate-300 hover:text-rose-500"><Trash2 size={20} /></button>

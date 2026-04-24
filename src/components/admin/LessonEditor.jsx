@@ -151,19 +151,19 @@ const LessonEditor = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-12" dir="rtl">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <header className="bg-white border-b border-slate-200 px-4 py-3 md:px-6 md:py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
         <div className="flex items-center gap-4">
           <Link to="/admin" className="text-slate-500 hover:text-slate-800 transition-colors bg-slate-100 hover:bg-slate-200 p-2 rounded-full">
             <ArrowRight size={20} />
           </Link>
-          <h1 className="text-xl font-bold text-slate-800">
+          <h1 className="text-lg md:text-xl font-bold text-slate-800 line-clamp-1">
             {isNew ? 'إضافة درس جديد' : `تعديل الدرس: ${pageTitle || id}`}
           </h1>
         </div>
         <button
           onClick={handleSaveLesson}
           disabled={saving || editingSectionIndex !== null}
-          className={`bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2 ${saving || editingSectionIndex !== null ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`bg-indigo-600 hover:bg-indigo-700 text-white px-4 md:px-6 py-2 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center gap-2 text-sm md:text-base ${saving || editingSectionIndex !== null ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           {saving ? (
              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -177,7 +177,7 @@ const LessonEditor = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-6 md:p-8">
+      <main className="max-w-6xl mx-auto p-4 md:p-8">
         {loading ? (
           <div className="text-center py-12">
             <div className="w-10 h-10 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
@@ -223,13 +223,13 @@ const LessonEditor = () => {
 
             {/* Sections List */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-              <h2 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2 flex justify-between items-center">
+              <h2 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <span>أقسام وأنشطة الدرس ({sections.length})</span>
-                <div className="flex gap-2">
-                   <button onClick={() => addNewSection('intro')} className="text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 flex items-center gap-1">
+                <div className="flex gap-2 w-full sm:w-auto">
+                   <button onClick={() => addNewSection('intro')} className="flex-1 sm:flex-none text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 flex items-center justify-center gap-1">
                      <Plus size={14} /> إضافة مقدمة
                    </button>
-                   <button onClick={() => addNewSection('mcq')} className="text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 flex items-center gap-1">
+                   <button onClick={() => addNewSection('mcq')} className="flex-1 sm:flex-none text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 flex items-center justify-center gap-1">
                      <Plus size={14} /> إضافة نشاط
                    </button>
                 </div>

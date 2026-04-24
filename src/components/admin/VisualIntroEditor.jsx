@@ -48,7 +48,7 @@ const VisualIntroEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-indigo-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-indigo-900">محرر المقدمة (واجهة مرئية)</h3>
@@ -105,7 +105,7 @@ const VisualIntroEditor = ({ section, onSave, onCancel }) => {
           <div className="space-y-4">
             {content.map((card, index) => (
               <div key={index} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group">
-                <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                   <button onClick={() => moveCard(index, -1)} disabled={index === 0} className="text-slate-300 hover:text-indigo-600 disabled:opacity-0" title="تحريك لأعلى"><ArrowUp size={18} /></button>
                   <button onClick={() => moveCard(index, 1)} disabled={index === content.length - 1} className="text-slate-300 hover:text-indigo-600 disabled:opacity-0" title="تحريك لأسفل"><ArrowDown size={18} /></button>
                   <button 
@@ -118,11 +118,11 @@ const VisualIntroEditor = ({ section, onSave, onCancel }) => {
                 </div>
                 
                 <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-12 md:col-span-1">
+                  <div className="col-span-4 md:col-span-1">
                      <label className="block text-slate-600 text-xs font-medium mb-1">إيموجي</label>
                      <input type="text" value={card.icon || ''} onChange={(e) => handleCardChange(index, 'icon', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-center text-xl" />
                   </div>
-                  <div className="col-span-12 md:col-span-9">
+                  <div className="col-span-8 md:col-span-9">
                      <label className="block text-slate-600 text-xs font-medium mb-1">عنوان البطاقة</label>
                      <textarea value={card.title || ''} onChange={(e) => handleCardChange(index, 'title', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-200 font-bold h-12"></textarea>
                   </div>
@@ -158,7 +158,6 @@ const VisualIntroEditor = ({ section, onSave, onCancel }) => {
           إلغاء التعديل
         </button>
         <button onClick={handleSave} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2 rounded-lg font-bold shadow-sm transition-all active:scale-95">
-          <Save size={18} />
           اعتماد التغييرات
         </button>
       </div>

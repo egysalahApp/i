@@ -137,7 +137,7 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
           <div className="space-y-4">
             {questions.map((q, idx) => (
               <div key={idx} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative group hover:border-indigo-300 transition-colors">
-                <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 left-3 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                    <button onClick={() => moveQuestion(idx, -1)} disabled={idx === 0} className="text-slate-300 hover:text-indigo-600 disabled:opacity-0"><ArrowUp size={20} /></button>
                    <button onClick={() => moveQuestion(idx, 1)} disabled={idx === questions.length - 1} className="text-slate-300 hover:text-indigo-600 disabled:opacity-0"><ArrowDown size={20} /></button>
                    <button onClick={() => removeQuestion(idx)} className="text-slate-300 hover:text-rose-500"><Trash2 size={20} /></button>

@@ -36,7 +36,7 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
 
   return (
-    <div className="bg-white p-6 rounded-xl border border-cyan-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
+    <div className="bg-white p-4 md:p-6 rounded-xl border border-cyan-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div>
           <h3 className="text-xl font-bold text-cyan-900 flex items-center gap-2">
@@ -80,7 +80,7 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
           <div className="grid grid-cols-1 gap-3">
             {pairs.map((pair, index) => (
               <div key={index} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm relative group hover:border-cyan-200 transition-all flex flex-col md:flex-row items-center gap-4">
-                <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-2 left-2 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
                    <button onClick={() => movePair(index, -1)} disabled={index === 0} className="text-slate-300 hover:text-cyan-600 disabled:opacity-0"><ArrowUp size={16} /></button>
                    <button onClick={() => movePair(index, 1)} disabled={index === pairs.length - 1} className="text-slate-300 hover:text-cyan-600 disabled:opacity-0"><ArrowDown size={16} /></button>
                    <button onClick={() => removePair(index)} className="text-slate-300 hover:text-rose-500"><Trash2 size={16} /></button>
