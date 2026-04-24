@@ -15,6 +15,12 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
+  const categoriesWithTheme = sectionData.categories.map((cat, idx) => ({
+    ...cat,
+    theme: cat.theme || ['sky', 'emerald', 'indigo', 'amber', 'violet', 'cyan', 'purple', 'rose'][idx % 8]
+  }));
+
+
   useEffect(() => {
     setQuestions(shuffleArray(sectionData.questions).map(q => ({
       originalQuestion: q,
@@ -22,7 +28,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
     })));
     
     let initialPlaced = {};
-    sectionData.categories.forEach(c => initialPlaced[c.id] = []);
+    categoriesWithTheme.forEach(c => initialPlaced[c.id] = []);
     setPlacedItems(initialPlaced);
 
     // قياس ديناميكي لأكبر نص سؤال لتوحيد الارتفاع الأساسي للبطاقة
@@ -69,7 +75,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       const isLast = currentIndex === questions.length - 1;
       if (!isLast) setAnimatingOut(true);
       
-      const theme = sectionData.categories.find(c => c.id === catId).theme;
+      const theme = categoriesWithTheme.find(c => c.id === catId).theme;
       
       setTimeout(() => {
         setPlacedItems(prev => ({
@@ -160,7 +166,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
 
         <div className={`flex flex-row w-full max-w-2xl mx-auto gap-2 md:gap-4 mt-2 relative z-0 flex-wrap justify-center ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
-          {sectionData.categories.map((cat, idx) => {
+          {categoriesWithTheme.map((cat, idx) => {
             const btnClass = (status !== 'correct' && !animatingOut && !isComplete) 
               ? `md:hover:border-${cat.theme}-400 md:hover:bg-${cat.theme}-100 md:hover:-translate-y-1 cursor-pointer shadow-sm md:hover:shadow-md active:scale-95`
               : `cursor-default pointer-events-none`;
@@ -175,7 +181,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
       </div>
 
       <div className="mt-12 bg-white rounded-[2.5rem] border-2 border-slate-200 shadow-sm p-6 md:p-8 flex flex-col md:flex-row gap-6 relative z-0">
-        {sectionData.categories.map(cat => (
+        {categoriesWithTheme.map(cat => (
           <div key={cat.id} className={`flex-1 bg-${cat.theme}-50/40 border-2 border-${cat.theme}-200/50 rounded-[2rem] p-6 md:p-8 flex flex-col items-center min-h-[300px] shadow-sm relative overflow-hidden backdrop-blur-sm max-h-[350px] overflow-y-auto no-scrollbar`}>
             
             <div className={`absolute top-0 left-0 w-full h-2 bg-${cat.theme}-400 opacity-60 z-10`}></div>

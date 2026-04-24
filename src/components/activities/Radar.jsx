@@ -5,7 +5,13 @@ const Radar = ({ sectionData }) => {
   const [activeMobileBranches, setActiveMobileBranches] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-  const map = sectionData.mapData;
+  const map = {
+    ...sectionData.mapData,
+    branches: sectionData.mapData.branches.map((branch, idx) => ({
+      ...branch,
+      color: branch.color || branch.theme || ['sky', 'emerald', 'indigo', 'amber', 'violet', 'cyan', 'purple', 'rose'][idx % 8]
+    }))
+  };
 
   const colorMap = {
     blue: '#60a5fa',
