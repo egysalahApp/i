@@ -16,10 +16,10 @@ const ContrastCards = ({ sectionData }) => {
           <div key={idx} className="relative bg-white rounded-3xl border border-slate-200 shadow-md p-5 md:p-8 flex flex-col gap-5 overflow-hidden md:hover:shadow-lg transition-shadow">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-sky-50 border-2 border-sky-200 rounded-2xl p-6 text-center shadow-inner flex items-center justify-center min-h-[6rem]">
-                      <h4 className="text-2xl md:text-3xl font-normal text-sky-800">{pair.right}</h4>
+                      <h4 className="text-xl md:text-2xl font-normal text-sky-800 leading-relaxed">{pair.right}</h4>
                   </div>
                   <div className="bg-rose-50 border-2 border-rose-200 rounded-2xl p-6 text-center shadow-inner flex items-center justify-center min-h-[6rem]">
-                      <h4 className="text-2xl md:text-3xl font-normal text-rose-800">{pair.left}</h4>
+                      <h4 className="text-xl md:text-2xl font-normal text-rose-800 leading-relaxed">{pair.left}</h4>
                   </div>
               </div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[calc(50%+2rem)] bg-white rounded-full w-14 h-14 shadow-lg border border-slate-100 hidden md:flex items-center justify-center font-black text-slate-400 text-xl z-10">
