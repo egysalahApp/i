@@ -19,9 +19,9 @@ const Intro = ({ sectionData, onNext }) => {
                 {block.icon}
             </div>
             <h3 className={`text-2xl md:text-3xl font-bold text-${block.theme}-800 mb-4 leading-relaxed w-full`}>{block.title}</h3>
-            <p className="text-lg md:text-xl font-normal text-slate-600 leading-relaxed mb-6 flex-grow w-full">{block.desc}</p>
+            <p className="text-xl md:text-xl font-normal text-slate-600 leading-relaxed mb-6 flex-grow w-full">{block.desc}</p>
             <div className={`w-full bg-${block.theme}-50/80 rounded-2xl p-5 text-center space-y-3 mt-auto`}>
-                <div dangerouslySetInnerHTML={{ __html: block.examples }} className={`text-lg md:text-xl font-normal text-${block.theme}-900 leading-relaxed`} />
+                <div dangerouslySetInnerHTML={{ __html: block.examples }} className={`text-xl md:text-xl font-normal text-${block.theme}-900 leading-relaxed`} />
             </div>
           </div>
         ))}
