@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download, ArrowRight, Save, Layout, Code, Plus, AlertCircle, FileJson, X, ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowRight, Save, AlertCircle, Layout, Code, Trash2, ArrowUp, ArrowDown, Plus, FileJson, X } from 'lucide-react';
 import RawSectionEditor from './RawSectionEditor';
 import VisualIntroEditor from './VisualIntroEditor';
 import VisualMcqEditor from './VisualMcqEditor';
@@ -288,7 +288,8 @@ const LessonEditor = () => {
             </>
           )}
         </button>
-      </header>
+      </div>
+    </header>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto p-4 md:p-8">
