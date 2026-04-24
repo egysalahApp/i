@@ -139,19 +139,74 @@ const LessonEditor = () => {
       alert('يرجى حفظ أو إغلاق المحرر المفتوح حالياً قبل إضافة قسم جديد.');
       return;
     }
-    const newSection = {
+    
+    let newSection = {
       id: `section_${Date.now()}`,
       type: type,
-      title: type === 'intro' ? 'مقدمة جديدة' : 'نشاط جديد',
-      theme: 'sky'
+      title: 'نشاط جديد',
+      theme: 'sky',
+      description: ''
     };
-    if (type === 'intro') {
-      newSection.content = [];
-      newSection.description = '';
+
+    // Initialize specific data structures for each type
+    switch (type) {
+      case 'intro':
+        newSection.title = 'قبل أن نبدأ';
+        newSection.content = [];
+        break;
+      case 'mcq':
+        newSection.title = 'الضبط الصحيح';
+        newSection.questions = [];
+        break;
+      case 'tap_to_fill':
+        newSection.title = 'أكمل الجملة';
+        newSection.questions = [];
+        break;
+      case 'story':
+        newSection.title = 'قصة تعليمية';
+        newSection.slides = [];
+        break;
+      case 'classify':
+        newSection.title = 'صناديق التصنيف';
+        newSection.categories = [];
+        newSection.questions = [];
+        break;
+      case 'flashcards':
+        newSection.title = 'بطاقات الذاكرة';
+        newSection.cards = [];
+        break;
+      case 'radar':
+        newSection.title = 'مخطط الرادار';
+        newSection.mapData = { center: { title: '', text: '' }, branches: [] };
+        break;
+      case 'matching':
+        newSection.title = 'نشاط التوصيل';
+        newSection.pairs = [];
+        break;
+      case 'hotspot':
+        newSection.title = 'النص التفاعلي';
+        newSection.questions = [];
+        break;
+      case 'style_lab':
+        newSection.title = 'مختبر الأسلوب';
+        newSection.excerpts = [];
+        break;
+      case 'golden_envelope':
+        newSection.title = 'أثرٌ يبقى';
+        newSection.quote = '';
+        newSection.summary = '';
+        newSection.question = '';
+        break;
+      case 'sort':
+        newSection.title = 'ترتيب الكلمات';
+        newSection.questions = [];
+        break;
+      default:
+        break;
     }
+
     const updatedSections = [...sections, newSection];
     setSections(updatedSections);
-    // Auto-open the newly added section for editing
     setEditingSectionIndex(updatedSections.length - 1);
   };
 
@@ -232,13 +287,31 @@ const LessonEditor = () => {
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
               <h2 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <span>أقسام وأنشطة الدرس ({sections.length})</span>
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                    <button onClick={() => addNewSection('intro')} className="flex-1 sm:flex-none text-xs font-bold bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-100 flex items-center justify-center gap-1">
-                     <Plus size={14} /> إضافة مقدمة
+                     <Plus size={14} /> مقدمة
                    </button>
-                   <button onClick={() => addNewSection('mcq')} className="flex-1 sm:flex-none text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 flex items-center justify-center gap-1">
-                     <Plus size={14} /> إضافة نشاط
-                   </button>
+                   
+                   <div className="relative group flex-1 sm:flex-none">
+                     <button className="w-full text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 flex items-center justify-center gap-1 border border-slate-200">
+                       <Plus size={14} /> إضافة نشاط...
+                     </button>
+                     <div className="absolute left-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 overflow-hidden">
+                       <div className="max-h-60 overflow-y-auto">
+                         <button onClick={() => addNewSection('mcq')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">اختيار من متعدد</button>
+                         <button onClick={() => addNewSection('tap_to_fill')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">أكمل الجملة</button>
+                         <button onClick={() => addNewSection('classify')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">صناديق التصنيف</button>
+                         <button onClick={() => addNewSection('radar')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">الرادار (خريطة)</button>
+                         <button onClick={() => addNewSection('matching')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">توصيل الأزواج</button>
+                         <button onClick={() => addNewSection('hotspot')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">النص التفاعلي</button>
+                         <button onClick={() => addNewSection('flashcards')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">بطاقات الذاكرة</button>
+                         <button onClick={() => addNewSection('sort')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">ترتيب الكلمات</button>
+                         <button onClick={() => addNewSection('story')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">قصة تعليمية</button>
+                         <button onClick={() => addNewSection('style_lab')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">مختبر الأسلوب</button>
+                         <button onClick={() => addNewSection('golden_envelope')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600">الرسالة الذهبية</button>
+                       </div>
+                     </div>
+                   </div>
                 </div>
               </h2>
               
