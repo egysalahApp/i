@@ -228,29 +228,40 @@ function LessonViewer({ APP_DATA }) {
         <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 pt-6 mb-6 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
         
         <div id="section-content-wrapper" className="fade-in">
-          {APP_DATA.sections.map((section) => {
+          {APP_DATA.sections.map((section, index) => {
             const isActive = activeTab === section.id;
             const secProgress = progress[section.id];
+            
+            // Unified Theme System: Automatically assign a premium theme based on section index
+            const themePalette = ['indigo', 'rose', 'amber', 'purple', 'emerald', 'sky', 'orange', 'cyan'];
+            const autoTheme = themePalette[index % themePalette.length];
+            
+            // Override section theme if it's not specified or just to enforce global consistency
+            const sectionWithTheme = { 
+                ...section, 
+                theme: section.theme || autoTheme 
+            };
+
             return (
               <div key={`${section.id}-${resetKeys[section.id] || 0}`} className={isActive ? 'block' : 'hidden'}>
                 <ErrorBoundary>
-                  {section.type === 'intro' && <Intro sectionData={section} />}
-                  {section.type === 'radar' && <Radar sectionData={section} />}
-                  {section.type === 'style_lab' && <StyleLab sectionData={section} />}
-                  {section.type === 'contrast_cards' && <ContrastCards sectionData={section} />}
-                  {section.type === 'classify' && <Classify sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'spotting' && <Spotting sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'mcq' && <MCQ sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'error_correction' && <ErrorCorrection sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'hotspot' && <Hotspot sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'tap_to_fill' && <TapToFill sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'story' && <Story sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
-                  {section.type === 'flashcards' && <Flashcards sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'sort' && <Sort sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'matching' && <Matching sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'meaning_cards' && <CardQuiz sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'card_quiz' && <CardQuiz sectionData={section} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {section.type === 'golden_envelope' && <GoldenEnvelope sectionData={section} />}
+                  {sectionWithTheme.type === 'intro' && <Intro sectionData={sectionWithTheme} />}
+                  {sectionWithTheme.type === 'radar' && <Radar sectionData={sectionWithTheme} />}
+                  {sectionWithTheme.type === 'style_lab' && <StyleLab sectionData={sectionWithTheme} />}
+                  {sectionWithTheme.type === 'contrast_cards' && <ContrastCards sectionData={sectionWithTheme} />}
+                  {sectionWithTheme.type === 'classify' && <Classify sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'spotting' && <Spotting sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'mcq' && <MCQ sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'error_correction' && <ErrorCorrection sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'hotspot' && <Hotspot sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'tap_to_fill' && <TapToFill sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'story' && <Story sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
+                  {sectionWithTheme.type === 'flashcards' && <Flashcards sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'meaning_cards' && <CardQuiz sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'card_quiz' && <CardQuiz sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}
                 </ErrorBoundary>
               </div>
             );
