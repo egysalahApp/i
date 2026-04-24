@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
-import { Inbox } from 'lucide-react';
+import { Inbox, CircleHelp } from 'lucide-react';
 
 const Classify = ({ sectionData, progress, onUpdateProgress }) => {
   const [questions, setQuestions] = useState([]);
@@ -116,7 +116,8 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 <div className="flex items-center justify-between mb-4">
                     <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>البطاقة {toArabicNum(isComplete ? questions.length : currentIndex + 1)}</span>
                     <button onClick={toggleHint} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 hover:bg-amber-50">
-                      💡 تلميح
+                      <CircleHelp size={20} />
+                      تلميح
                     </button>
                 </div>
 
@@ -135,7 +136,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 </div>
                 {status === 'incorrect' && currentQState && (
                   <div className="mt-5 smooth-expand w-full text-right">
-                    <FeedbackBox isCorrect={false} explanation={currentQState.originalQuestion.explanation || 'حاول مرة أخرى'} />
+                    <FeedbackBox isCorrect={false} explanation={currentQState.originalQuestion.explanation || currentQState.originalQuestion.feedback || 'حاول مرة أخرى'} />
                   </div>
                 )}
               </div>

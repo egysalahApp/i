@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, RefreshCw, Layout, CircleHelp, CircleCheck, BookOpen, Layers, Target, RotateCw, ListOrdered, Share2, Mail, Microscope, Lightbulb, CircleX } from 'lucide-react';
+import { Trophy, RefreshCw, Layout, CircleHelp, CircleCheck, BookOpen, Layers, Target, RotateCw, ListOrdered, Share2, Mail, Microscope, Info, Star, Lightbulb, CircleX } from 'lucide-react';
 import { toArabicNum } from '../utils';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
@@ -205,10 +205,10 @@ function LessonViewer({ APP_DATA }) {
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const getIcon = (type) => {
                   const icons = {
-                    'intro': <Layout size={20} />,
+                    'intro': <BookOpen size={20} />,
                     'mcq': <CircleHelp size={20} />,
                     'tap_to_fill': <CircleCheck size={20} />,
-                    'story': <BookOpen size={20} />,
+                    'story': <Layout size={20} />,
                     'classify': <Layers size={20} />,
                     'hotspot': <Target size={20} />,
                     'flashcards': <RotateCw size={20} />,
@@ -217,24 +217,17 @@ function LessonViewer({ APP_DATA }) {
                     'golden_envelope': <Mail size={20} />,
                     'style_lab': <Microscope size={20} />
                   };
-                  return icons[type] || <CircleHelp size={20} />;
+                  return icons[type] || <Star size={20} />;
                 };
 
                 const theme = getEffectiveTheme(idx);
-                // Tailwind dynamic classes fix - mapping themes to hardcoded strings
-                const themeClasses = {
-                  'indigo': isActive ? "bg-indigo-100 border-indigo-500 text-indigo-800" : "text-slate-500 border-transparent hover:bg-indigo-50",
-                  'rose': isActive ? "bg-rose-100 border-rose-500 text-rose-800" : "text-slate-500 border-transparent hover:bg-rose-50",
-                  'sky': isActive ? "bg-sky-100 border-sky-500 text-sky-800" : "text-slate-500 border-transparent hover:bg-sky-50",
-                  'amber': isActive ? "bg-amber-100 border-amber-500 text-amber-800" : "text-slate-500 border-transparent hover:bg-amber-50",
-                  'emerald': isActive ? "bg-emerald-100 border-emerald-500 text-emerald-800" : "text-slate-500 border-transparent hover:bg-emerald-50",
-                  'violet': isActive ? "bg-violet-100 border-violet-500 text-violet-800" : "text-slate-500 border-transparent hover:bg-violet-50",
-                  'slate': isActive ? "bg-slate-200 border-slate-500 text-slate-800" : "text-slate-500 border-transparent hover:bg-slate-100"
-                };
-                const activeClass = themeClasses[theme] || (isActive ? "bg-indigo-100 border-indigo-500 text-indigo-800" : "text-slate-500 border-transparent hover:bg-slate-50");
+                // Safe theme styling that works for ALL lessons
+                const isActiveClass = isActive 
+                  ? "bg-white shadow-md border-slate-300 text-slate-900" 
+                  : "bg-transparent border-transparent text-slate-500 hover:bg-white/50";
 
                 return (
-                  <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-3 rounded-full font-bold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-3 active:scale-95 shadow-sm ${activeClass}`}>
+                  <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-3 rounded-full font-bold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-3 active:scale-95 ${isActiveClass}`}>
                     {getIcon(section.type)}
                     {section.title}
                     {isDone && !isActive && <span className="text-emerald-600 font-black">✓</span>}

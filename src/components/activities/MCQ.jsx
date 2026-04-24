@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CircleHelp, CircleCheck, CircleX } from 'lucide-react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
@@ -94,7 +95,8 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                   <div className="flex items-center justify-between mb-4">
                       <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>السؤال {toArabicNum(idx + 1)}</span>
                       <button onClick={() => toggleHint(idx)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50">
-                        💡 تلميح
+                        <CircleHelp size={20} />
+                        تلميح
                       </button>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right">{q.text || q.question}</h3>
@@ -133,7 +135,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
 
               {answered && (
                   <div className="mt-6 smooth-expand w-full">
-                      <FeedbackBox isCorrect={isSelectedCorrect} explanation={q.explanation} />
+                      <FeedbackBox isCorrect={isSelectedCorrect} explanation={q.explanation || q.feedback} />
                   </div>
               )}
           </div>
