@@ -8,6 +8,7 @@ import { validateLesson } from './lib/schemas';
 import Login from './components/admin/Login';
 import Dashboard from './components/admin/Dashboard';
 import LessonEditor from './components/admin/LessonEditor';
+import HomePage from './components/HomePage';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -161,14 +162,7 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/:lessonId" element={<LessonWrapper />} />
-        <Route path="/" element={
-           <div className="flex items-center justify-center min-h-screen bg-slate-50">
-             <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-200">
-               <h1 className="text-2xl font-bold text-slate-700 mb-2">مرحبًا بك في المنصة التعليمية</h1>
-               <p className="text-slate-500 mb-6">يرجى استخدام الرابط المباشر الخاص بالدرس للدخول.</p>
-             </div>
-           </div>
-        } />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>
   );

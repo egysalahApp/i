@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { validateLesson } from '../../lib/schemas';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download, Upload } from 'lucide-react';
+import { LogOut, Edit, Trash2, PlusCircle, Search, Copy, Download, Upload, FileDown } from 'lucide-react';
 
 const Dashboard = () => {
   const [lessons, setLessons] = useState([]);
@@ -18,7 +19,7 @@ const Dashboard = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('lessons')
-      .select('id, page_title')
+      .select('id, page_title, sections')
       .order('id');
       
     if (!error && data) {
@@ -90,6 +91,39 @@ const Dashboard = () => {
     }
   };
 
+  const handleExportLesson = async (lesson) => {
+    try {
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*')
+        .eq('id', lesson.id)
+        .single();
+      if (error) throw error;
+
+      const exportData = {
+        id: data.id,
+        pageTitle: data.page_title,
+        headerTitle: data.header_title,
+        headerSubtitle: data.header_subtitle,
+        youtubeLink: data.youtube_link,
+        copyright: data.copyright,
+        sections: data.sections
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${lesson.id}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('حدث خطأ أثناء تصدير الدرس');
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!id) {
        alert('معرف الدرس مفقود.');
@@ -107,7 +141,7 @@ const Dashboard = () => {
           .eq('id', id)
           .select(); // Return deleted rows to confirm
 
-        console.log('Delete response:', { data, error, status, statusText });
+
 
         if (error) {
           console.error("Delete error:", error);
@@ -137,6 +171,14 @@ const Dashboard = () => {
 
       if (!data.id || !data.sections) {
         alert('ملف غير صالح: يجب أن يحتوي على id و sections');
+        return;
+      }
+
+      // التحقق من صلاحية الملف ضد Schema
+      const validation = validateLesson(data);
+      if (!validation.success) {
+        const errMsg = validation.errors.slice(0, 3).join('\n');
+        alert(`⚠️ الملف لا يتطابق مع المعايير:\n${errMsg}`);
         return;
       }
 
@@ -233,23 +275,38 @@ const Dashboard = () => {
               <div key={lesson.id} className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:shadow-md">
                 <div>
                   <h3 className="text-xl font-bold text-slate-800 mb-1">{lesson.page_title || '(بدون عنوان)'}</h3>
-                  <span className={`text-sm font-medium px-2 py-1 rounded-md ${!lesson.id ? 'bg-rose-100 text-rose-600 animate-pulse' : 'bg-slate-100 text-slate-400'}`}>
-                    المعرف: {lesson.id || '⚠️ مفقود - يرجى الحذف'}
-                  </span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-sm font-medium px-2 py-1 rounded-md ${!lesson.id ? 'bg-rose-100 text-rose-600 animate-pulse' : 'bg-slate-100 text-slate-400'}`}>
+                      المعرف: {lesson.id || '⚠️ مفقود - يرجى الحذف'}
+                    </span>
+                    {lesson.sections && (
+                      <span className="text-sm font-medium px-2 py-1 rounded-md bg-indigo-50 text-indigo-500">
+                        {lesson.sections.length} قسم
+                      </span>
+                    )}
+                  </div>
                 </div>
                 
-                <div className="grid grid-cols-2 sm:grid-cols-4 lg:flex items-center gap-2 w-full md:w-auto">
+                <div className="grid grid-cols-3 sm:grid-cols-5 lg:flex items-center gap-2 w-full md:w-auto">
                   <button 
                     onClick={() => handleDuplicate(lesson)} 
                     className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-lg font-medium transition-colors border border-slate-100 text-xs md:text-sm"
                     title="نسخ الدرس"
                   >
                     <Copy size={16} />
-                    <span>نسخ</span>
+                    <span className="hidden sm:inline">نسخ</span>
+                  </button>
+                  <button
+                    onClick={() => handleExportLesson(lesson)}
+                    className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-lg font-medium transition-colors border border-slate-100 text-xs md:text-sm"
+                    title="تصدير كملف JSON"
+                  >
+                    <FileDown size={16} />
+                    <span className="hidden sm:inline">تصدير</span>
                   </button>
                   <Link to={`/admin/lessons/${lesson.id}`} className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 px-3 py-2 rounded-lg font-medium transition-colors border border-slate-100 text-xs md:text-sm">
                     <Edit size={16} />
-                    <span>تعديل</span>
+                    <span className="hidden sm:inline">تعديل</span>
                   </Link>
                   <button onClick={() => handleDelete(lesson.id)} className="flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-2 rounded-lg font-medium transition-colors text-xs md:text-sm">
                     <Trash2 size={16} />
