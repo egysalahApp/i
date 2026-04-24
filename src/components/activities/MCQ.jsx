@@ -4,6 +4,13 @@ import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray } from '../../utils';
 
+const highlightMarked = (text, theme) => {
+  if (!text || !text.includes('«')) return text;
+  return text.split(/(«[^»]+»)/).map((part, i) =>
+    part.startsWith('«') ? <span key={i} className={`text-${theme}-600 font-bold`}>{part.slice(1, -1)}</span> : part
+  );
+};
+
 const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
@@ -97,7 +104,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right">{q.text}</h3>
+                  <h3 className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right">{highlightMarked(q.text, sectionData.theme)}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />
