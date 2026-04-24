@@ -77,6 +77,25 @@ const LessonEditor = () => {
     setSaving(true);
     setError(null);
 
+    // Validation
+    if (!lessonId || lessonId.trim() === '') {
+      setError('يرجى كتابة معرف الدرس (URL ID)');
+      setSaving(false);
+      return;
+    }
+
+    if (!/^[a-z0-9-]+$/.test(lessonId)) {
+      setError('المعرف يجب أن يحتوي على حروف إنجليزية صغيرة وأرقام وعلامة (-) فقط');
+      setSaving(false);
+      return;
+    }
+
+    if (!pageTitle || pageTitle.trim() === '') {
+      setError('يرجى كتابة عنوان الصفحة');
+      setSaving(false);
+      return;
+    }
+
     const lessonData = {
       id: lessonId,
       page_title: pageTitle,

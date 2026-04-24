@@ -161,8 +161,10 @@ ${id}`);
             {filteredLessons.map((lesson) => (
               <div key={lesson.id} className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:shadow-md">
                 <div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">{lesson.page_title}</h3>
-                  <span className="text-sm font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded-md">المعرف: {lesson.id}</span>
+                  <h3 className="text-xl font-bold text-slate-800 mb-1">{lesson.page_title || '(بدون عنوان)'}</h3>
+                  <span className={`text-sm font-medium px-2 py-1 rounded-md ${!lesson.id ? 'bg-rose-100 text-rose-600 animate-pulse' : 'bg-slate-100 text-slate-400'}`}>
+                    المعرف: {lesson.id || '⚠️ مفقود - يرجى الحذف'}
+                  </span>
                 </div>
                 
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:flex items-center gap-2 w-full md:w-auto">
