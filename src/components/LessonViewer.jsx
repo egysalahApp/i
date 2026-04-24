@@ -306,7 +306,9 @@ function LessonViewer({ APP_DATA }) {
       </main>
 
       <footer className="mt-auto py-8 bg-white border-t border-slate-200 text-center">
-          <p className="text-slate-400 text-sm font-medium block w-full">{APP_DATA.copyright || APP_CONFIG.copyright}</p>
+          <a href={APP_CONFIG.youtubeLink} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-indigo-600 transition-colors text-sm font-medium block w-full">
+            {APP_DATA.copyright || APP_CONFIG.copyright}
+          </a>
       </footer>
     </div>
   )

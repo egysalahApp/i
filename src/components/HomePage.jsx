@@ -99,7 +99,9 @@ const HomePage = () => {
 
       {/* Footer */}
       <footer className="py-8 border-t border-slate-100 text-center">
-        <p className="text-slate-400 text-sm font-medium">{APP_CONFIG.copyright}</p>
+        <a href={APP_CONFIG.youtubeLink} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-indigo-600 transition-colors text-sm font-medium">
+          {APP_CONFIG.copyright}
+        </a>
       </footer>
     </div>
   );

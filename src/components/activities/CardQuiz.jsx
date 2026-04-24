@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
-import { toArabicNum } from '../../utils';
+import { toArabicNum, shuffleArray } from '../../utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
@@ -10,7 +10,20 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
   const [answers, setAnswers] = useState(new Array(sectionData.questions.length).fill(null));
   const [showHint, setShowHint] = useState(false);
 
-  const currentQuestion = sectionData.questions[currentIndex];
+  const questions = useMemo(() => {
+    return sectionData.questions.map(q => {
+      const opts = (q.options || []).map((opt, oIdx) => ({
+        text: opt,
+        isCorrect: oIdx === q.correct
+      }));
+      return {
+        ...q,
+        shuffledOptions: shuffleArray([...opts])
+      };
+    });
+  }, [sectionData]);
+
+  const currentQuestion = questions[currentIndex];
   const isAnswered = answers[currentIndex] !== null;
   const isCorrect = isAnswered && answers[currentIndex].isCorrect;
   const isLast = currentIndex === sectionData.questions.length - 1;
@@ -18,7 +31,7 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
   const handleAnswer = (optIdx) => {
     if (isAnswered) return;
 
-    const isCorrect = optIdx === currentQuestion.correct;
+    const isCorrect = currentQuestion.shuffledOptions[optIdx].isCorrect;
     const selectedOption = {
       index: optIdx,
       isCorrect: isCorrect
@@ -117,9 +130,9 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
 
           {/* Options Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {currentQuestion.options.map((opt, idx) => {
+            {currentQuestion.shuffledOptions.map((opt, idx) => {
               const isSelected = isAnswered && answers[currentIndex].index === idx;
-              const isOptionCorrect = idx === currentQuestion.correct;
+              const isOptionCorrect = opt.isCorrect;
               
               let btnClass = `p-4 rounded-2xl border-2 text-xl font-bold transition-all duration-300 flex flex-col items-center justify-center gap-2 `;
               
@@ -142,7 +155,7 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
                   onClick={() => handleAnswer(idx)}
                   className={btnClass}
                 >
-                  <span className="text-center">{opt}</span>
+                  <span className="text-center">{opt.text}</span>
                   {isAnswered && isOptionCorrect && <span className="text-xs">✓ إجابة صحيحة</span>}
                 </button>
               );
