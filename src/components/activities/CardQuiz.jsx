@@ -58,9 +58,9 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
         </div>
       )}
 
-      {/* Progress Indicator */}
-      <div className="flex justify-between items-center mb-6 px-2">
-        <div className="flex gap-1.5">
+      {/* Progress Indicator - Centered */}
+      <div className="flex justify-center items-center mb-8 px-2">
+        <div className="flex gap-2">
           {sectionData.questions.map((_, idx) => (
             <div 
               key={idx} 
@@ -72,9 +72,6 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
             />
           ))}
         </div>
-        <span className="text-sm font-bold text-slate-400">
-          البطاقة {toArabicNum(currentIndex + 1)} من {toArabicNum(sectionData.questions.length)}
-        </span>
       </div>
 
       {/* Main Card Container */}
@@ -85,15 +82,13 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
           
           {/* Card Header */}
           <div className="flex justify-between items-start mb-8">
-            <div className={`px-4 py-1.5 rounded-full bg-${sectionData.theme}-50 text-${sectionData.theme}-600 text-sm font-bold border border-${sectionData.theme}-100`}>
-              كارد كويز ✨
-            </div>
             <button 
               onClick={() => setShowHint(!showHint)}
-              className={`p-2 rounded-full transition-colors ${showHint ? 'bg-amber-100 text-amber-600' : 'bg-slate-50 text-slate-400 hover:bg-amber-50 hover:text-amber-500'}`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 hover:bg-amber-50"
             >
-              <HelpCircle size={24} />
+              💡 تلميح
             </button>
+            <div className="w-10" /> {/* Spacer for symmetry */}
           </div>
 
           {/* Question Text */}
