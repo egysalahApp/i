@@ -3,13 +3,13 @@ import { z } from 'zod';
 /**
  * Common Schemas
  */
-const ThemeSchema = z.enum(['emerald', 'amber', 'indigo', 'purple', 'violet', 'cyan', 'sky', 'rose', 'slate']);
+const ThemeSchema = z.enum(['emerald', 'amber', 'indigo', 'purple', 'violet', 'cyan', 'sky', 'rose', 'slate', 'orange', 'blue']);
 
 // Base for all sections
 const BaseSectionSchema = z.object({
   id: z.string().min(1, "معرف القسم مطلوب"),
   title: z.string().min(1, "عنوان القسم مطلوب"),
-  theme: ThemeSchema,
+  theme: ThemeSchema.optional(), // Make optional since we have auto-theme now
   description: z.string().optional(),
 });
 
@@ -19,11 +19,11 @@ const BaseSectionSchema = z.object({
 
 // Intro Section
 const IntroContentSchema = z.object({
-  icon: z.string(),
-  title: z.string(),
-  desc: z.string(),
-  theme: ThemeSchema,
-  examples: z.string(),
+  icon: z.string().optional(),
+  title: z.string().optional(),
+  desc: z.string().optional(),
+  theme: ThemeSchema.optional(),
+  examples: z.string().optional(),
 });
 
 const IntroSchema = BaseSectionSchema.extend({
@@ -54,7 +54,7 @@ const TapToFillSchema = BaseSectionSchema.extend({
 const CategorySchema = z.object({
   id: z.string(),
   label: z.string(),
-  theme: ThemeSchema,
+  theme: ThemeSchema.optional(),
 });
 
 const ClassifyQuestionSchema = z.object({
@@ -72,7 +72,9 @@ const ClassifySchema = BaseSectionSchema.extend({
 
 // Story
 const StorySlideSchema = z.object({
+  title: z.string().optional(),
   text: z.string(),
+  icon: z.string().optional(),
   image: z.string().optional(),
   audio: z.string().optional(),
 });
@@ -87,6 +89,7 @@ const FlashcardSchema = z.object({
   front: z.string(),
   back: z.string(),
   hint: z.string().optional(),
+  explanation: z.string().optional(),
 });
 
 const FlashcardsSchema = BaseSectionSchema.extend({
@@ -96,9 +99,11 @@ const FlashcardsSchema = BaseSectionSchema.extend({
 
 // Radar
 const RadarBranchSchema = z.object({
+  id: z.string().optional(),
   title: z.string(),
   text: z.string(),
   color: z.string().optional(),
+  icon: z.string().optional(),
 });
 
 const RadarSchema = BaseSectionSchema.extend({
@@ -114,8 +119,10 @@ const RadarSchema = BaseSectionSchema.extend({
 
 // Matching
 const MatchingPairSchema = z.object({
+  id: z.string().optional(),
   left: z.string(),
   right: z.string(),
+  desc: z.string().optional(),
 });
 
 const MatchingSchema = BaseSectionSchema.extend({
@@ -123,11 +130,25 @@ const MatchingSchema = BaseSectionSchema.extend({
   pairs: z.array(MatchingPairSchema).min(1, "يجب إضافة زوج واحد على الأقل"),
 });
 
+// Contrast Cards
+const ContrastCardsSchema = BaseSectionSchema.extend({
+  type: z.literal('contrast_cards'),
+  pairs: z.array(MatchingPairSchema).min(1, "يجب إضافة زوج واحد على الأقل"),
+});
+
 // Hotspot & Spotting
 const HotspotQuestionSchema = z.object({
-  task: z.string(),
-  content: z.string(),
-  correctWords: z.array(z.string()),
+  task: z.string().optional(),
+  text: z.string().optional(),
+  words: z.array(z.string()).optional(),
+  targetIndex: z.number().optional(),
+  targetIndices: z.array(z.number()).optional(),
+  paragraph: z.array(z.object({
+    id: z.string(),
+    text: z.string(),
+    isTarget: z.boolean(),
+  })).optional(),
+  requiredCount: z.number().optional(),
   hint: z.string().optional(),
   explanation: z.string().optional(),
 });
@@ -144,10 +165,12 @@ const SpottingSchema = BaseSectionSchema.extend({
 
 // Error Correction
 const ErrorCorrectionQuestionSchema = z.object({
+  text: z.string().optional(),
   words: z.array(z.string()),
   errorWordIndex: z.number().int(),
   options: z.array(z.string()),
-  correct: z.number().int(),
+  correctOptionIndex: z.number().int().optional(), // Support both formats
+  correct: z.number().int().optional(),
   hint: z.string().optional(),
   explanation: z.string().optional(),
 });
@@ -160,7 +183,9 @@ const ErrorCorrectionSchema = BaseSectionSchema.extend({
 // Sort
 const SortQuestionSchema = z.object({
   text: z.string(),
-  correctOrder: z.array(z.string()),
+  options: z.array(z.string()).optional(),
+  correct: z.number().optional(),
+  correctOrder: z.array(z.string()).optional(),
   hint: z.string().optional(),
   explanation: z.string().optional(),
 });
@@ -172,8 +197,14 @@ const SortSchema = BaseSectionSchema.extend({
 
 // Style Lab
 const StyleExcerptSchema = z.object({
-  text: z.string(),
-  analysis: z.string(),
+  segments: z.array(z.object({
+    id: z.string().optional(),
+    text: z.string(),
+    isHighlight: z.boolean().optional(),
+    explanation: z.string().optional(),
+  })).optional(),
+  text: z.string().optional(),
+  analysis: z.string().optional(),
   highlight: z.string().optional(),
 });
 
@@ -190,7 +221,7 @@ const GoldenEnvelopeSchema = BaseSectionSchema.extend({
   question: z.string(),
 });
 
-// Card Quiz (New Activity)
+// Card Quiz
 const CardQuizSchema = BaseSectionSchema.extend({
   type: z.literal('card_quiz'),
   questions: z.array(z.object({
@@ -214,6 +245,7 @@ const SectionSchema = z.discriminatedUnion('type', [
   FlashcardsSchema,
   RadarSchema,
   MatchingSchema,
+  ContrastCardsSchema,
   HotspotSchema,
   SpottingSchema,
   ErrorCorrectionSchema,
@@ -222,6 +254,34 @@ const SectionSchema = z.discriminatedUnion('type', [
   GoldenEnvelopeSchema,
   CardQuizSchema,
 ]);
+
+export const LessonSchema = z.object({
+  id: z.string().min(1, "معرف الدرس مطلوب"),
+  pageTitle: z.string().min(1, "عنوان الصفحة مطلوب"),
+  headerTitle: z.string().default("العربية السهلة"),
+  headerSubtitle: z.string().default("محمود صلاح"),
+  youtubeLink: z.string().optional().default(""),
+  copyright: z.string().optional().default("© 2025 العربية السهلة"),
+  sections: z.array(SectionSchema).min(1, "يجب أن يحتوي الدرس على قسم واحد على الأقل"),
+});
+
+/**
+ * Helper to get human readable error messages in Arabic
+ */
+export const validateLesson = (data) => {
+  const result = LessonSchema.safeParse(data);
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+
+  // Format errors to be more readable
+  const errors = result.error.issues.map(issue => {
+    const path = issue.path.join(' -> ');
+    return `[${path}]: ${issue.message}`;
+  });
+
+  return { success: false, errors };
+};
 
 export const LessonSchema = z.object({
   id: z.string().min(1, "معرف الدرس مطلوب"),

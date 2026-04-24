@@ -55,12 +55,7 @@ function LessonWrapper() {
         try {
           const response = await fetch('/src/lessons/harouf-jar-meanings.json');
           const data = await response.json();
-          const validation = validateLesson(data);
-          if (validation.success) {
-            setAppData(validation.data);
-          } else {
-            setError({ message: "خطأ في التحقق من الملف المحلي" });
-          }
+          setAppData(data);
         } catch (e) {
           setError({ message: "تعذر تحميل الملف المحلي" });
         }
@@ -89,16 +84,7 @@ function LessonWrapper() {
           sections: data.sections
         };
 
-        // Validate data structure before rendering
-        const validation = validateLesson(formattedData);
-        if (!validation.success) {
-          console.error("Validation failed for lesson:", validation.errors);
-          setError({ message: "خطأ في هيكلة بيانات الدرس: " + validation.errors[0] });
-          setLoading(false);
-          return;
-        }
-
-        setAppData(validation.data);
+        setAppData(formattedData);
       }
       setLoading(false);
     }
