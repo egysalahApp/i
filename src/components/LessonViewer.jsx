@@ -204,15 +204,16 @@ function LessonViewer({ APP_DATA }) {
         <h2 className="text-lg font-bold text-slate-600 md:hover:text-slate-700 md:hover:-translate-x-1 transition-transform duration-300 cursor-default inline-block">{APP_DATA.headerSubtitle || APP_CONFIG.headerSubtitle}</h2>
       </div>
 
-      <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-[#f8fafc]/95 backdrop-blur-md shadow-sm border-b border-slate-200">
+      <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
         <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
             <div className="flex items-center gap-3 py-3 flex-nowrap">
               {APP_DATA.sections.map((section, idx) => {
                 const isActive = activeTab === section.id;
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const effectiveTheme = getEffectiveTheme(idx);
-                const activeBg = (effectiveTheme === 'slate') ? 'bg-slate-500' : `bg-${effectiveTheme}-700`;
-                const activeClass = isActive ? `${activeBg} text-white shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
+                const activeBg = `bg-${effectiveTheme}-500`;
+                const activeText = (['amber', 'sky', 'cyan', 'slate'].includes(effectiveTheme)) ? 'text-slate-900' : 'text-white';
+                const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
                 
                 return (
                   <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
