@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lightbulb, CheckCircle2, XCircle, LogIn } from 'lucide-react';
+import { Lightbulb, CircleCheck, CircleX } from 'lucide-react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
@@ -18,7 +18,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         selectedOption: null,
         showHint: false,
         wrongAttempt: false,
-        isOptionsOpen: false
+        isOptionsOpen: true
       };
     });
   });
@@ -103,7 +103,6 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         let ringClass = answered ? (isSelectedCorrect ? 'ring-2 ring-emerald-400' : 'ring-2 ring-rose-400') : '';
         if (wrongAttempt) ringClass += ' shake ';
 
-        // Support both ___ and ... as blanks
         const questionText = q.text || q.question || '';
         const textSegments = questionText.split(/_{3,}|\.{3,}/);
         const longestOption = options.length > 0 ? options.reduce((a, b) => a.text.length > b.text.length ? a : b).text : '........';
@@ -135,15 +134,13 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                                            : `border-slate-300 bg-white border-solid text-slate-700 hover:border-${sectionData.theme}-300 hover:bg-slate-50 cursor-pointer`
                                        }`}
                                    >
-                                       {/* العنصر المخفي يحدد العرض والارتفاع بدقة، ويضبط خط الأساس (Baseline) ليتساوى مع بقية الكلمات */}
                                        <span className="invisible opacity-0 font-bold text-[1em] leading-tight whitespace-nowrap px-2 pointer-events-none">{longestOption}</span>
                                        
-                                       {/* المحتوى الفعلي (نقاط أو الكلمة المختارة) يتوسط الصندوق تماماً */}
                                        <span className="absolute inset-0 flex items-center justify-center gap-1">
                                          {answered && selectedOption ? (
                                              <>
                                                <span className="font-bold text-[1em] whitespace-nowrap animate-in zoom-in-95 duration-300 leading-tight">{selectedOption.text}</span>
-                                               {isSelectedCorrect ? <CheckCircle2 size={24} className="text-emerald-600" /> : <XCircle size={24} className="text-rose-600" />}
+                                               {isSelectedCorrect ? <CircleCheck size={24} className="text-emerald-600" /> : <CircleX size={24} className="text-rose-600" />}
                                              </>
                                          ) : (
                                             <span className="text-[0.65em] md:text-[0.85em] opacity-30 whitespace-nowrap tracking-[0.1em] md:tracking-[0.2em]">
@@ -190,10 +187,9 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                   )}
               </div>
 
-
               {answered && (
-                  <div className="mt-6 smooth-expand w-full">
-                      <FeedbackBox isCorrect={isSelectedCorrect} explanation={q.explanation} />
+                  <div className="mt-6 smooth-expand w-full text-right">
+                      <FeedbackBox isCorrect={isSelectedCorrect} explanation={q.explanation || q.feedback} />
                   </div>
               )}
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, RefreshCw, Layout, HelpCircle, CheckCircle2, BookOpen, Layers, Target, RotateCw, ListOrdered, Share2, Mail, Microscope, HelpCircle as DefaultIcon } from 'lucide-react';
+import { Trophy, RefreshCw, Layout, CircleHelp, CircleCheck, BookOpen, Layers, Target, RotateCw, ListOrdered, Share2, Mail, Microscope, Lightbulb, CircleX } from 'lucide-react';
 import { toArabicNum } from '../utils';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
@@ -206,8 +206,8 @@ function LessonViewer({ APP_DATA }) {
                 const getIcon = (type) => {
                   const icons = {
                     'intro': <Layout size={20} />,
-                    'mcq': <HelpCircle size={20} />,
-                    'tap_to_fill': <CheckCircle2 size={20} />,
+                    'mcq': <CircleHelp size={20} />,
+                    'tap_to_fill': <CircleCheck size={20} />,
                     'story': <BookOpen size={20} />,
                     'classify': <Layers size={20} />,
                     'hotspot': <Target size={20} />,
@@ -217,7 +217,7 @@ function LessonViewer({ APP_DATA }) {
                     'golden_envelope': <Mail size={20} />,
                     'style_lab': <Microscope size={20} />
                   };
-                  return icons[type] || <HelpCircle size={20} />;
+                  return icons[type] || <CircleHelp size={20} />;
                 };
 
                 const theme = getEffectiveTheme(idx);
@@ -251,7 +251,6 @@ function LessonViewer({ APP_DATA }) {
       </div>
 
       <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
-        <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 pt-6 mb-6 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
         
         <div id="section-content-wrapper" className="fade-in">
           {APP_DATA.sections.map((section) => {
