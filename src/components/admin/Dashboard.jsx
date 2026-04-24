@@ -91,22 +91,24 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    const userInput = window.prompt(`تنبيه: سيتم حذف الدرس نهائياً.
-لتأكيد الحذف، يرجى كتابة المعرف التالي بالضبط:
-${id}`);
+    if (!id) {
+       // Handle case where ID is missing from UI but exists in DB
+       alert('معرف الدرس مفقود. سيتم محاولة الحذف باستخدام البيانات المتوفرة.');
+    }
+
+    const confirmDelete = window.confirm('تنبيه: هل أنت متأكد من حذف هذا الدرس نهائياً؟ لا يمكن التراجع عن هذه الخطوة.');
     
-    if (userInput === id) {
+    if (confirmDelete) {
+      setLoading(true);
       const { error } = await supabase.from('lessons').delete().eq('id', id);
       if (!error) {
-        // Re-fetch lessons from server to ensure UI is perfectly synced
         await fetchLessons();
         alert('تم حذف الدرس بنجاح');
       } else {
         console.error("Delete error:", error);
         alert('حدث خطأ أثناء الحذف: ' + error.message);
       }
-    } else if (userInput !== null) {
-      alert('المعرف غير متطابق، تم إلغاء عملية الحذف.');
+      setLoading(false);
     }
   };
 
