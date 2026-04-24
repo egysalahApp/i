@@ -15,13 +15,13 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
   const isCorrect = isAnswered && answers[currentIndex].isCorrect;
   const isLast = currentIndex === sectionData.questions.length - 1;
   const allAnswered = answers.every(a => a !== null);
-
   const handleAnswer = (optIdx) => {
     if (isAnswered) return;
 
+    const isCorrect = optIdx === currentQuestion.correct;
     const selectedOption = {
       index: optIdx,
-      isCorrect: optIdx === currentQuestion.correct
+      isCorrect: isCorrect
     };
 
     const newAnswers = [...answers];
@@ -32,6 +32,13 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
     const totalAnswered = newAnswers.filter(a => a !== null).length;
     const totalScore = newAnswers.reduce((acc, a) => acc + (a?.isCorrect ? 1 : 0), 0);
     onUpdateProgress(sectionData.id, totalAnswered, totalScore);
+
+    // Auto-transition if correct
+    if (isCorrect && !isLast) {
+      setTimeout(() => {
+        nextCard();
+      }, 800);
+    }
   };
 
   const nextCard = () => {
@@ -142,12 +149,14 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
             })}
           </div>
 
-          {/* Feedback Section */}
-          {isAnswered && (
+          {/* Feedback Section - Only show if incorrect or last */}
+          {isAnswered && (!isCorrect || isLast) && (
             <div className="mt-10 smooth-expand">
-              <FeedbackBox isCorrect={isCorrect} explanation={currentQuestion.explanation} />
+              {(!isCorrect || (isCorrect && isLast && currentQuestion.explanation)) && (
+                <FeedbackBox isCorrect={isCorrect} explanation={currentQuestion.explanation} />
+              )}
               
-              {!isLast ? (
+              {!isLast && !isCorrect && (
                 <button 
                   onClick={nextCard}
                   className={`mt-6 w-full py-4 rounded-2xl bg-${sectionData.theme}-600 text-white font-bold text-xl shadow-lg hover:bg-${sectionData.theme}-700 transition-all active:scale-95 flex items-center justify-center gap-2`}
@@ -155,7 +164,9 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
                   البطاقة التالية
                   <ChevronLeft size={24} />
                 </button>
-              ) : allAnswered && (
+              )}
+              
+              {isLast && allAnswered && (
                  <div className="mt-8">
                     <ResultBox 
                       title={sectionData.title} 
