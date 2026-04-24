@@ -74,8 +74,8 @@
     },
     {
       "id": "mcq_meanings",
-      "type": "mcq",
-      "title": "فرز البطاقات",
+      "type": "card_quiz",
+      "title": "تحديد المعنى",
       "theme": "amber",
       "description": "اختر المعنى الذي يؤديه الحرف الملون.",
       "questions": [

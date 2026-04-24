@@ -14,6 +14,8 @@ import VisualMatchingEditor from './VisualMatchingEditor';
 import VisualHotspotEditor from './VisualHotspotEditor';
 import VisualGoldenEnvelopeEditor from './VisualGoldenEnvelopeEditor';
 import VisualSortEditor from './VisualSortEditor';
+import VisualCardQuizEditor from './VisualCardQuizEditor';
+import { validateLesson } from '../../lib/schemas';
 
 const LessonEditor = () => {
   const { id } = useParams();
@@ -159,21 +161,30 @@ const LessonEditor = () => {
   const handleImportJson = () => {
     try {
       const data = JSON.parse(importJson);
-      if (!data.sections) throw new Error('الملف غير متوافق (يجب أن يحتوي على sections)');
       
-      if (data.id) setLessonId(data.id);
-      if (data.pageTitle) setPageTitle(data.pageTitle);
-      if (data.headerTitle) setHeaderTitle(data.headerTitle);
-      if (data.headerSubtitle) setHeaderSubtitle(data.headerSubtitle);
-      if (data.youtubeLink) setYoutubeLink(data.youtubeLink);
-      if (data.copyright) setCopyright(data.copyright);
-      if (data.sections) setSections(data.sections);
+      // Use Zod validation
+      const validation = validateLesson(data);
+      if (!validation.success) {
+        const errorMsg = validation.errors.join('\n');
+        alert('خطأ في بيانات الدرس:\n' + errorMsg);
+        return;
+      }
+      
+      const validatedData = validation.data;
+      
+      if (validatedData.id) setLessonId(validatedData.id);
+      if (validatedData.pageTitle) setPageTitle(validatedData.pageTitle);
+      if (validatedData.headerTitle) setHeaderTitle(validatedData.headerTitle);
+      if (validatedData.headerSubtitle) setHeaderSubtitle(validatedData.headerSubtitle);
+      if (validatedData.youtubeLink !== undefined) setYoutubeLink(validatedData.youtubeLink);
+      if (validatedData.copyright) setCopyright(validatedData.copyright);
+      if (validatedData.sections) setSections(validatedData.sections);
       
       setShowImportModal(false);
       setImportJson('');
-      alert('تم استيراد بيانات الدرس بنجاح!');
+      alert('تم استيراد بيانات الدرس بنجاح بعد التحقق من سلامتها!');
     } catch (err) {
-      alert('خطأ في تنسيق الكود: ' + err.message);
+      alert('خطأ في تنسيق الكود (JSON Syntax Error): ' + err.message);
     }
   };
 
@@ -242,6 +253,13 @@ const LessonEditor = () => {
         break;
       case 'sort':
         newSection.title = 'ترتيب الكلمات';
+        newSection.questions = [];
+        break;
+      case 'meaning_cards':
+      case 'card_quiz':
+        newSection.title = 'كارد كويز ✨';
+        newSection.type = 'card_quiz';
+        newSection.theme = 'indigo';
         newSection.questions = [];
         break;
       default:
@@ -352,6 +370,7 @@ const LessonEditor = () => {
                      <div className="absolute left-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 overflow-hidden">
                        <div className="max-h-60 overflow-y-auto">
                          <button onClick={() => addNewSection('mcq')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">اختيار من متعدد</button>
+                          <button onClick={() => addNewSection('meaning_cards')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50 font-bold text-indigo-700 bg-indigo-50/30">كارد كويز (جديد) ✨</button>
                          <button onClick={() => addNewSection('tap_to_fill')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">أكمل الجملة</button>
                          <button onClick={() => addNewSection('classify')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">صناديق التصنيف</button>
                          <button onClick={() => addNewSection('radar')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">الرادار (خريطة)</button>
@@ -502,8 +521,16 @@ const LessonEditor = () => {
                           onCancel={cancelEditSection} 
                         />
                       )}
+
+                      {isEditing && (section.type === 'meaning_cards' || section.type === 'card_quiz') && (
+                        <VisualCardQuizEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
                       
-                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort'].includes(section.type) && (
+                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'meaning_cards', 'card_quiz'].includes(section.type) && (
                         <RawSectionEditor 
                           section={section} 
                           onSave={saveSection} 

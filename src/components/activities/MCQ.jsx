@@ -104,7 +104,14 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right">{highlightMarked(q.text, sectionData.theme)}</h3>
+                  <h3 
+                    className="text-2xl md:text-3xl font-normal text-slate-800 leading-snug whitespace-pre-line text-right"
+                    dangerouslySetInnerHTML={{ 
+                      __html: q.text
+                        .replace(/«([^»]+)»/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
+                        .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
+                    }}
+                  />
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />

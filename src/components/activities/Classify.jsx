@@ -122,9 +122,16 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
                 <div className="w-full flex flex-col transition-all duration-300">
                     <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
-                      <h3 className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center">
-                        «{currentQState?.originalQuestion.text}»
-                      </h3>
+                      <h3 
+                        className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center"
+                        dangerouslySetInnerHTML={{ 
+                          __html: currentQState?.originalQuestion.text
+                            ? currentQState.originalQuestion.text
+                                .replace(/«([^»]+)»/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
+                                .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
+                            : ''
+                        }}
+                      />
                     </div>
                    
                     {currentQState?.showHint && (
@@ -190,9 +197,15 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
             
             <div className="flex flex-col gap-3 w-full relative z-10 mt-2 pb-4">
               {placedItems[cat.id]?.map((item, i) => (
-                 <div key={i} className={`bg-white border-2 border-${cat.theme}-200 text-slate-700 text-xl font-normal py-3 px-4 rounded-xl text-center shadow-sm smooth-expand w-full`}>
-                    {item.text}
-                 </div>
+                 <div 
+                    key={i} 
+                    className={`bg-white border-2 border-${cat.theme}-200 text-slate-700 text-xl font-normal py-3 px-4 rounded-xl text-center shadow-sm smooth-expand w-full`}
+                    dangerouslySetInnerHTML={{ 
+                      __html: item.text
+                        .replace(/«([^»]+)»/g, `<span class="text-${cat.theme}-600 font-extrabold">$1</span>`)
+                        .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${cat.theme}-600 font-extrabold">$1</span>`)
+                    }}
+                  />
               ))}
             </div>
           </div>

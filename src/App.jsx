@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, Navigate } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import LessonViewer from './components/LessonViewer';
+import { validateLesson } from './lib/schemas';
 
 // Admin Components
 import Login from './components/admin/Login';
@@ -50,6 +51,23 @@ function LessonWrapper() {
       setLoading(true);
       setError(null);
       
+      if (lessonId === 'test') {
+        try {
+          const response = await fetch('/src/lessons/harouf-jar-meanings.json');
+          const data = await response.json();
+          const validation = validateLesson(data);
+          if (validation.success) {
+            setAppData(validation.data);
+          } else {
+            setError({ message: "خطأ في التحقق من الملف المحلي" });
+          }
+        } catch (e) {
+          setError({ message: "تعذر تحميل الملف المحلي" });
+        }
+        setLoading(false);
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('lessons')
         .select('*')
@@ -70,7 +88,17 @@ function LessonWrapper() {
           copyright: data.copyright,
           sections: data.sections
         };
-        setAppData(formattedData);
+
+        // Validate data structure before rendering
+        const validation = validateLesson(formattedData);
+        if (!validation.success) {
+          console.error("Validation failed for lesson:", validation.errors);
+          setError({ message: "خطأ في هيكلة بيانات الدرس: " + validation.errors[0] });
+          setLoading(false);
+          return;
+        }
+
+        setAppData(validation.data);
       }
       setLoading(false);
     }
