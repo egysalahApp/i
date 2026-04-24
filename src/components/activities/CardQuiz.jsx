@@ -50,7 +50,7 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
     if (isCorrect && !isLast) {
       setTimeout(() => {
         nextCard();
-      }, 800);
+      }, 400);
     }
   };
 
@@ -156,7 +156,6 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
                   className={btnClass}
                 >
                   <span className="text-center">{opt.text}</span>
-                  {isAnswered && isOptionCorrect && <span className="text-xs">✓ إجابة صحيحة</span>}
                 </button>
               );
             })}
