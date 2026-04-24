@@ -162,14 +162,23 @@ const LessonEditor = () => {
     try {
       const data = JSON.parse(importJson);
       
-      // Validation disabled by user request
-      if (data.id) setLessonId(data.id);
-      if (data.pageTitle) setPageTitle(data.pageTitle);
-      if (data.headerTitle) setHeaderTitle(data.headerTitle);
-      if (data.headerSubtitle) setHeaderSubtitle(data.headerSubtitle);
-      if (data.youtubeLink !== undefined) setYoutubeLink(data.youtubeLink);
-      if (data.copyright) setCopyright(data.copyright);
-      if (data.sections) setSections(data.sections);
+      // Use Zod validation
+      const validation = validateLesson(data);
+      if (!validation.success) {
+        const errorMsg = validation.errors.join('\n');
+        alert('خطأ في بيانات الدرس:\n' + errorMsg);
+        return;
+      }
+      
+      const validatedData = validation.data;
+      
+      if (validatedData.id) setLessonId(validatedData.id);
+      if (validatedData.pageTitle) setPageTitle(validatedData.pageTitle);
+      if (validatedData.headerTitle) setHeaderTitle(validatedData.headerTitle);
+      if (validatedData.headerSubtitle) setHeaderSubtitle(validatedData.headerSubtitle);
+      if (validatedData.youtubeLink !== undefined) setYoutubeLink(validatedData.youtubeLink);
+      if (validatedData.copyright) setCopyright(validatedData.copyright);
+      if (validatedData.sections) setSections(validatedData.sections);
       
       setShowImportModal(false);
       setImportJson('');

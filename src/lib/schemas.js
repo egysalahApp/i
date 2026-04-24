@@ -282,31 +282,3 @@ export const validateLesson = (data) => {
 
   return { success: false, errors };
 };
-
-export const LessonSchema = z.object({
-  id: z.string().min(1, "معرف الدرس مطلوب"),
-  pageTitle: z.string().min(1, "عنوان الصفحة مطلوب"),
-  headerTitle: z.string().default("العربية السهلة"),
-  headerSubtitle: z.string().default("محمود صلاح"),
-  youtubeLink: z.string().optional().default(""),
-  copyright: z.string().optional().default("© 2025 العربية السهلة"),
-  sections: z.array(SectionSchema).min(1, "يجب أن يحتوي الدرس على قسم واحد على الأقل"),
-});
-
-/**
- * Helper to get human readable error messages in Arabic
- */
-export const validateLesson = (data) => {
-  const result = LessonSchema.safeParse(data);
-  if (result.success) {
-    return { success: true, data: result.data };
-  }
-
-  // Format errors to be more readable
-  const errors = result.error.issues.map(issue => {
-    const path = issue.path.join(' -> ');
-    return `[${path}]: ${issue.message}`;
-  });
-
-  return { success: false, errors };
-};

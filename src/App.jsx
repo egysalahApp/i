@@ -55,7 +55,12 @@ function LessonWrapper() {
         try {
           const response = await fetch('/src/lessons/harouf-jar-meanings.json');
           const data = await response.json();
-          setAppData(data);
+          const validation = validateLesson(data);
+          if (validation.success) {
+            setAppData(validation.data);
+          } else {
+            setError({ message: "خطأ في التحقق من الملف المحلي" });
+          }
         } catch (e) {
           setError({ message: "تعذر تحميل الملف المحلي" });
         }
@@ -84,7 +89,16 @@ function LessonWrapper() {
           sections: data.sections
         };
 
-        setAppData(formattedData);
+        // Validate data structure before rendering
+        const validation = validateLesson(formattedData);
+        if (!validation.success) {
+          console.error("Validation failed for lesson:", validation.errors);
+          setError({ message: "خطأ في هيكلة بيانات الدرس: " + validation.errors[0] });
+          setLoading(false);
+          return;
+        }
+
+        setAppData(validation.data);
       }
       setLoading(false);
     }
@@ -105,11 +119,23 @@ function LessonWrapper() {
 
   // If the lesson ID is not found or error
   if (error || !appData) {
+    const isValidationError = error && error.message && error.message.includes('هيكلة بيانات');
+    
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-slate-700 mb-4">الدرس غير موجود</h1>
-          <p className="text-slate-500">تأكد من الرابط وحاول مرة أخرى.</p>
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 p-6">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-slate-700 mb-4">
+            {isValidationError ? 'خطأ في بيانات الدرس' : 'الدرس غير موجود'}
+          </h1>
+          <p className="text-slate-500 mb-6">
+            {isValidationError 
+              ? error.message 
+              : 'تأكد من الرابط أو قم بإعادة رفع الدرس عبر لوحة التحكم.'}
+          </p>
+          <div className="flex justify-center gap-3">
+             <a href="/" className="px-6 py-2 bg-slate-200 text-slate-700 rounded-xl font-bold">الرئيسية</a>
+             <a href="/admin" className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold">لوحة التحكم</a>
+          </div>
         </div>
       </div>
     );
