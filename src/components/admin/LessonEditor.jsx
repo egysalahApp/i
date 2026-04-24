@@ -16,6 +16,7 @@ import VisualGoldenEnvelopeEditor from './VisualGoldenEnvelopeEditor';
 import VisualSortEditor from './VisualSortEditor';
 import VisualCardQuizEditor from './VisualCardQuizEditor';
 import { validateLesson } from '../../lib/schemas';
+import { APP_CONFIG } from '../../constants/appConfig';
 
 const LessonEditor = () => {
   const { id } = useParams();
@@ -338,21 +339,74 @@ const LessonEditor = () => {
                     value={lessonId}
                     onChange={(e) => setLessonId(e.target.value)}
                     disabled={!isNew}
+                    placeholder="مثال: esteara-lesson"
                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:text-slate-500"
                     dir="ltr"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-2 text-sm">عنوان الصفحة</label>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">عنوان الصفحة (للمتصفح)</label>
                   <input
                     type="text"
                     value={pageTitle}
                     onChange={(e) => setPageTitle(e.target.value)}
+                    placeholder="مثال: درس الاستعارة | العربية السهلة"
                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                   />
                 </div>
               </div>
             </div>
+
+            {/* Global Overrides */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <h2 className="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                إعدادات إضافية <span className="text-xs font-normal text-slate-500">(اختياري - لتجاوز الإعدادات العامة)</span>
+              </h2>
+              <p className="text-xs text-slate-400 mb-4">اترك هذه الحقول فارغة لاستخدام الإعدادات الافتراضية للموقع.</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">عنوان الترويسة (Header Title)</label>
+                  <input
+                    type="text"
+                    value={headerTitle}
+                    onChange={(e) => setHeaderTitle(e.target.value)}
+                    placeholder={`الافتراضي: ${APP_CONFIG.headerTitle}`}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">العنوان الفرعي (Header Subtitle)</label>
+                  <input
+                    type="text"
+                    value={headerSubtitle}
+                    onChange={(e) => setHeaderSubtitle(e.target.value)}
+                    placeholder={`الافتراضي: ${APP_CONFIG.headerSubtitle}`}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">رابط اليوتيوب</label>
+                  <input
+                    type="text"
+                    value={youtubeLink}
+                    onChange={(e) => setYoutubeLink(e.target.value)}
+                    placeholder={`الافتراضي: ${APP_CONFIG.youtubeLink}`}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2 text-sm">حقوق النشر (Footer Copyright)</label>
+                  <input
+                    type="text"
+                    value={copyright}
+                    onChange={(e) => setCopyright(e.target.value)}
+                    placeholder={`الافتراضي: ${APP_CONFIG.copyright}`}
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  />
+                </div>
+              </div>
 
             {/* Sections List */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">

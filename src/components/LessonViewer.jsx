@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, RefreshCw } from 'lucide-react';
 import { toArabicNum } from '../utils';
+import { APP_CONFIG } from '../constants/appConfig';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
 import StyleLab from './activities/StyleLab';
@@ -192,10 +193,10 @@ function LessonViewer({ APP_DATA }) {
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
       <div className="w-full text-center py-6 bg-transparent flex flex-col items-center">
-        <a href={APP_DATA.youtubeLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 text-2xl font-bold text-purple-900 md:hover:text-purple-800 md:hover:scale-105 active:scale-95 transition-transform duration-300 mb-1">
-            <span>{APP_DATA.headerTitle}</span>
+        <a href={APP_DATA.youtubeLink || APP_CONFIG.youtubeLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 text-2xl font-bold text-purple-900 md:hover:text-purple-800 md:hover:scale-105 active:scale-95 transition-transform duration-300 mb-1">
+            <span>{APP_DATA.headerTitle || APP_CONFIG.headerTitle}</span>
         </a>
-        <h2 className="text-lg font-bold text-slate-600 md:hover:text-slate-700 md:hover:-translate-x-1 transition-transform duration-300 cursor-default inline-block">{APP_DATA.headerSubtitle}</h2>
+        <h2 className="text-lg font-bold text-slate-600 md:hover:text-slate-700 md:hover:-translate-x-1 transition-transform duration-300 cursor-default inline-block">{APP_DATA.headerSubtitle || APP_CONFIG.headerSubtitle}</h2>
       </div>
 
       <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-[#f8fafc]/95 backdrop-blur-md shadow-sm border-b border-slate-200">
@@ -294,7 +295,7 @@ function LessonViewer({ APP_DATA }) {
       </main>
 
       <footer className="mt-auto py-8 bg-white border-t border-slate-200 text-center">
-          <p className="text-slate-400 text-sm font-medium block w-full">{APP_DATA.copyright}</p>
+          <p className="text-slate-400 text-sm font-medium block w-full">{APP_DATA.copyright || APP_CONFIG.copyright}</p>
       </footer>
     </div>
   )

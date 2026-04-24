@@ -258,10 +258,10 @@ const SectionSchema = z.discriminatedUnion('type', [
 export const LessonSchema = z.object({
   id: z.string().min(1, "معرف الدرس مطلوب"),
   pageTitle: z.string().min(1, "عنوان الصفحة مطلوب"),
-  headerTitle: z.string().default("العربية السهلة"),
-  headerSubtitle: z.string().default("محمود صلاح"),
-  youtubeLink: z.string().optional().default(""),
-  copyright: z.string().optional().default("© 2025 العربية السهلة"),
+  headerTitle: z.string().optional(),
+  headerSubtitle: z.string().optional(),
+  youtubeLink: z.string().optional(),
+  copyright: z.string().optional(),
   sections: z.array(SectionSchema).min(1, "يجب أن يحتوي الدرس على قسم واحد على الأقل"),
 });
 
