@@ -92,22 +92,36 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     if (!id) {
-       // Handle case where ID is missing from UI but exists in DB
-       alert('معرف الدرس مفقود. سيتم محاولة الحذف باستخدام البيانات المتوفرة.');
+       alert('معرف الدرس مفقود.');
+       return;
     }
 
-    const confirmDelete = window.confirm('تنبيه: هل أنت متأكد من حذف هذا الدرس نهائياً؟ لا يمكن التراجع عن هذه الخطوة.');
+    const confirmDelete = window.confirm(`هل أنت متأكد من حذف الدرس "${id}" نهائياً؟`);
     
     if (confirmDelete) {
       setLoading(true);
-      const { error } = await supabase.from('lessons').delete().eq('id', id);
-      if (!error) {
-        await fetchLessons();
-        alert('تم حذف الدرس بنجاح');
-      } else {
-        console.error("Delete error:", error);
-        alert('حدث خطأ أثناء الحذف: ' + error.message);
+      try {
+        const { data, error, status, statusText } = await supabase
+          .from('lessons')
+          .delete()
+          .eq('id', id)
+          .select(); // Return deleted rows to confirm
+
+        console.log('Delete response:', { data, error, status, statusText });
+
+        if (error) {
+          console.error("Delete error:", error);
+          alert('فشل الحذف: ' + error.message);
+        } else if (!data || data.length === 0) {
+          alert('تحذير: لم يتم العثور على الدرس في قاعدة البيانات. قد يكون المعرف غير متطابق.');
+        } else {
+          alert('تم حذف الدرس بنجاح!');
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        alert('خطأ غير متوقع: ' + err.message);
       }
+      await fetchLessons();
       setLoading(false);
     }
   };
