@@ -35,12 +35,12 @@
 | فهرس الإجابة الصحيحة | `correct` | `answer`, `correctIndex` |
 
 ### أنواع الأنشطة المتاحة
-`intro`, `mcq`, `tap_to_fill`, `classify`, `spotting`, `hotspot`, `error_correction`, `story`, `flashcards`, `sort`, `matching`, `golden_envelope`, `style_lab`, `radar`, `contrast_cards`
+`intro`, `mcq`, `tap_to_fill`, `classify`, `spotting`, `hotspot`, `error_correction`, `story`, `flashcards`, `sort`, `matching`, `golden_envelope`, `style_lab`, `radar`, `contrast_cards`, `card_quiz`
 
 **كل القيم بحروف إنجليزية صغيرة (lowercase) وبشرطة سفلية (_).**
 
 ### الألوان المتاحة لـ theme
-`emerald`, `amber`, `indigo`, `purple`, `violet`, `cyan`, `sky`, `rose`, `slate`
+`emerald`, `amber`, `indigo`, `purple`, `violet`, `cyan`, `sky`, `rose`, `slate`, `orange`, `blue`
 
 ### الفراغات في tap_to_fill
 استخدم `...` (ثلاث نقاط) أو `___` (ثلاث شرطات سفلية) داخل نص السؤال.

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+
 
 const Intro = ({ sectionData, onNext }) => {
   return (

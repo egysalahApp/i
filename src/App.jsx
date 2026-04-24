@@ -51,23 +51,6 @@ function LessonWrapper() {
       setLoading(true);
       setError(null);
       
-      if (lessonId === 'test') {
-        try {
-          const response = await fetch('/src/lessons/harouf-jar-meanings.json');
-          const data = await response.json();
-          const validation = validateLesson(data);
-          if (validation.success) {
-            setAppData(validation.data);
-          } else {
-            setError({ message: "خطأ في التحقق من الملف المحلي" });
-          }
-        } catch (e) {
-          setError({ message: "تعذر تحميل الملف المحلي" });
-        }
-        setLoading(false);
-        return;
-      }
-      
       const { data, error } = await supabase
         .from('lessons')
         .select('*')

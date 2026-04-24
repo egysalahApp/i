@@ -259,7 +259,6 @@ const LessonEditor = () => {
         newSection.title = 'ترتيب الكلمات';
         newSection.questions = [];
         break;
-      case 'meaning_cards':
       case 'card_quiz':
         newSection.title = 'كارد كويز ✨';
         newSection.type = 'card_quiz';
@@ -441,7 +440,7 @@ const LessonEditor = () => {
                      <div className="absolute left-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 overflow-hidden">
                        <div className="max-h-60 overflow-y-auto">
                          <button onClick={() => addNewSection('mcq')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">اختيار من متعدد</button>
-                          <button onClick={() => addNewSection('meaning_cards')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50 font-bold text-indigo-700 bg-indigo-50/30">كارد كويز (جديد) ✨</button>
+                          <button onClick={() => addNewSection('card_quiz')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50 font-bold text-indigo-700 bg-indigo-50/30">كارد كويز ✨</button>
                          <button onClick={() => addNewSection('tap_to_fill')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">أكمل الجملة</button>
                          <button onClick={() => addNewSection('classify')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">صناديق التصنيف</button>
                          <button onClick={() => addNewSection('radar')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">الرادار (خريطة)</button>
@@ -494,7 +493,7 @@ const LessonEditor = () => {
                               }}
                               className="text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 px-4 py-2 rounded-lg transition-colors"
                             >
-                              {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'meaning_cards', 'card_quiz', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
+                              {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'card_quiz', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
                             </button>
                             <button
                               onClick={() => deleteSection(index)}
@@ -596,7 +595,7 @@ const LessonEditor = () => {
                         />
                       )}
 
-                      {isEditing && (section.type === 'meaning_cards' || section.type === 'card_quiz') && (
+                      {isEditing && section.type === 'card_quiz' && (
                         <VisualCardQuizEditor 
                           section={section} 
                           onSave={saveSection} 
@@ -628,7 +627,7 @@ const LessonEditor = () => {
                         />
                       )}
                       
-                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'meaning_cards', 'card_quiz', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) && (
+                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'card_quiz', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) && (
                         <RawSectionEditor 
                           section={section} 
                           onSave={saveSection} 

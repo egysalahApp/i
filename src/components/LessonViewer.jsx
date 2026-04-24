@@ -33,7 +33,7 @@ function LessonViewer({ APP_DATA }) {
   const [progress, setProgress] = useState(
     APP_DATA.sections.reduce((acc, section) => {
       // Scorable generic logic
-      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
+      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards'].includes(section.type);
       const total = isScorable ? (section.questions?.length || section.pairs?.length || section.cards?.length || 0) : (section.slides?.length || section.cards?.length || 1);
       const answered = isScorable ? 0 : (section.type === 'story' ? 0 : 1);
       
@@ -42,31 +42,36 @@ function LessonViewer({ APP_DATA }) {
     }, {})
   );
 
-  const getEffectiveTheme = (currentIdx) => {
-    const currentSection = APP_DATA.sections[currentIdx];
-    // Use the same auto-theme logic
+  const effectiveThemes = React.useMemo(() => {
     const themePalette = APP_CONFIG.themePalette;
-    const autoTheme = currentIdx === 0 ? APP_CONFIG.firstSectionTheme : themePalette[(currentIdx - 1) % themePalette.length];
-    const sectionTheme = currentSection.theme || autoTheme;
+    const themes = [];
+    const pairs = {
+      'emerald': 'purple',
+      'cyan': 'amber',
+      'amber': 'indigo',
+      'purple': 'emerald',
+      'violet': 'cyan',
+      'indigo': 'emerald',
+      'slate': 'sky',
+      'sky': 'indigo'
+    };
 
-    if (currentIdx === 0 || currentIdx === APP_DATA.sections.length - 1) return sectionTheme;
-    
-    const prevEffectiveTheme = getEffectiveTheme(currentIdx - 1);
-    if (sectionTheme === prevEffectiveTheme) {
-      const pairs = {
-        'emerald': 'purple',
-        'cyan': 'amber',
-        'amber': 'indigo',
-        'purple': 'emerald',
-        'violet': 'cyan',
-        'indigo': 'emerald',
-        'slate': 'sky',
-        'sky': 'indigo'
-      };
-      return pairs[sectionTheme] || sectionTheme;
-    }
-    return sectionTheme;
-  };
+    APP_DATA.sections.forEach((section, idx) => {
+      const autoTheme = idx === 0 ? APP_CONFIG.firstSectionTheme : themePalette[(idx - 1) % themePalette.length];
+      let sectionTheme = section.theme || autoTheme;
+
+      if (idx > 0 && idx < APP_DATA.sections.length - 1) {
+        if (sectionTheme === themes[idx - 1]) {
+          sectionTheme = pairs[sectionTheme] || sectionTheme;
+        }
+      }
+      themes.push(sectionTheme);
+    });
+    return themes;
+  }, [APP_DATA.sections]);
+
+  const getEffectiveTheme = (idx) => effectiveThemes[idx] || 'indigo';
+
 
   const activeSection = APP_DATA.sections.find(s => s.id === activeTab);
   const currentProgress = progress[activeTab];
@@ -91,7 +96,7 @@ function LessonViewer({ APP_DATA }) {
     scrollToContent();
     // Also reset progress for this section
     setProgress(prev => {
-      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(activeSection.type);
+      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards'].includes(activeSection.type);
       const answered = isScorable ? 0 : (activeSection.type === 'story' ? 0 : 1);
       return {
         ...prev,
@@ -182,7 +187,7 @@ function LessonViewer({ APP_DATA }) {
     setResetKeys(newResetKeys);
 
     setProgress(APP_DATA.sections.reduce((acc, section) => {
-      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards', 'toolbelt'].includes(section.type);
+      const isScorable = !['intro', 'story', 'golden_envelope', 'style_lab', 'radar', 'contrast_cards'].includes(section.type);
       const total = isScorable ? (section.questions?.length || section.pairs?.length || section.cards?.length || 0) : (section.slides?.length || section.cards?.length || 1);
       const answered = isScorable ? 0 : (section.type === 'story' ? 0 : 1);
       
@@ -267,7 +272,6 @@ function LessonViewer({ APP_DATA }) {
                   {sectionWithTheme.type === 'flashcards' && <Flashcards sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {sectionWithTheme.type === 'meaning_cards' && <CardQuiz sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'card_quiz' && <CardQuiz sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}
                 </ErrorBoundary>

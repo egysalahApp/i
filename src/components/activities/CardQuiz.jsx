@@ -3,7 +3,7 @@ import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum } from '../../utils';
-import { ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
