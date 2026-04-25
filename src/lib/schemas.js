@@ -221,17 +221,6 @@ const GoldenEnvelopeSchema = BaseSectionSchema.extend({
   question: z.string(),
 });
 
-// Card Quiz
-const CardQuizSchema = BaseSectionSchema.extend({
-  type: z.literal('card_quiz'),
-  questions: z.array(z.object({
-    text: z.string().min(1, "نص البطاقة مطلوب"),
-    options: z.array(z.string()).length(3, "يجب وجود ٣ اختيارات بالضبط"),
-    correct: z.number().int().min(0).max(2),
-    hint: z.string().optional(),
-    explanation: z.string().optional(),
-  })).min(1, "يجب إضافة بطاقة واحدة على الأقل"),
-});
 
 /**
  * Master Lesson Schema
@@ -252,7 +241,6 @@ const SectionSchema = z.discriminatedUnion('type', [
   SortSchema,
   StyleLabSchema,
   GoldenEnvelopeSchema,
-  CardQuizSchema,
 ]);
 
 export const LessonSchema = z.object({

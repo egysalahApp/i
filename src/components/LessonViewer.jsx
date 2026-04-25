@@ -17,7 +17,7 @@ import Story from './activities/Story';
 import Flashcards from './activities/Flashcards';
 import Sort from './activities/Sort';
 import Matching from './activities/Matching';
-import CardQuiz from './activities/CardQuiz';
+
 import SectionFooter from './ui/SectionFooter';
 import ErrorBoundary from './ui/ErrorBoundary';
 
@@ -272,7 +272,7 @@ function LessonViewer({ APP_DATA }) {
                   {sectionWithTheme.type === 'flashcards' && <Flashcards sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {sectionWithTheme.type === 'card_quiz' && <CardQuiz sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+
                   {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}
                 </ErrorBoundary>
               </div>
