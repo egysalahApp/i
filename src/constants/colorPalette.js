@@ -43,7 +43,7 @@ export const SATURATED_BY_THEME = {
   'orange':  'bg-orange-400 border-orange-500',
   'purple':  'bg-purple-500 border-purple-600',
   'cyan':    'bg-cyan-500 border-cyan-600',
-  'slate':   'bg-slate-500 border-slate-600',
+  'slate':   'bg-slate-400 border-slate-500',
 };
 
 // ═══════════════════════════════════════════

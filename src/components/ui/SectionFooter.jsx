@@ -10,7 +10,7 @@ const SectionFooter = ({ theme, onNext, onReset, isLast, showNext, isScorable = 
         </button>
       )}
       {showNext && !isLast && (
-        <button onClick={onNext} className={`w-full md:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-xl md:text-2xl text-white shadow-md transition-transform flex items-center justify-center gap-3 active:scale-95 bg-${theme}-600 md:hover:bg-${theme}-700`}>
+        <button onClick={onNext} className={`w-full md:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-xl md:text-2xl text-white shadow-md transition-transform flex items-center justify-center gap-3 active:scale-95 bg-${theme}-500 md:hover:bg-${theme}-600`}>
           القسم التالي <ArrowLeft className="w-6 h-6" />
         </button>
       )}
