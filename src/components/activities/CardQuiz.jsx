@@ -95,8 +95,8 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
       </div>
 
       {/* Main Card Container */}
-      <div className="relative min-h-[400px] perspective-1000">
-        <div className={`bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl border-2 transition-all duration-500 transform ${
+      <div className="relative min-h-[400px] perspective-1000" key={`card-${currentIndex}`}>
+        <div className={`fade-in bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl border-2 transition-all duration-500 transform ${
           isAnswered ? (isCorrect ? 'border-emerald-200 shadow-emerald-100' : 'border-rose-200 shadow-rose-100') : `border-${sectionData.theme}-100`
         }`}>
           
@@ -137,7 +137,7 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
               let btnClass = `p-4 rounded-2xl border-2 text-xl font-bold transition-all duration-300 flex flex-col items-center justify-center gap-2 `;
               
               if (!isAnswered) {
-                btnClass += `border-slate-100 bg-slate-50 text-slate-600 hover:border-${sectionData.theme}-300 hover:bg-${sectionData.theme}-50 hover:text-${sectionData.theme}-700 hover:-translate-y-1`;
+                btnClass += `border-slate-100 bg-slate-50 text-slate-600 md:hover:border-${sectionData.theme}-300 md:hover:bg-${sectionData.theme}-50 md:hover:text-${sectionData.theme}-700 md:hover:-translate-y-1`;
               } else {
                 if (isOptionCorrect) {
                   btnClass += `border-emerald-500 bg-emerald-50 text-emerald-700 shadow-lg shadow-emerald-100 scale-105 z-10`;
