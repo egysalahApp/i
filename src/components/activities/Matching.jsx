@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 
-// Extended color palette for pair identification (enough for 12+ pairs)
+// Wordwall-style solid colors with white text — all chosen for excellent contrast
 const PAIR_COLORS = [
-  { bg: 'bg-sky-100',    border: 'border-sky-400',    text: 'text-sky-800',    activeBg: 'bg-sky-200',    activeBorder: 'border-sky-500' },
-  { bg: 'bg-rose-100',   border: 'border-rose-400',   text: 'text-rose-800',   activeBg: 'bg-rose-200',   activeBorder: 'border-rose-500' },
-  { bg: 'bg-amber-100',  border: 'border-amber-400',  text: 'text-amber-800',  activeBg: 'bg-amber-200',  activeBorder: 'border-amber-500' },
-  { bg: 'bg-emerald-100',border: 'border-emerald-400', text: 'text-emerald-800',activeBg: 'bg-emerald-200',activeBorder: 'border-emerald-500' },
-  { bg: 'bg-violet-100', border: 'border-violet-400',  text: 'text-violet-800', activeBg: 'bg-violet-200', activeBorder: 'border-violet-500' },
-  { bg: 'bg-orange-100', border: 'border-orange-400',  text: 'text-orange-800', activeBg: 'bg-orange-200', activeBorder: 'border-orange-500' },
-  { bg: 'bg-cyan-100',   border: 'border-cyan-400',    text: 'text-cyan-800',   activeBg: 'bg-cyan-200',   activeBorder: 'border-cyan-500' },
-  { bg: 'bg-pink-100',   border: 'border-pink-400',    text: 'text-pink-800',   activeBg: 'bg-pink-200',   activeBorder: 'border-pink-500' },
-  { bg: 'bg-teal-100',   border: 'border-teal-400',    text: 'text-teal-800',   activeBg: 'bg-teal-200',   activeBorder: 'border-teal-500' },
-  { bg: 'bg-indigo-100', border: 'border-indigo-400',  text: 'text-indigo-800', activeBg: 'bg-indigo-200', activeBorder: 'border-indigo-500' },
-  { bg: 'bg-lime-100',   border: 'border-lime-400',    text: 'text-lime-800',   activeBg: 'bg-lime-200',   activeBorder: 'border-lime-500' },
-  { bg: 'bg-fuchsia-100',border: 'border-fuchsia-400', text: 'text-fuchsia-800',activeBg: 'bg-fuchsia-200',activeBorder: 'border-fuchsia-500' },
+  { bg: 'bg-sky-500',     active: 'bg-sky-600',     border: 'border-sky-600',     ring: 'ring-sky-300' },
+  { bg: 'bg-rose-500',    active: 'bg-rose-600',    border: 'border-rose-600',    ring: 'ring-rose-300' },
+  { bg: 'bg-amber-600',   active: 'bg-amber-700',   border: 'border-amber-700',   ring: 'ring-amber-300' },
+  { bg: 'bg-emerald-600', active: 'bg-emerald-700',  border: 'border-emerald-700', ring: 'ring-emerald-300' },
+  { bg: 'bg-violet-500',  active: 'bg-violet-600',  border: 'border-violet-600',  ring: 'ring-violet-300' },
+  { bg: 'bg-orange-500',  active: 'bg-orange-600',  border: 'border-orange-600',  ring: 'ring-orange-300' },
+  { bg: 'bg-cyan-600',    active: 'bg-cyan-700',    border: 'border-cyan-700',    ring: 'ring-cyan-300' },
+  { bg: 'bg-pink-500',    active: 'bg-pink-600',    border: 'border-pink-600',    ring: 'ring-pink-300' },
+  { bg: 'bg-teal-600',    active: 'bg-teal-700',    border: 'border-teal-700',    ring: 'ring-teal-300' },
+  { bg: 'bg-indigo-500',  active: 'bg-indigo-600',  border: 'border-indigo-600',  ring: 'ring-indigo-300' },
+  { bg: 'bg-red-600',     active: 'bg-red-700',     border: 'border-red-700',     ring: 'ring-red-300' },
+  { bg: 'bg-fuchsia-600', active: 'bg-fuchsia-700',  border: 'border-fuchsia-700', ring: 'ring-fuchsia-300' },
 ];
 
 const Matching = ({ sectionData, progress, onUpdateProgress }) => {
@@ -123,15 +123,15 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     const color = getColorForPair(item.id);
 
     if (isMatched) {
-      return `${color.bg} ${color.border} ${color.text} cursor-default pointer-events-none`;
+      return `${color.bg} ${color.border} text-white cursor-default pointer-events-none shadow-sm`;
     }
     if (isWrong) {
-      return `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
+      return `bg-red-700 border-red-800 text-white shake pointer-events-none`;
     }
     if (isSelected) {
-      return `${color.activeBg} ${color.activeBorder} ${color.text} shadow-lg scale-[1.03]`;
+      return `${color.active} ${color.border} text-white shadow-xl scale-[1.04] ring-4 ${color.ring}`;
     }
-    return `${color.bg} ${color.border} ${color.text} active:scale-95 cursor-pointer md:hover:shadow-md md:hover:scale-[1.02]`;
+    return `${color.bg} ${color.border} text-white active:scale-95 cursor-pointer md:hover:shadow-lg md:hover:scale-[1.02] md:hover:brightness-110`;
   };
 
   const getLeftBtnClass = (item) => {
@@ -141,15 +141,16 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     const color = getColorForPair(item.id);
 
     if (isMatched) {
-      return `${color.bg} ${color.border} ${color.text} cursor-default pointer-events-none`;
+      // Adopt pair's solid color
+      return `${color.bg} ${color.border} text-white cursor-default pointer-events-none shadow-sm`;
     }
     if (isWrong) {
-      return `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
+      return `bg-red-700 border-red-800 text-white shake pointer-events-none`;
     }
     if (isSelected) {
-      return `bg-slate-200 border-slate-500 text-slate-900 shadow-lg scale-[1.03]`;
+      return `bg-slate-600 border-slate-700 text-white shadow-xl scale-[1.04] ring-4 ring-slate-300`;
     }
-    return `bg-white border-slate-200 text-slate-700 active:scale-95 cursor-pointer md:hover:border-slate-400 md:hover:shadow-md md:hover:scale-[1.02]`;
+    return `bg-white border-slate-200 text-slate-700 active:scale-95 cursor-pointer md:hover:border-slate-400 md:hover:shadow-lg md:hover:scale-[1.02]`;
   };
 
   const btnBase = `w-full px-3 py-2.5 md:px-5 md:py-3 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed`;
