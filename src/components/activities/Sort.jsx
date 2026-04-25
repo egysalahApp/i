@@ -154,8 +154,10 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
                   'bg-cyan-600 border-cyan-700', 'bg-teal-600 border-teal-700',
                 ];
                 const colorClass = saturatedColors[optIdx % saturatedColors.length];
+                const maxOptLen = Math.max(...currentQuestion.options.map(o => o.length));
+                const fontSize = maxOptLen <= 10 ? 'text-lg md:text-2xl' : maxOptLen <= 20 ? 'text-lg md:text-xl' : 'text-lg md:text-xl';
                 
-                let btnClass = `flex-1 min-w-[140px] flex items-center justify-center min-h-[4.5rem] px-4 py-3 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 border-2 text-center leading-relaxed ${colorClass} text-white `;
+                let btnClass = `flex-1 min-w-[140px] flex items-center justify-center min-h-[4.5rem] px-4 py-3 rounded-2xl font-bold ${fontSize} transition-all duration-300 border-2 text-center leading-relaxed ${colorClass} text-white `;
                 
                 if (!animatingOut && status !== 'correct' && !isComplete) {
                   btnClass += `shadow-md md:hover:shadow-lg md:hover:-translate-y-1 md:hover:brightness-110 active:scale-95 cursor-pointer`;
