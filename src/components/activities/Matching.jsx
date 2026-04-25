@@ -41,38 +41,32 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [wrongAttempt, setWrongAttempt] = useState(false);
 
-  // Dynamic uniform height
+  // Dynamic uniform height — measured ONCE on mount, then locked
   const gridRef = useRef(null);
   const [uniformHeight, setUniformHeight] = useState(0);
+  const heightLocked = useRef(false);
 
-  const measureHeight = useCallback(() => {
-    if (!gridRef.current) return;
-    const buttons = gridRef.current.querySelectorAll('[data-match-btn]');
-    let maxH = 0;
-    // Reset to natural size
-    buttons.forEach(btn => { btn.style.minHeight = 'auto'; });
-    // Measure after reset
-    requestAnimationFrame(() => {
+  useEffect(() => {
+    if (heightLocked.current || !gridRef.current) return;
+    const measure = () => {
+      const buttons = gridRef.current?.querySelectorAll('[data-match-btn]');
+      if (!buttons || buttons.length === 0) return;
+      let maxH = 0;
+      buttons.forEach(btn => {
+        btn.style.minHeight = 'auto';
+      });
       buttons.forEach(btn => {
         const h = btn.scrollHeight;
         if (h > maxH) maxH = h;
       });
-      // Add small padding for visual comfort
-      if (maxH > 0) setUniformHeight(maxH + 4);
-    });
+      if (maxH > 0) {
+        setUniformHeight(maxH + 4);
+        heightLocked.current = true; // Lock — never re-measure
+      }
+    };
+    // Allow DOM to render first
+    requestAnimationFrame(() => requestAnimationFrame(measure));
   }, []);
-
-  useEffect(() => {
-    measureHeight();
-    window.addEventListener('resize', measureHeight);
-    return () => window.removeEventListener('resize', measureHeight);
-  }, [measureHeight]);
-
-  // Re-measure once on first render after DOM is ready
-  useEffect(() => {
-    const timer = setTimeout(measureHeight, 100);
-    return () => clearTimeout(timer);
-  }, [measureHeight]);
 
   useEffect(() => {
     if (selectedRight && selectedLeft) {
