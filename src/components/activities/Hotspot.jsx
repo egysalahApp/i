@@ -92,13 +92,13 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                       const isSelectedTarget = selectedTargetId === seg.id;
                       const isShaking = shakeSegmentId === seg.id;
 
-                      let btnClass = "inline transition-all duration-300 select-none ";
+                      let btnClass = "inline-block transition-all duration-300 select-none rounded-md px-1.5 py-0.5 mx-0.5 ";
                       
                       if (!answered) {
-                          btnClass += `text-slate-800 md:hover:bg-${sectionData.theme}-100 md:hover:text-${sectionData.theme}-800 cursor-pointer rounded `;
+                          btnClass += `text-slate-800 md:hover:bg-${sectionData.theme}-100 md:hover:text-${sectionData.theme}-800 cursor-pointer `;
                           if (isShaking) btnClass += "bg-rose-100 text-rose-700 shake ";
                       } else {
-                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white rounded-md px-2 py-1 mx-1 relative z-10 shadow-sm cursor-default inline-block ";
+                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white relative z-10 shadow-sm cursor-default ";
                           else btnClass += "text-slate-800 cursor-default ";
                       }
 
