@@ -172,10 +172,12 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
             const hoverClass = (status !== 'correct' && !animatingOut && !isComplete) 
               ? `md:hover:brightness-110 md:hover:-translate-y-1 cursor-pointer shadow-md md:hover:shadow-lg active:scale-95`
               : `cursor-default pointer-events-none`;
+            const maxLabelLen = Math.max(...categoriesWithTheme.map(c => c.label.length));
+            const fontSize = maxLabelLen <= 10 ? 'text-base md:text-2xl' : maxLabelLen <= 20 ? 'text-base md:text-xl' : 'text-base md:text-lg';
               
             return (
               <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 ${colorClass} text-white min-w-[120px] ${hoverClass}`}>
-                <span className="font-bold text-base md:text-lg text-center leading-snug">{cat.label}</span>
+                <span className={`font-bold ${fontSize} text-center leading-snug`}>{cat.label}</span>
               </button>
             );
           })}
