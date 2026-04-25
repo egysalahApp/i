@@ -76,7 +76,7 @@ const Radar = ({ sectionData }) => {
             <>
               <div className={`absolute -inset-4 bg-${sectionData.theme}-400/20 blur-xl rounded-[3.5rem] -z-10 animate-pulse pointer-events-none`}></div>
               <div className="absolute -bottom-20 left-0 right-0 mx-auto w-max flex items-center gap-2 text-slate-600 font-bold fade-in bg-white/90 px-6 py-3 rounded-full shadow-md text-sm md:text-base whitespace-nowrap border border-slate-100">
-                <span className="animate-bounce text-2xl">👆</span> انقر هنا لاكتشاف الخريطة
+                انقر هنا لاكتشاف الخريطة
               </div>
             </>
           )}
