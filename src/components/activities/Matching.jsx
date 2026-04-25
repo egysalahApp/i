@@ -8,13 +8,11 @@ const PAIR_COLORS = [
   { bg: 'bg-amber-600',   active: 'bg-amber-700',   border: 'border-amber-700',   ring: 'ring-amber-300' },
   { bg: 'bg-emerald-600', active: 'bg-emerald-700',  border: 'border-emerald-700', ring: 'ring-emerald-300' },
   { bg: 'bg-violet-500',  active: 'bg-violet-600',  border: 'border-violet-600',  ring: 'ring-violet-300' },
-  { bg: 'bg-orange-500',  active: 'bg-orange-600',  border: 'border-orange-600',  ring: 'ring-orange-300' },
   { bg: 'bg-cyan-600',    active: 'bg-cyan-700',    border: 'border-cyan-700',    ring: 'ring-cyan-300' },
   { bg: 'bg-pink-500',    active: 'bg-pink-600',    border: 'border-pink-600',    ring: 'ring-pink-300' },
   { bg: 'bg-teal-600',    active: 'bg-teal-700',    border: 'border-teal-700',    ring: 'ring-teal-300' },
   { bg: 'bg-indigo-500',  active: 'bg-indigo-600',  border: 'border-indigo-600',  ring: 'ring-indigo-300' },
   { bg: 'bg-red-600',     active: 'bg-red-700',     border: 'border-red-700',     ring: 'ring-red-300' },
-  { bg: 'bg-fuchsia-600', active: 'bg-fuchsia-700',  border: 'border-fuchsia-700', ring: 'ring-fuchsia-300' },
 ];
 
 const Matching = ({ sectionData, progress, onUpdateProgress }) => {
