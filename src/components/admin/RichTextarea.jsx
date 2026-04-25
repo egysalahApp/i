@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Bold, Highlighter, Type, Minus, RemoveFormatting, ChevronDown } from 'lucide-react';
 
 const HIGHLIGHT_COLORS = [
-  { id: '', label: 'افتراضي', tailwind: 'bg-indigo-500' },
+  { id: 'indigo', label: 'نيلي', tailwind: 'bg-indigo-500' },
   { id: 'rose', label: 'وردي', tailwind: 'bg-rose-500' },
   { id: 'amber', label: 'ذهبي', tailwind: 'bg-amber-500' },
   { id: 'emerald', label: 'أخضر', tailwind: 'bg-emerald-500' },
@@ -54,11 +54,8 @@ const RichTextarea = ({ value, onChange, className = '', rows = 3, placeholder =
   };
 
   const handleHighlight = (colorId) => {
-    if (colorId) {
-      wrapSelection(`<mark class="${colorId}">`, '</mark>');
-    } else {
-      wrapSelection('<mark>', '</mark>');
-    }
+    const color = colorId || 'indigo';
+    wrapSelection(`<mark class="${color}">`, '</mark>');
   };
 
   const handleBold = () => wrapSelection('<b>', '</b>');

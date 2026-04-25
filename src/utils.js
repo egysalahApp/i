@@ -54,9 +54,9 @@ export const renderFormattedText = (text, theme) => {
     return `<span class="${colorClass} font-bold">${content}</span>`;
   });
 
-  // Process <mark>text</mark> (default = theme color)
+  // Process <mark>text</mark> (legacy/default = indigo)
   result = result.replace(/<mark>(.*?)<\/mark>/g, (_, content) => {
-    return `<span class="text-${theme}-600 font-bold">${content}</span>`;
+    return `<span class="text-indigo-600 font-bold">${content}</span>`;
   });
 
   // Process <b>text</b>
