@@ -338,15 +338,6 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
                   </button>
                 )}
 
-                {checked && !isCorrect && (
-                  <button
-                    onClick={handleRetry}
-                    className="flex-1 max-w-sm flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold text-lg md:text-xl text-white bg-orange-500 md:hover:bg-orange-600 shadow-md transition-all active:scale-95"
-                  >
-                    <RotateCcw className="w-5 h-5" /> حاول مرة أخرى
-                  </button>
-                )}
-
                 {checked && isCorrect && currentIndex < questions.length - 1 && (
                   <button
                     onClick={handleNext}
