@@ -127,9 +127,10 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
               </div>
             )}
           </div>
+        </div>
 
-          {/* Options Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Options Grid - Separated from the card */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
             {currentQuestion.shuffledOptions.map((opt, idx) => {
               const isSelected = isAnswered && answers[currentIndex].index === idx;
               const isOptionCorrect = opt.isCorrect;
@@ -163,7 +164,7 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
 
           {/* Feedback Section - Only show if incorrect or last */}
           {isAnswered && (!isCorrect || isLast) && (
-            <div className="mt-10 smooth-expand">
+            <div className="mt-8 smooth-expand bg-white rounded-[2rem] p-6 shadow-sm border border-slate-200">
               {(!isCorrect || (isCorrect && isLast && currentQuestion.explanation)) && (
                 <FeedbackBox isCorrect={isCorrect} explanation={currentQuestion.explanation} />
               )}
@@ -190,7 +191,6 @@ const CardQuiz = ({ sectionData, progress, onUpdateProgress }) => {
               )}
             </div>
           )}
-        </div>
 
         {/* Navigation Arrows */}
         <div className="absolute top-1/2 -left-4 -right-4 md:-left-16 md:-right-16 -translate-y-1/2 flex justify-between pointer-events-none">
