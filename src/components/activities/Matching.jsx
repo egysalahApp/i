@@ -133,7 +133,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     return `bg-white border-slate-200 text-slate-700 active:scale-95 cursor-pointer md:hover:border-slate-400 md:hover:shadow-lg md:hover:scale-[1.02]`;
   };
 
-  const btnBase = `w-full px-3 py-2.5 md:px-5 md:py-3 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed`;
+  const btnBase = `w-full px-3 py-1.5 md:px-5 md:py-2 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed`;
 
   return (
     <div className="max-w-4xl mx-auto pb-6" dir="rtl">
