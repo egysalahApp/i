@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, RefreshCw } from 'lucide-react';
+import { Trophy, RefreshCw, Link2 } from 'lucide-react';
 import { toArabicNum } from '../utils';
 import { APP_CONFIG } from '../constants/appConfig';
 import Intro from './activities/Intro';
@@ -19,9 +19,12 @@ import Sort from './activities/Sort';
 import Matching from './activities/Matching';
 
 import SectionFooter from './ui/SectionFooter';
+import ShareModal from './ui/ShareModal';
 import ErrorBoundary from './ui/ErrorBoundary';
 
-function LessonViewer({ APP_DATA }) {
+function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
+  const isShareMode = !!singleSectionId;
+  const [showShareModal, setShowShareModal] = useState(false);
   useEffect(() => {
     if (APP_DATA.pageTitle) {
       document.title = APP_DATA.pageTitle;
@@ -212,40 +215,55 @@ function LessonViewer({ APP_DATA }) {
         <h2 className="text-lg font-bold text-slate-600 md:hover:text-slate-700 md:hover:-translate-x-1 transition-transform duration-300 cursor-default inline-block">{APP_DATA.headerSubtitle || APP_CONFIG.headerSubtitle}</h2>
       </div>
 
-      <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
-        <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
-            <div className="flex items-center gap-3 py-3 flex-nowrap">
-              {APP_DATA.sections.map((section, idx) => {
-                const isActive = activeTab === section.id;
-                const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
-                const effectiveTheme = getEffectiveTheme(idx);
-                const isSlate = effectiveTheme === 'slate';
-                const activeBg = isSlate ? 'bg-slate-400' : `bg-${effectiveTheme}-500`;
-                const activeText = 'text-white';
-                const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
-                
-                return (
-                  <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
-                    {section.title}
-                    {isDone && !isActive && <span className="text-emerald-600">✓</span>}
-                  </button>
-                )
-              })}
-            </div>
-        </div>
-        {currentProgress?.isScorable && (
-          <div className="w-full h-[4px] bg-slate-200">
-            <div className={`h-full transition-all duration-500 ease-out bg-${getEffectiveTheme(activeSectionIndex)}-500`} style={{ width: `${progressPercent}%` }}></div>
+      {!isShareMode && (
+        <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
+          <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
+              <div className="flex items-center gap-3 py-3 flex-nowrap">
+                {APP_DATA.sections.map((section, idx) => {
+                  const isActive = activeTab === section.id;
+                  const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
+                  const effectiveTheme = getEffectiveTheme(idx);
+                  const isSlate = effectiveTheme === 'slate';
+                  const activeBg = isSlate ? 'bg-slate-400' : `bg-${effectiveTheme}-500`;
+                  const activeText = 'text-white';
+                  const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
+                  
+                  return (
+                    <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
+                      {section.title}
+                      {isDone && !isActive && <span className="text-emerald-600">✓</span>}
+                    </button>
+                  )
+                })}
+              </div>
           </div>
-        )}
-      </div>
+          {currentProgress?.isScorable && (
+            <div className="w-full h-[4px] bg-slate-200">
+              <div className={`h-full transition-all duration-500 ease-out bg-${getEffectiveTheme(activeSectionIndex)}-500`} style={{ width: `${progressPercent}%` }}></div>
+            </div>
+          )}
+        </div>
+      )}
 
       <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
-        <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 pt-6 mb-6 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
+        <div className="flex items-center justify-center gap-3 pt-6 mb-6 relative">
+          <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
+          {!isShareMode && lessonId && (
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="absolute left-0 w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-indigo-100 hover:text-indigo-500 transition-all active:scale-90"
+              title="مشاركة هذا القسم"
+            >
+              <Link2 size={18} />
+            </button>
+          )}
+        </div>
         
         <div id="section-content-wrapper" className="fade-in">
           {APP_DATA.sections.map((section, index) => {
-            const isActive = activeTab === section.id;
+            // In share mode, skip sections that don't match
+            if (isShareMode && section.id !== singleSectionId) return null;
+            const isActive = isShareMode ? true : (activeTab === section.id);
             const secProgress = progress[section.id];
             
             // Unified Theme System: Automatically assign a premium theme based on APP_CONFIG
@@ -283,7 +301,7 @@ function LessonViewer({ APP_DATA }) {
           })}
         </div>
         
-        {activeSection.type !== 'golden_envelope' && (
+        {!isShareMode && activeSection.type !== 'golden_envelope' && (
           <SectionFooter 
             theme={getEffectiveTheme(activeSectionIndex)} 
             onNext={handleNextSection} 
@@ -293,8 +311,17 @@ function LessonViewer({ APP_DATA }) {
             isScorable={currentProgress.isScorable}
           />
         )}
+        {isShareMode && activeSection.type !== 'intro' && (
+          <SectionFooter 
+            theme={getEffectiveTheme(activeSectionIndex)} 
+            onReset={handleResetSection}
+            isLast={true}
+            showNext={false} 
+            isScorable={currentProgress.isScorable}
+          />
+        )}
 
-        {isAllComplete && (
+        {!isShareMode && isAllComplete && (
           <div className="mt-12 bg-gradient-to-br from-indigo-50 to-purple-50 p-8 md:p-10 rounded-[2.5rem] border-2 border-indigo-100 shadow-lg text-center fade-in">
              <Trophy className="w-20 h-20 mx-auto text-indigo-500 mb-6 drop-shadow-md" />
              <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4 leading-snug">{globalMessage}</h2>
@@ -313,6 +340,17 @@ function LessonViewer({ APP_DATA }) {
             {APP_DATA.copyright || APP_CONFIG.copyright}
           </a>
       </footer>
+
+      {/* Share Modal */}
+      {!isShareMode && lessonId && (
+        <ShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          lessonId={lessonId}
+          sectionId={activeTab}
+          sectionTitle={activeSection.title}
+        />
+      )}
     </div>
   )
 }
