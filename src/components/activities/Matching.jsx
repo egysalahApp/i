@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 
 // Wordwall-style solid colors with white text — all chosen for excellent contrast
@@ -41,42 +41,12 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [wrongAttempt, setWrongAttempt] = useState(false);
 
-  // Dynamic uniform height — measured ONCE on mount, then locked
+  // Calculate fixed height based on longest text in all pairs
+  const allTexts = (sectionData.pairs || []).flatMap(p => [p.right, p.left]);
+  const maxChars = Math.max(...allTexts.map(t => t.length), 1);
+  // Base height + extra per ~10 chars (accounts for text wrapping on mobile)
+  const fixedHeight = maxChars > 30 ? 90 : maxChars > 20 ? 76 : maxChars > 10 ? 64 : 56;
   const gridRef = useRef(null);
-  const [uniformHeight, setUniformHeight] = useState(0);
-  const heightLocked = useRef(false);
-
-  useEffect(() => {
-    if (heightLocked.current) return;
-
-    const measure = () => {
-      if (!gridRef.current || heightLocked.current) return;
-      const buttons = gridRef.current.querySelectorAll('[data-match-btn]');
-      if (!buttons || buttons.length === 0) return;
-
-      // Phase 1: Reset all to natural height
-      buttons.forEach(btn => { btn.style.minHeight = 'auto'; });
-
-      // Phase 2: Wait for browser reflow, then measure
-      setTimeout(() => {
-        let maxH = 0;
-        buttons.forEach(btn => {
-          const h = btn.scrollHeight;
-          if (h > maxH) maxH = h;
-        });
-        if (maxH > 0) {
-          const finalHeight = maxH + 4;
-          setUniformHeight(finalHeight);
-          // Apply immediately via DOM to prevent flash
-          buttons.forEach(btn => { btn.style.minHeight = `${finalHeight}px`; });
-          heightLocked.current = true;
-        }
-      }, 50);
-    };
-
-    // Try measuring after DOM + fonts are ready
-    setTimeout(measure, 150);
-  }, []);
 
   useEffect(() => {
     if (selectedRight && selectedLeft) {
@@ -183,7 +153,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         {/* Grid rows */}
         {rightItems.map((rItem, rowIdx) => {
           const lItem = leftItems[rowIdx];
-          const heightStyle = uniformHeight ? { minHeight: `${uniformHeight}px` } : {};
+          const heightStyle = { minHeight: `${fixedHeight}px` };
           return (
             <React.Fragment key={rowIdx}>
               {/* First column (colored) */}
