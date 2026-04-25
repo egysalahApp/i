@@ -4,6 +4,7 @@ import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray, renderFormattedText } from '../../utils';
 import { Inbox } from 'lucide-react';
+import { SATURATED_BY_THEME, AUTO_PALETTE } from '../../constants/colorPalette';
 
 const Classify = ({ sectionData, progress, onUpdateProgress }) => {
   const [questions, setQuestions] = useState([]);
@@ -17,7 +18,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
   const categoriesWithTheme = sectionData.categories.map((cat, idx) => ({
     ...cat,
-    theme: cat.theme || ['sky', 'emerald', 'indigo', 'amber', 'violet', 'cyan', 'purple', 'rose'][idx % 8]
+    theme: cat.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length]
   }));
 
 
@@ -161,14 +162,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
         <div className={`flex flex-row w-full max-w-2xl mx-auto gap-2 md:gap-4 mt-2 relative z-0 flex-wrap justify-center ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
           {categoriesWithTheme.map((cat, idx) => {
-            const saturatedColors = {
-              'sky': 'bg-sky-500 border-sky-600', 'emerald': 'bg-emerald-600 border-emerald-700',
-              'indigo': 'bg-indigo-500 border-indigo-600', 'amber': 'bg-amber-600 border-amber-700',
-              'violet': 'bg-violet-500 border-violet-600', 'cyan': 'bg-cyan-600 border-cyan-700',
-              'purple': 'bg-purple-500 border-purple-600', 'rose': 'bg-rose-500 border-rose-600',
-              'teal': 'bg-teal-600 border-teal-700', 'pink': 'bg-pink-500 border-pink-600',
-            };
-            const colorClass = saturatedColors[cat.theme] || `bg-${cat.theme}-500 border-${cat.theme}-600`;
+            const colorClass = SATURATED_BY_THEME[cat.theme] || `bg-${cat.theme}-500 border-${cat.theme}-600`;
             const hoverClass = (status !== 'correct' && !animatingOut && !isComplete) 
               ? `md:hover:brightness-110 md:hover:-translate-y-1 cursor-pointer shadow-md md:hover:shadow-lg active:scale-95`
               : `cursor-default pointer-events-none`;

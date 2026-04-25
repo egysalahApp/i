@@ -1,4 +1,5 @@
 import React from 'react';
+import { CONTRAST_COLORS } from '../../constants/colorPalette';
 
 const ContrastCards = ({ sectionData }) => {
   return (
@@ -15,10 +16,10 @@ const ContrastCards = ({ sectionData }) => {
         {sectionData.pairs.map((pair, idx) => (
           <div key={idx} className="relative bg-white rounded-3xl border border-slate-200 shadow-md p-5 md:p-8 flex flex-col gap-5 overflow-hidden md:hover:shadow-lg transition-shadow">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-sky-500 border-2 border-sky-600 rounded-2xl p-6 text-center shadow-md flex items-center justify-center min-h-[6rem]">
+                  <div className={`${CONTRAST_COLORS.right.bg} border-2 ${CONTRAST_COLORS.right.border} rounded-2xl p-6 text-center shadow-md flex items-center justify-center min-h-[6rem]`}>
                       <h4 className="text-xl md:text-2xl font-bold text-white leading-relaxed">{pair.right}</h4>
                   </div>
-                  <div className="bg-rose-500 border-2 border-rose-600 rounded-2xl p-6 text-center shadow-md flex items-center justify-center min-h-[6rem]">
+                  <div className={`${CONTRAST_COLORS.left.bg} border-2 ${CONTRAST_COLORS.left.border} rounded-2xl p-6 text-center shadow-md flex items-center justify-center min-h-[6rem]`}>
                       <h4 className="text-xl md:text-2xl font-bold text-white leading-relaxed">{pair.left}</h4>
                   </div>
               </div>

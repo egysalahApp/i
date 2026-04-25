@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, AlertTriangle, PartyPopper } from 'lucide-react';
+import { ACTIVITY_COLORS } from '../../constants/colorPalette';
 
 const Sort = ({ sectionData, progress, onUpdateProgress }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -147,13 +148,8 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
           <div className="w-full max-w-4xl mt-8">
             <div className={`flex flex-wrap justify-center gap-4 ${disablePanelClass} ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
               {currentQuestion.options.map((opt, optIdx) => {
-                const saturatedColors = [
-                  'bg-emerald-600 border-emerald-700', 'bg-sky-500 border-sky-600',
-                  'bg-amber-600 border-amber-700', 'bg-rose-500 border-rose-600',
-                  'bg-indigo-500 border-indigo-600', 'bg-violet-500 border-violet-600',
-                  'bg-cyan-600 border-cyan-700', 'bg-teal-600 border-teal-700',
-                ];
-                const colorClass = saturatedColors[optIdx % saturatedColors.length];
+                const color = ACTIVITY_COLORS[optIdx % ACTIVITY_COLORS.length];
+                const colorClass = `${color.bg} ${color.border}`;
                 const maxOptLen = Math.max(...currentQuestion.options.map(o => o.length));
                 const fontSize = maxOptLen <= 10 ? 'text-lg md:text-2xl' : maxOptLen <= 20 ? 'text-lg md:text-xl' : 'text-lg md:text-xl';
                 

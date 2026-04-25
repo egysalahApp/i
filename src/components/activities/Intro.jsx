@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { AUTO_PALETTE } from '../../constants/colorPalette';
 
 const Intro = ({ sectionData, onNext }) => {
   return (
@@ -14,8 +14,7 @@ const Intro = ({ sectionData, onNext }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full fade-in">
         {sectionData.content.map((block, idx) => {
-          const defaultPalette = ['sky', 'emerald', 'indigo', 'amber', 'violet', 'cyan', 'purple', 'rose'];
-          const theme = block.theme || defaultPalette[idx % defaultPalette.length];
+          const theme = block.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length];
           return (
             <div key={idx} className={`bg-white border-2 border-${theme}-200 rounded-[2rem] p-6 md:p-8 shadow-sm md:hover:-translate-y-2 md:hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center group cursor-default`}>
               <div className={`w-16 h-16 md:w-20 md:h-20 bg-${theme}-100 rounded-full flex items-center justify-center text-3xl md:text-4xl mb-8 md:group-hover:scale-110 md:group-hover:-rotate-3 transition-transform duration-300 shrink-0`}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AUTO_PALETTE } from '../../constants/colorPalette';
 
 const Radar = ({ sectionData }) => {
   const [activeBranch, setActiveBranch] = useState(null);
@@ -9,7 +10,7 @@ const Radar = ({ sectionData }) => {
     ...sectionData.mapData,
     branches: sectionData.mapData.branches.map((branch, idx) => ({
       ...branch,
-      color: branch.color || branch.theme || ['sky', 'emerald', 'indigo', 'amber', 'violet', 'cyan', 'purple', 'rose'][idx % 8]
+      color: branch.color || branch.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length]
     }))
   };
 
@@ -21,7 +22,7 @@ const Radar = ({ sectionData }) => {
     rose: '#fb7185',
     indigo: '#818cf8',
     purple: '#a78bfa',
-    teal: '#2dd4bf',
+    violet: '#8b5cf6',
     orange: '#fb923c'
   };
 

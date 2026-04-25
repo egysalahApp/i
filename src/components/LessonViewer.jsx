@@ -46,14 +46,17 @@ function LessonViewer({ APP_DATA }) {
     const themePalette = APP_CONFIG.themePalette;
     const themes = [];
     const pairs = {
-      'emerald': 'purple',
-      'cyan': 'amber',
+      'emerald': 'violet',
       'amber': 'indigo',
-      'purple': 'emerald',
-      'violet': 'cyan',
-      'indigo': 'emerald',
+      'violet': 'emerald',
+      'indigo': 'amber',
+      'blue': 'rose',
+      'rose': 'blue',
+      'orange': 'indigo',
       'slate': 'sky',
-      'sky': 'indigo'
+      'sky': 'indigo',
+      'purple': 'emerald',
+      'cyan': 'amber',
     };
 
     APP_DATA.sections.forEach((section, idx) => {
@@ -217,7 +220,7 @@ function LessonViewer({ APP_DATA }) {
                 const isDone = progress[section.id]?.isScorable && progress[section.id].answered >= progress[section.id].total;
                 const effectiveTheme = getEffectiveTheme(idx);
                 const isSlate = effectiveTheme === 'slate';
-                const activeBg = isSlate ? 'bg-slate-500' : `bg-${effectiveTheme}-600`;
+                const activeBg = isSlate ? 'bg-slate-500' : `bg-${effectiveTheme}-500`;
                 const activeText = 'text-white';
                 const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
                 
