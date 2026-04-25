@@ -121,7 +121,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                     }
                     let numClass = `w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-xl md:text-2xl font-bold shrink-0 transition-all `;
                     if (answered) numClass += opt.isCorrect ? 'bg-emerald-500 text-white shadow-sm' : (selectedOption === opt ? 'bg-rose-500 text-white shadow-sm' : 'bg-slate-100 text-slate-400 border border-slate-200');
-                    else numClass += `bg-white text-${sectionData.theme}-600 shadow-md border border-slate-100`;
+                    else numClass += `bg-${sectionData.theme}-500 text-white shadow-md`;
                     
                     return (
                       <button key={optIdx} disabled={answered} onClick={() => handleAnswer(idx, optIdx)} className={btnClass}>

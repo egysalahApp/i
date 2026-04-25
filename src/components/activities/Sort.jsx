@@ -147,13 +147,18 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
           <div className="w-full max-w-4xl mt-8">
             <div className={`flex flex-wrap justify-center gap-4 ${disablePanelClass} ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
               {currentQuestion.options.map((opt, optIdx) => {
-                const colors = ['emerald', 'sky', 'amber', 'rose', 'indigo', 'violet', 'orange', 'cyan'];
-                const btnColor = colors[optIdx % colors.length];
+                const saturatedColors = [
+                  'bg-emerald-600 border-emerald-700', 'bg-sky-500 border-sky-600',
+                  'bg-amber-600 border-amber-700', 'bg-rose-500 border-rose-600',
+                  'bg-indigo-500 border-indigo-600', 'bg-violet-500 border-violet-600',
+                  'bg-cyan-600 border-cyan-700', 'bg-teal-600 border-teal-700',
+                ];
+                const colorClass = saturatedColors[optIdx % saturatedColors.length];
                 
-                let btnClass = `flex-1 min-w-[140px] flex items-center justify-center min-h-[4.5rem] px-4 py-3 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 border-2 text-center leading-relaxed bg-${btnColor}-50 border-${btnColor}-200 text-${btnColor}-800 `;
+                let btnClass = `flex-1 min-w-[140px] flex items-center justify-center min-h-[4.5rem] px-4 py-3 rounded-2xl font-bold text-lg md:text-xl transition-all duration-300 border-2 text-center leading-relaxed ${colorClass} text-white `;
                 
                 if (!animatingOut && status !== 'correct' && !isComplete) {
-                  btnClass += `shadow-sm md:hover:shadow-md md:hover:-translate-y-1 active:scale-95 cursor-pointer`;
+                  btnClass += `shadow-md md:hover:shadow-lg md:hover:-translate-y-1 md:hover:brightness-110 active:scale-95 cursor-pointer`;
                 } else {
                   btnClass += `cursor-default pointer-events-none`;
                 }

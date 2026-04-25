@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown, Link2, GripVertical } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -64,8 +65,13 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-slate-700 font-medium mb-2 text-sm">وصف النشاط</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-cyan-500 outline-none h-16"></textarea>
+            <label className="block text-slate-700 font-medium mb-2 text-sm">وصف النشاط (يدعم التنسيق)</label>
+            <RichTextarea 
+              value={description} 
+              onChange={setDescription}
+              placeholder="اكتب تعليمات النشاط هنا..."
+              theme={theme}
+            />
           </div>
           <div className="md:col-span-2 flex items-center gap-3 bg-white p-3 rounded-lg border border-slate-100">
             <label className="flex items-center gap-2 cursor-pointer select-none">

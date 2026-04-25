@@ -108,8 +108,13 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none h-16"></textarea>
+            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط (يدعم التنسيق)</label>
+            <RichTextarea 
+              value={description} 
+              onChange={setDescription}
+              placeholder="اكتب تعليمات النشاط هنا..."
+              theme={theme}
+            />
           </div>
         </div>
 
@@ -183,12 +188,24 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
                       </div>
                    </div>
                    <div className="col-span-12 md:col-span-6">
-                      <label className="block text-slate-500 text-[10px] font-bold uppercase mb-1">تلميح</label>
-                      <input type="text" value={q.hint || ''} onChange={(e) => handleQuestionChange(qIdx, 'hint', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-100 text-sm focus:border-emerald-300 outline-none" />
+                      <label className="block text-slate-500 text-[10px] font-bold uppercase mb-1">تلميح (Hint)</label>
+                      <RichTextarea 
+                        value={q.hint || ''} 
+                        onChange={(val) => handleQuestionChange(qIdx, 'hint', val)}
+                        placeholder="تلميح..."
+                        theme={theme}
+                        minHeight="60px"
+                      />
                    </div>
                    <div className="col-span-12 md:col-span-6">
                       <label className="block text-slate-500 text-[10px] font-bold uppercase mb-1">شرح الإجابة</label>
-                      <input type="text" value={q.explanation || ''} onChange={(e) => handleQuestionChange(qIdx, 'explanation', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-100 text-sm focus:border-emerald-300 outline-none" />
+                      <RichTextarea 
+                        value={q.explanation || ''} 
+                        onChange={(val) => handleQuestionChange(qIdx, 'explanation', val)}
+                        placeholder="شرح..."
+                        theme={theme}
+                        minHeight="60px"
+                      />
                    </div>
                 </div>
               </div>

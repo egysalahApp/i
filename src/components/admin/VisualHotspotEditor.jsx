@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown, Target, Highlighter, Info } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -100,6 +101,15 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
               {themes.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
+          <div className="md:col-span-2">
+            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط (يدعم التنسيق)</label>
+            <RichTextarea 
+              value={description} 
+              onChange={setDescription}
+              placeholder="اكتب تعليمات النشاط هنا..."
+              theme={theme}
+            />
+          </div>
         </div>
 
         {/* Questions List */}
@@ -188,24 +198,24 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
                       <label className="block text-amber-700 text-xs font-bold mb-2 flex items-center gap-1">
                         <Info size={14} /> التلميح (Hint)
                       </label>
-                      <input 
-                        type="text" 
+                      <RichTextarea 
                         value={q.hint || ''} 
-                        onChange={(e) => handleQuestionChange(qIdx, 'hint', e.target.value)}
-                        className="w-full bg-white px-3 py-2 rounded-lg border border-amber-100 outline-none text-sm"
+                        onChange={(val) => handleQuestionChange(qIdx, 'hint', val)}
                         placeholder="ساعد الطالب بكلمة..."
+                        theme={theme}
+                        minHeight="60px"
                       />
                    </div>
                    <div className="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100">
                       <label className="block text-emerald-700 text-xs font-bold mb-2 flex items-center gap-1">
                         <Save size={14} /> شرح الإجابة
                       </label>
-                      <input 
-                        type="text" 
+                      <RichTextarea 
                         value={q.explanation || ''} 
-                        onChange={(e) => handleQuestionChange(qIdx, 'explanation', e.target.value)}
-                        className="w-full bg-white px-3 py-2 rounded-lg border border-emerald-100 outline-none text-sm"
+                        onChange={(val) => handleQuestionChange(qIdx, 'explanation', val)}
                         placeholder="لماذا هذه هي الإجابة؟"
+                        theme={theme}
+                        minHeight="60px"
                       />
                    </div>
                 </div>

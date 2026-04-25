@@ -87,8 +87,13 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none h-20"></textarea>
+            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط (يدعم التنسيق)</label>
+            <RichTextarea 
+              value={description} 
+              onChange={setDescription}
+              placeholder="اكتب تعليمات النشاط هنا..."
+              theme={theme}
+            />
           </div>
         </div>
 
@@ -169,20 +174,22 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
                   </div>
                   <div className="col-span-12 md:col-span-6">
                     <label className="block text-slate-500 text-xs font-medium mb-1">تلميح (Hint)</label>
-                    <input 
-                      type="text" 
+                    <RichTextarea 
                       value={q.hint || ''} 
-                      onChange={(e) => handleQuestionChange(idx, 'hint', e.target.value)}
-                      className="w-full px-4 py-2 rounded-lg border border-slate-100 text-sm"
+                      onChange={(val) => handleQuestionChange(idx, 'hint', val)}
+                      placeholder="تلميح..."
+                      theme={theme}
+                      minHeight="60px"
                     />
                   </div>
                   <div className="col-span-12 md:col-span-6">
                     <label className="block text-slate-500 text-xs font-medium mb-1">شرح الإجابة الصحيحة</label>
-                    <input 
-                      type="text" 
+                    <RichTextarea 
                       value={q.explanation || ''} 
-                      onChange={(e) => handleQuestionChange(idx, 'explanation', e.target.value)}
-                      className="w-full px-4 py-2 rounded-lg border border-slate-100 text-sm"
+                      onChange={(val) => handleQuestionChange(idx, 'explanation', val)}
+                      placeholder="شرح..."
+                      theme={theme}
+                      minHeight="60px"
                     />
                   </div>
                 </div>

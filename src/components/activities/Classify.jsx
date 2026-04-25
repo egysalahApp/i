@@ -161,12 +161,20 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
         <div className={`flex flex-row w-full max-w-2xl mx-auto gap-2 md:gap-4 mt-2 relative z-0 flex-wrap justify-center ${isComplete ? 'opacity-40 grayscale-[50%]' : ''}`}>
           {categoriesWithTheme.map((cat, idx) => {
-            const btnClass = (status !== 'correct' && !animatingOut && !isComplete) 
-              ? `md:hover:border-${cat.theme}-400 md:hover:bg-${cat.theme}-100 md:hover:-translate-y-1 cursor-pointer shadow-sm md:hover:shadow-md active:scale-95`
+            const saturatedColors = {
+              'sky': 'bg-sky-500 border-sky-600', 'emerald': 'bg-emerald-600 border-emerald-700',
+              'indigo': 'bg-indigo-500 border-indigo-600', 'amber': 'bg-amber-600 border-amber-700',
+              'violet': 'bg-violet-500 border-violet-600', 'cyan': 'bg-cyan-600 border-cyan-700',
+              'purple': 'bg-purple-500 border-purple-600', 'rose': 'bg-rose-500 border-rose-600',
+              'teal': 'bg-teal-600 border-teal-700', 'pink': 'bg-pink-500 border-pink-600',
+            };
+            const colorClass = saturatedColors[cat.theme] || `bg-${cat.theme}-500 border-${cat.theme}-600`;
+            const hoverClass = (status !== 'correct' && !animatingOut && !isComplete) 
+              ? `md:hover:brightness-110 md:hover:-translate-y-1 cursor-pointer shadow-md md:hover:shadow-lg active:scale-95`
               : `cursor-default pointer-events-none`;
               
             return (
-              <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 border-${cat.theme}-200 text-${cat.theme}-700 bg-${cat.theme}-50 min-w-[120px] ${btnClass}`}>
+              <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 ${colorClass} text-white min-w-[120px] ${hoverClass}`}>
                 <span className="font-bold text-base md:text-lg text-center leading-snug">{cat.label}</span>
               </button>
             );

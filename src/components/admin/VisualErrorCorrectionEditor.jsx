@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown, HelpCircle, CheckCircle2, AlertTriangle } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -120,8 +121,13 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-rose-500 outline-none h-16"></textarea>
+            <label className="block text-slate-700 font-medium mb-2 text-sm">تعليمات النشاط (يدعم التنسيق)</label>
+            <RichTextarea 
+              value={description} 
+              onChange={setDescription}
+              placeholder="اكتب تعليمات النشاط هنا..."
+              theme={theme}
+            />
           </div>
         </div>
 
@@ -213,11 +219,23 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                   <div>
                     <label className="block text-slate-500 text-[10px] font-bold uppercase mb-1">تلميح (Hint)</label>
-                    <input type="text" value={q.hint || ''} onChange={(e) => handleQuestionChange(qIdx, 'hint', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+                    <RichTextarea 
+                      value={q.hint || ''} 
+                      onChange={(val) => handleQuestionChange(qIdx, 'hint', val)}
+                      placeholder="تلميح..."
+                      theme={theme}
+                      minHeight="60px"
+                    />
                   </div>
                   <div>
                     <label className="block text-slate-500 text-[10px] font-bold uppercase mb-1">شرح (Explanation)</label>
-                    <input type="text" value={q.explanation || ''} onChange={(e) => handleQuestionChange(qIdx, 'explanation', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm" />
+                    <RichTextarea 
+                      value={q.explanation || ''} 
+                      onChange={(val) => handleQuestionChange(qIdx, 'explanation', val)}
+                      placeholder="شرح..."
+                      theme={theme}
+                      minHeight="60px"
+                    />
                   </div>
                 </div>
               </div>
