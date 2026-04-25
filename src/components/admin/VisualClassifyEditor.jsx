@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown, LayoutGrid, CheckCircle2 } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -146,11 +147,12 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
                 <div className="grid grid-cols-12 gap-4">
                   <div className="col-span-12 md:col-span-8">
                     <label className="block text-slate-500 text-xs font-medium mb-1">نص البطاقة</label>
-                    <textarea 
+                    <RichTextarea 
                       value={q.text} 
-                      onChange={(e) => handleQuestionChange(idx, 'text', e.target.value)}
+                      onChange={(val) => handleQuestionChange(idx, 'text', val)}
                       className="w-full px-4 py-2 rounded-lg border border-slate-200 font-medium h-16"
-                    ></textarea>
+                      rows={2}
+                    />
                   </div>
                   <div className="col-span-12 md:col-span-4">
                     <label className="block text-slate-500 text-xs font-medium mb-1 text-indigo-600 font-bold">المجموعة الصحيحة</label>

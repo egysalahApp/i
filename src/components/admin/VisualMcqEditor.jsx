@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, HelpCircle, CheckCircle2, ArrowUp, ArrowDown } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualMcqEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -94,11 +95,12 @@ const VisualMcqEditor = ({ section, onSave, onCancel }) => {
                   <label className="block text-slate-600 text-xs font-bold mb-2 uppercase tracking-wider flex items-center gap-2">
                     <HelpCircle size={14} /> نص السؤال {qIdx + 1}
                   </label>
-                  <textarea 
+                  <RichTextarea 
                     value={q.text} 
-                    onChange={(e) => handleQuestionChange(qIdx, 'text', e.target.value)} 
+                    onChange={(val) => handleQuestionChange(qIdx, 'text', val)} 
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500 text-lg font-medium h-24"
-                  ></textarea>
+                    rows={3}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-3">

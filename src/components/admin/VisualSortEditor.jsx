@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown, Layers, MousePointer2 } from 'lucide-react';
+import RichTextarea from './RichTextarea';
 
 const VisualSortEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
@@ -158,11 +159,12 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
                 <div className="grid grid-cols-12 gap-6">
                    <div className="col-span-12 md:col-span-7">
                       <label className="block text-slate-500 text-[10px] font-bold uppercase mb-2">محتوى البطاقة</label>
-                      <textarea 
+                      <RichTextarea 
                         value={q.text} 
-                        onChange={(e) => handleQuestionChange(qIdx, 'text', e.target.value)}
+                        onChange={(val) => handleQuestionChange(qIdx, 'text', val)}
                         className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 outline-none text-lg font-medium leading-relaxed h-24"
-                      ></textarea>
+                        rows={3}
+                      />
                    </div>
                    <div className="col-span-12 md:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-100">
                       <label className="block text-emerald-700 text-[10px] font-bold uppercase mb-3 flex items-center gap-1">

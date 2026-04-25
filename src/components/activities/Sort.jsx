@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { HintBox } from '../ui/HintBox';
-import { toArabicNum } from '../../utils';
+import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, AlertTriangle, PartyPopper } from 'lucide-react';
 
 const Sort = ({ sectionData, progress, onUpdateProgress }) => {
@@ -35,7 +35,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
 
       let maxH = 0;
       sectionData.questions.forEach(q => {
-        tempDiv.innerText = `«${q.text}»`;
+        tempDiv.innerText = q.text;
         const h = tempDiv.offsetHeight;
         if (h > maxH) maxH = h;
       });
@@ -110,9 +110,10 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
 
                 
                 <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2 transition-all duration-300">
-                  <h3 className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 text-center">
-                    «{currentQuestion.text}»
-                  </h3>
+                  <h3 
+                    className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 text-center"
+                    dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQuestion.text, theme) }}
+                  />
                 </div>
                 
                 {showHint && (

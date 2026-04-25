@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
-import { toArabicNum, shuffleArray } from '../../utils';
+import { toArabicNum, shuffleArray, renderFormattedText } from '../../utils';
 import { Inbox } from 'lucide-react';
 
 const Classify = ({ sectionData, progress, onUpdateProgress }) => {
@@ -51,7 +51,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
       let maxH = 0;
       sectionData.questions.forEach(q => {
-        tempDiv.innerText = `«${q.text}»`;
+        tempDiv.innerText = q.text;
         const h = tempDiv.offsetHeight;
         if (h > maxH) maxH = h;
       });
@@ -130,13 +130,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                     <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
                       <h3 
                         className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center"
-                        dangerouslySetInnerHTML={{ 
-                          __html: currentQState?.originalQuestion.text
-                            ? currentQState.originalQuestion.text
-                                .replace(/«([^»]+)»/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
-                                .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
-                            : ''
-                        }}
+                        dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQState?.originalQuestion.text || '', sectionData.theme) }}
                       />
                     </div>
                    
@@ -205,9 +199,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                     key={i} 
                     className={`bg-white border-2 border-${cat.theme}-200 text-slate-700 text-xl font-normal py-3 px-4 rounded-xl text-center shadow-sm smooth-expand w-full`}
                     dangerouslySetInnerHTML={{ 
-                      __html: item.text
-                        .replace(/«([^»]+)»/g, `<span class="text-${cat.theme}-600 font-extrabold">$1</span>`)
-                        .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${cat.theme}-600 font-extrabold">$1</span>`)
+                      __html: renderFormattedText(item.text, cat.theme)
                     }}
                   />
               ))}

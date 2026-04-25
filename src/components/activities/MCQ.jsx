@@ -2,14 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
-import { toArabicNum, shuffleArray } from '../../utils';
-
-const highlightMarked = (text, theme) => {
-  if (!text || !text.includes('«')) return text;
-  return text.split(/(«[^»]+»)/).map((part, i) =>
-    part.startsWith('«') ? <span key={i} className={`text-${theme}-600 font-bold`}>{part.slice(1, -1)}</span> : part
-  );
-};
+import { toArabicNum, shuffleArray, renderFormattedText } from '../../utils';
 
 const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
   const isComplete = progress.total > 0 && progress.answered === progress.total;
@@ -106,11 +99,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                   </div>
                   <h3 
                     className="text-2xl md:text-3xl font-normal text-slate-800 leading-loose whitespace-pre-line text-right"
-                    dangerouslySetInnerHTML={{ 
-                      __html: q.text
-                        .replace(/«([^»]+)»/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
-                        .replace(/<b>([^<]+)<\/b>/g, `<span class="text-${sectionData.theme}-600 font-extrabold">$1</span>`)
-                    }}
+                    dangerouslySetInnerHTML={{ __html: renderFormattedText(q.text, sectionData.theme) }}
                   />
                   {showHint && (
                       <div className="mt-4 smooth-expand">
