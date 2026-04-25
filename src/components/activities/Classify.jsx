@@ -173,7 +173,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
               
             return (
               <button key={idx} disabled={status === 'correct' || animatingOut || isComplete} onClick={() => handleCategoryClick(cat.id)} className={`flex-1 flex flex-col items-center justify-center p-3 md:p-5 border-2 md:border-4 rounded-xl md:rounded-2xl transition-all duration-300 border-${cat.theme}-200 text-${cat.theme}-700 bg-${cat.theme}-50 min-w-[120px] ${btnClass}`}>
-                <span className="font-bold text-lg md:text-xl text-center leading-snug">{cat.label}</span>
+                <span className="font-bold text-base md:text-lg text-center leading-snug">{cat.label}</span>
               </button>
             );
           })}
@@ -193,9 +193,9 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
             <div className="flex flex-col items-center justify-center w-full relative z-10 mb-1">
                 <div className="flex items-center justify-center gap-3">
                     <div className="bg-white shadow-sm rounded-full p-2 border border-slate-100 flex items-center justify-center shrink-0">
-                        <Inbox className={`w-6 h-6 md:w-8 md:h-8 text-${cat.theme}-600 shrink-0`} />
+                        <Inbox className={`w-5 h-5 md:w-6 md:h-6 text-${cat.theme}-600 shrink-0`} />
                     </div>
-                    <h3 className="font-bold text-2xl md:text-3xl text-slate-900 text-center">{cat.label}</h3>
+                    <h3 className="font-bold text-xl md:text-2xl text-slate-900 text-center">{cat.label}</h3>
                 </div>
             </div>
 
