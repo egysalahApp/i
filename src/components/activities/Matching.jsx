@@ -49,15 +49,16 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     if (!gridRef.current) return;
     const buttons = gridRef.current.querySelectorAll('[data-match-btn]');
     let maxH = 0;
-    // Reset heights first to get natural height
+    // Reset to natural size
     buttons.forEach(btn => { btn.style.minHeight = 'auto'; });
-    // Measure
+    // Measure after reset
     requestAnimationFrame(() => {
       buttons.forEach(btn => {
         const h = btn.scrollHeight;
         if (h > maxH) maxH = h;
       });
-      if (maxH > 0) setUniformHeight(maxH);
+      // Add small padding for visual comfort
+      if (maxH > 0) setUniformHeight(maxH + 4);
     });
   }, []);
 
@@ -65,16 +66,34 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     measureHeight();
     window.addEventListener('resize', measureHeight);
     return () => window.removeEventListener('resize', measureHeight);
-  }, [measureHeight, rightItems, leftItems]);
+  }, [measureHeight]);
+
+  // Re-measure once on first render after DOM is ready
+  useEffect(() => {
+    const timer = setTimeout(measureHeight, 100);
+    return () => clearTimeout(timer);
+  }, [measureHeight]);
 
   useEffect(() => {
     if (selectedRight && selectedLeft) {
       if (selectedRight === selectedLeft) {
-        // Match!
+        // Match! Move the left item to face its right pair
         const matchedId = selectedRight;
         setMatchedPairs(prev => [...prev, matchedId]);
         setSelectedRight(null);
         setSelectedLeft(null);
+
+        // Reorder leftItems so matched item sits at the same row as its right pair
+        setLeftItems(prev => {
+          const rightIdx = rightItems.findIndex(r => r.id === matchedId);
+          const leftIdx = prev.findIndex(l => l.id === matchedId);
+          if (rightIdx === -1 || leftIdx === -1 || rightIdx === leftIdx) return prev;
+          const newArr = [...prev];
+          // Swap positions so matched left item faces its right pair
+          [newArr[rightIdx], newArr[leftIdx]] = [newArr[leftIdx], newArr[rightIdx]];
+          return newArr;
+        });
+
         onUpdateProgress(sectionData.id, progress.answered + 1, progress.score + 1);
       } else {
         // Mismatch!
@@ -86,7 +105,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         }, 600);
       }
     }
-  }, [selectedRight, selectedLeft, sectionData.id, progress, onUpdateProgress]);
+  }, [selectedRight, selectedLeft, sectionData.id, progress, onUpdateProgress, rightItems]);
 
   const handleRightClick = (id) => {
     if (wrongAttempt || matchedPairs.includes(id)) return;
@@ -110,7 +129,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     const color = getColorForPair(item.id);
 
     if (isMatched) {
-      return `${color.bg} ${color.border} ${color.text} opacity-60 cursor-default pointer-events-none`;
+      return `${color.bg} ${color.border} ${color.text} cursor-default pointer-events-none`;
     }
     if (isWrong) {
       return `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
@@ -118,7 +137,6 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     if (isSelected) {
       return `${color.activeBg} ${color.activeBorder} ${color.text} shadow-lg scale-[1.03]`;
     }
-    // Default: colored background (right column is always colored)
     return `${color.bg} ${color.border} ${color.text} active:scale-95 cursor-pointer md:hover:shadow-md md:hover:scale-[1.02]`;
   };
 
@@ -129,8 +147,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     const color = getColorForPair(item.id);
 
     if (isMatched) {
-      // When matched, adopt the pair's color
-      return `${color.bg} ${color.border} ${color.text} opacity-60 cursor-default pointer-events-none`;
+      return `${color.bg} ${color.border} ${color.text} cursor-default pointer-events-none`;
     }
     if (isWrong) {
       return `bg-rose-100 border-rose-500 text-rose-800 shake pointer-events-none`;
@@ -138,9 +155,10 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     if (isSelected) {
       return `bg-slate-200 border-slate-500 text-slate-900 shadow-lg scale-[1.03]`;
     }
-    // Default: neutral/white (left column starts uncolored)
     return `bg-white border-slate-200 text-slate-700 active:scale-95 cursor-pointer md:hover:border-slate-400 md:hover:shadow-md md:hover:scale-[1.02]`;
   };
+
+  const btnBase = `w-full px-3 py-2.5 md:px-5 md:py-3 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-300 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed`;
 
   return (
     <div className="max-w-4xl mx-auto pb-6" dir="rtl">
@@ -157,17 +175,18 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         <div className="text-center text-slate-400 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1 opacity-80">{swap ? 'المجموعة الثانية' : 'المجموعة الأولى'}</div>
         <div className="text-center text-slate-400 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1 opacity-80">{swap ? 'المجموعة الأولى' : 'المجموعة الثانية'}</div>
 
-        {/* Interleaved rows: right item then left item for each row */}
+        {/* Grid rows */}
         {rightItems.map((rItem, rowIdx) => {
           const lItem = leftItems[rowIdx];
+          const heightStyle = uniformHeight ? { minHeight: `${uniformHeight}px` } : {};
           return (
             <React.Fragment key={rowIdx}>
               {/* First column (colored) */}
               <button
                 data-match-btn
                 onClick={() => handleRightClick(rItem.id)}
-                className={`w-full px-3 py-2.5 md:px-5 md:py-3 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-200 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed ${getRightBtnClass(rItem)}`}
-                style={uniformHeight ? { minHeight: `${uniformHeight}px` } : {}}
+                className={`${btnBase} ${getRightBtnClass(rItem)}`}
+                style={heightStyle}
               >
                 <span>{swap ? rItem.left : rItem.right}</span>
                 {matchedPairs.includes(rItem.id) && <span className="mr-1.5 text-xs md:text-base">✓</span>}
@@ -177,8 +196,8 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
               <button
                 data-match-btn
                 onClick={() => handleLeftClick(lItem.id)}
-                className={`w-full px-3 py-2.5 md:px-5 md:py-3 rounded-xl md:rounded-2xl font-bold text-sm md:text-xl transition-all duration-200 border-2 flex items-center justify-center text-center leading-snug md:leading-relaxed ${getLeftBtnClass(lItem)}`}
-                style={uniformHeight ? { minHeight: `${uniformHeight}px` } : {}}
+                className={`${btnBase} ${getLeftBtnClass(lItem)}`}
+                style={heightStyle}
               >
                 <span>{swap ? lItem.right : lItem.left}</span>
                 {matchedPairs.includes(lItem.id) && <span className="mr-1.5 text-xs md:text-base">✓</span>}
