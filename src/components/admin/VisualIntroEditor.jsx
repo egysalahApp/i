@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, X, PlusCircle, Trash2 } from 'lucide-react';
+import { Save, X, PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 
 const VisualIntroEditor = ({ section, onSave, onCancel }) => {
   // Initialize state with section data or defaults
