@@ -127,6 +127,7 @@ const MatchingPairSchema = z.object({
 
 const MatchingSchema = BaseSectionSchema.extend({
   type: z.literal('matching'),
+  swapColumns: z.boolean().optional(),
   pairs: z.array(MatchingPairSchema).min(1, "يجب إضافة زوج واحد على الأقل"),
 });
 

@@ -5,6 +5,7 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
   const [title, setTitle] = useState(section.title || '');
   const [description, setDescription] = useState(section.description || '');
   const [theme, setTheme] = useState(section.theme || 'cyan');
+  const [swapColumns, setSwapColumns] = useState(section.swapColumns || false);
   const [pairs, setPairs] = useState(section.pairs || []);
 
   const handlePairChange = (index, field, value) => {
@@ -30,7 +31,7 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const handleSave = () => {
-    onSave({ ...section, title, description, theme, pairs });
+    onSave({ ...section, title, description, theme, swapColumns, pairs });
   };
 
   const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
@@ -65,6 +66,18 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
           <div className="md:col-span-2">
             <label className="block text-slate-700 font-medium mb-2 text-sm">وصف النشاط</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-cyan-500 outline-none h-16"></textarea>
+          </div>
+          <div className="md:col-span-2 flex items-center gap-3 bg-white p-3 rounded-lg border border-slate-100">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input 
+                type="checkbox" 
+                checked={swapColumns} 
+                onChange={(e) => setSwapColumns(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+              />
+              <span className="text-sm font-medium text-slate-700">عكس ترتيب الأعمدة</span>
+              <span className="text-xs text-slate-400">(يمين ↔ يسار)</span>
+            </label>
           </div>
         </div>
 
