@@ -98,7 +98,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                           btnClass += `text-slate-800 md:hover:bg-${sectionData.theme}-100 md:hover:text-${sectionData.theme}-800 cursor-pointer rounded `;
                           if (isShaking) btnClass += "bg-rose-100 text-rose-700 shake ";
                       } else {
-                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white rounded-md px-1.5 -mx-1.5 pt-1 pb-1.5 relative z-10 shadow-sm cursor-default ";
+                          if (isSelectedTarget) btnClass += "bg-emerald-500 text-white rounded-md px-2 py-1 mx-1 relative z-10 shadow-sm cursor-default inline-block ";
                           else btnClass += "text-slate-800 cursor-default ";
                       }
 
