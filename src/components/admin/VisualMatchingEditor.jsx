@@ -70,7 +70,6 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
               value={description} 
               onChange={setDescription}
               placeholder="اكتب تعليمات النشاط هنا..."
-              theme={theme}
             />
           </div>
           <div className="md:col-span-2 flex items-center gap-3 bg-white p-3 rounded-lg border border-slate-100">

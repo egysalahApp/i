@@ -107,7 +107,6 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
               value={description} 
               onChange={setDescription}
               placeholder="اكتب تعليمات النشاط هنا..."
-              theme={theme}
             />
           </div>
         </div>
@@ -202,8 +201,6 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
                         value={q.hint || ''} 
                         onChange={(val) => handleQuestionChange(qIdx, 'hint', val)}
                         placeholder="ساعد الطالب بكلمة..."
-                        theme={theme}
-                        minHeight="60px"
                       />
                    </div>
                    <div className="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100">
@@ -214,8 +211,6 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
                         value={q.explanation || ''} 
                         onChange={(val) => handleQuestionChange(qIdx, 'explanation', val)}
                         placeholder="لماذا هذه هي الإجابة؟"
-                        theme={theme}
-                        minHeight="60px"
                       />
                    </div>
                 </div>

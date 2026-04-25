@@ -92,7 +92,6 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
               value={description} 
               onChange={setDescription}
               placeholder="اكتب تعليمات النشاط هنا..."
-              theme={theme}
             />
           </div>
         </div>
@@ -178,8 +177,6 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
                       value={q.hint || ''} 
                       onChange={(val) => handleQuestionChange(idx, 'hint', val)}
                       placeholder="تلميح..."
-                      theme={theme}
-                      minHeight="60px"
                     />
                   </div>
                   <div className="col-span-12 md:col-span-6">
@@ -188,8 +185,6 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
                       value={q.explanation || ''} 
                       onChange={(val) => handleQuestionChange(idx, 'explanation', val)}
                       placeholder="شرح..."
-                      theme={theme}
-                      minHeight="60px"
                     />
                   </div>
                 </div>

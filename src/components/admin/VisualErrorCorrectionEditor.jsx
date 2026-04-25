@@ -126,7 +126,6 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
               value={description} 
               onChange={setDescription}
               placeholder="اكتب تعليمات النشاط هنا..."
-              theme={theme}
             />
           </div>
         </div>
@@ -223,8 +222,6 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
                       value={q.hint || ''} 
                       onChange={(val) => handleQuestionChange(qIdx, 'hint', val)}
                       placeholder="تلميح..."
-                      theme={theme}
-                      minHeight="60px"
                     />
                   </div>
                   <div>
@@ -233,8 +230,6 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
                       value={q.explanation || ''} 
                       onChange={(val) => handleQuestionChange(qIdx, 'explanation', val)}
                       placeholder="شرح..."
-                      theme={theme}
-                      minHeight="60px"
                     />
                   </div>
                 </div>
