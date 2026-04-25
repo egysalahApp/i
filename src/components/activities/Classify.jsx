@@ -190,13 +190,11 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 <Inbox className="w-full h-full" />
             </div>
 
-            <div className="flex flex-col items-center justify-center w-full relative z-10 mb-1">
-                <div className="flex items-center justify-center gap-3">
-                    <div className="bg-white shadow-sm rounded-full p-2 border border-slate-100 flex items-center justify-center shrink-0">
-                        <Inbox className={`w-5 h-5 md:w-6 md:h-6 text-${cat.theme}-600 shrink-0`} />
-                    </div>
-                    <h3 className="font-bold text-xl md:text-2xl text-slate-900 text-center">{cat.label}</h3>
+            <div className="flex flex-col items-center justify-center w-full relative z-10 mb-2 gap-3">
+                <div className="bg-white shadow-sm rounded-full p-2.5 border border-slate-100 flex items-center justify-center shrink-0">
+                    <Inbox className={`w-6 h-6 md:w-7 md:h-7 text-${cat.theme}-600 shrink-0`} />
                 </div>
+                <h3 className="font-bold text-xl md:text-2xl text-slate-900 text-center">{cat.label}</h3>
             </div>
 
             <div className="h-px bg-slate-200 w-2/3 mx-auto my-4 relative z-10"></div>
