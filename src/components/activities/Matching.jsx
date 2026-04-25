@@ -14,12 +14,13 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 
-  // Assign a stable color index to each pair based on original order
-  const pairColorMap = useRef({});
-  useEffect(() => {
+  // Assign a stable color index to each pair based on original order synchronously
+  const pairColorMap = React.useMemo(() => {
+    const map = {};
     (sectionData.pairs || []).forEach((pair, idx) => {
-      pairColorMap.current[pair.id] = idx % PAIR_COLORS.length;
+      map[pair.id] = idx % PAIR_COLORS.length;
     });
+    return map;
   }, [sectionData.pairs]);
 
   const [rightItems, setRightItems] = useState(() => shuffle([...(sectionData.pairs || [])]));
@@ -80,7 +81,7 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
   };
 
   const getColorForPair = (pairId) => {
-    const idx = pairColorMap.current[pairId] ?? 0;
+    const idx = pairColorMap[pairId] ?? 0;
     return PAIR_COLORS[idx % PAIR_COLORS.length];
   };
 

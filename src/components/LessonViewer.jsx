@@ -16,6 +16,7 @@ import GoldenEnvelope from './activities/GoldenEnvelope';
 import Story from './activities/Story';
 import Flashcards from './activities/Flashcards';
 import Sort from './activities/Sort';
+import Ordering from './activities/Ordering';
 import Matching from './activities/Matching';
 
 import SectionFooter from './ui/SectionFooter';
@@ -292,6 +293,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   {sectionWithTheme.type === 'story' && <Story sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'flashcards' && <Flashcards sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'ordering' && <Ordering sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
 
                   {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}

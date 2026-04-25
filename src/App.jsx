@@ -53,11 +53,37 @@ function LessonWrapper() {
       setLoading(true);
       setError(null);
       
-      const { data, error } = await supabase
-        .from('lessons')
-        .select('*')
-        .eq('id', lessonId)
-        .single();
+      let data = null;
+      let error = null;
+
+      if (import.meta.env.DEV) {
+        try {
+          // Dynamic import to load local lesson data for testing
+          const localLesson = await import(`./lessons/${lessonId}.json`);
+          data = {
+            id: localLesson.default.id,
+            page_title: localLesson.default.pageTitle,
+            header_title: localLesson.default.headerTitle,
+            header_subtitle: localLesson.default.headerSubtitle,
+            youtube_link: localLesson.default.youtubeLink,
+            copyright: localLesson.default.copyright,
+            sections: localLesson.default.sections
+          };
+          console.log(`Loaded ${lessonId} locally from JSON file for testing`);
+        } catch (e) {
+          console.log(`Local file for ${lessonId} not found, falling back to Supabase`);
+        }
+      }
+
+      if (!data) {
+        const { data: dbData, error: dbError } = await supabase
+          .from('lessons')
+          .select('*')
+          .eq('id', lessonId)
+          .single();
+        data = dbData;
+        error = dbError;
+      }
         
       if (error) {
         console.error("Error fetching lesson:", error);

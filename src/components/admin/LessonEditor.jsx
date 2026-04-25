@@ -14,6 +14,7 @@ import VisualMatchingEditor from './VisualMatchingEditor';
 import VisualHotspotEditor from './VisualHotspotEditor';
 import VisualGoldenEnvelopeEditor from './VisualGoldenEnvelopeEditor';
 import VisualSortEditor from './VisualSortEditor';
+import VisualOrderingEditor from './VisualOrderingEditor';
 
 import VisualContrastCardsEditor from './VisualContrastCardsEditor';
 import VisualErrorCorrectionEditor from './VisualErrorCorrectionEditor';
@@ -272,6 +273,10 @@ const LessonEditor = () => {
         newSection.title = 'تحديد الكلمات';
         newSection.questions = [];
         break;
+      case 'ordering':
+        newSection.title = 'ترتيب الأحداث';
+        newSection.questions = [];
+        break;
       default:
         break;
     }
@@ -447,6 +452,7 @@ const LessonEditor = () => {
                           <button onClick={() => addNewSection('contrast_cards')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">بطاقات المقارنة</button>
                           <button onClick={() => addNewSection('error_correction')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">تصويب الأخطاء</button>
                           <button onClick={() => addNewSection('spotting')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">تحديد الكلمات (Spotting)</button>
+                          <button onClick={() => addNewSection('ordering')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">ترتيب الأحداث</button>
                           <button onClick={() => addNewSection('style_lab')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 border-b border-slate-50">مختبر الأسلوب</button>
                          <button onClick={() => addNewSection('golden_envelope')} className="w-full text-right px-4 py-2 text-xs hover:bg-indigo-50 text-slate-700 hover:text-indigo-600">الرسالة الذهبية</button>
                        </div>
@@ -488,7 +494,7 @@ const LessonEditor = () => {
                               }}
                               className="text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 px-4 py-2 rounded-lg transition-colors"
                             >
-                              {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
+                              {['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'ordering', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) ? 'تعديل بالواجهة' : 'تعديل الكود'}
                             </button>
                             <button
                               onClick={() => deleteSection(index)}
@@ -613,8 +619,16 @@ const LessonEditor = () => {
                           onCancel={cancelEditSection} 
                         />
                       )}
+
+                      {isEditing && section.type === 'ordering' && (
+                        <VisualOrderingEditor 
+                          section={section} 
+                          onSave={saveSection} 
+                          onCancel={cancelEditSection} 
+                        />
+                      )}
                       
-                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) && (
+                      {isEditing && !['intro', 'mcq', 'tap_to_fill', 'story', 'classify', 'flashcards', 'radar', 'style_lab', 'matching', 'hotspot', 'golden_envelope', 'sort', 'ordering', 'contrast_cards', 'error_correction', 'spotting'].includes(section.type) && (
                         <RawSectionEditor 
                           section={section} 
                           onSave={saveSection} 

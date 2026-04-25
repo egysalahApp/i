@@ -196,6 +196,19 @@ const SortSchema = BaseSectionSchema.extend({
   questions: z.array(SortQuestionSchema),
 });
 
+// Ordering (drag-and-reorder)
+const OrderingQuestionSchema = z.object({
+  text: z.string(),
+  correctOrder: z.array(z.string()).min(2, "يجب إضافة عنصرين على الأقل"),
+  hint: z.string().optional(),
+  explanation: z.string().optional(),
+});
+
+const OrderingSchema = BaseSectionSchema.extend({
+  type: z.literal('ordering'),
+  questions: z.array(OrderingQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
+});
+
 // Style Lab
 const StyleExcerptSchema = z.object({
   segments: z.array(z.object({
@@ -240,6 +253,7 @@ const SectionSchema = z.discriminatedUnion('type', [
   SpottingSchema,
   ErrorCorrectionSchema,
   SortSchema,
+  OrderingSchema,
   StyleLabSchema,
   GoldenEnvelopeSchema,
 ]);
