@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { toArabicNum } from '../../utils';
 
-const Story = ({ sectionData, progress, onUpdateProgress, onNextSection, isLastSection }) => {
+const Story = ({ sectionData, progress, onUpdateProgress }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -106,17 +106,6 @@ const Story = ({ sectionData, progress, onUpdateProgress, onNextSection, isLastS
         <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
       </div>
 
-      {/* Next Section Button */}
-      {isComplete && !isLastSection && (
-        <div className="mt-8 pt-4 w-full flex justify-center fade-in">
-          <button 
-            onClick={onNextSection} 
-            className={`bg-${theme}-600 md:hover:bg-${theme}-700 text-white font-semibold text-xl md:text-2xl py-4 px-10 rounded-full shadow-lg flex items-center gap-3 active:scale-95 transition-all`}
-          >
-            القسم التالي <ArrowLeft className="w-6 h-6" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };

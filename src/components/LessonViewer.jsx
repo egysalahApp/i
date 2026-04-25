@@ -268,7 +268,7 @@ function LessonViewer({ APP_DATA }) {
                   {sectionWithTheme.type === 'error_correction' && <ErrorCorrection sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'hotspot' && <Hotspot sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'tap_to_fill' && <TapToFill sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
-                  {sectionWithTheme.type === 'story' && <Story sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} onNextSection={handleNextSection} isLastSection={isLast} />}
+                  {sectionWithTheme.type === 'story' && <Story sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'flashcards' && <Flashcards sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
