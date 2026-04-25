@@ -47,25 +47,35 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
   const heightLocked = useRef(false);
 
   useEffect(() => {
-    if (heightLocked.current || !gridRef.current) return;
+    if (heightLocked.current) return;
+
     const measure = () => {
-      const buttons = gridRef.current?.querySelectorAll('[data-match-btn]');
+      if (!gridRef.current || heightLocked.current) return;
+      const buttons = gridRef.current.querySelectorAll('[data-match-btn]');
       if (!buttons || buttons.length === 0) return;
-      let maxH = 0;
-      buttons.forEach(btn => {
-        btn.style.minHeight = 'auto';
-      });
-      buttons.forEach(btn => {
-        const h = btn.scrollHeight;
-        if (h > maxH) maxH = h;
-      });
-      if (maxH > 0) {
-        setUniformHeight(maxH + 4);
-        heightLocked.current = true; // Lock — never re-measure
-      }
+
+      // Phase 1: Reset all to natural height
+      buttons.forEach(btn => { btn.style.minHeight = 'auto'; });
+
+      // Phase 2: Wait for browser reflow, then measure
+      setTimeout(() => {
+        let maxH = 0;
+        buttons.forEach(btn => {
+          const h = btn.scrollHeight;
+          if (h > maxH) maxH = h;
+        });
+        if (maxH > 0) {
+          const finalHeight = maxH + 4;
+          setUniformHeight(finalHeight);
+          // Apply immediately via DOM to prevent flash
+          buttons.forEach(btn => { btn.style.minHeight = `${finalHeight}px`; });
+          heightLocked.current = true;
+        }
+      }, 50);
     };
-    // Allow DOM to render first
-    requestAnimationFrame(() => requestAnimationFrame(measure));
+
+    // Try measuring after DOM + fonts are ready
+    setTimeout(measure, 150);
   }, []);
 
   useEffect(() => {
