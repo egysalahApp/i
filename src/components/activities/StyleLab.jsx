@@ -54,11 +54,11 @@ const StyleLab = ({ sectionData }) => {
             {excerpt.segments.map((seg, i) => {
               if (seg.isHighlight) {
                 const isSelected = selectedId === seg.id;
-                let classes = `inline font-bold px-3 py-1 md:py-2 mx-1 rounded-lg cursor-pointer transition-all duration-300 select-none `;
+                let classes = `inline px-0.5 rounded cursor-pointer transition-all duration-300 select-none `;
                 if (isSelected) {
-                    classes += `bg-${sectionData.theme}-500 text-white shadow-md`;
+                    classes += `bg-${sectionData.theme}-500 text-white shadow-md rounded-md px-1.5 py-0.5`;
                 } else {
-                    classes += `bg-${sectionData.theme}-100 text-${sectionData.theme}-800 border-b-2 border-${sectionData.theme}-300 hover:bg-${sectionData.theme}-200`;
+                    classes += `text-${sectionData.theme}-700 border-b-[3px] border-${sectionData.theme}-300 md:hover:border-${sectionData.theme}-500 md:hover:text-${sectionData.theme}-900`;
                 }
                 return <span key={i} className={classes} onClick={() => setSelectedId(seg.id)}>{seg.text}</span>;
               }
