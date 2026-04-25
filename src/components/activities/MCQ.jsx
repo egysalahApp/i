@@ -108,7 +108,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                   )}
               </div>
 
-              <div className={`grid gap-3 mx-auto w-full ${isTF ? 'max-w-[280px]' : 'max-w-md'} flex-grow grid-cols-1 content-start`}>
+              <div className={`grid gap-3 mx-auto w-full ${isTF ? 'max-w-[280px]' : 'max-w-md md:max-w-2xl'} flex-grow grid-cols-1 content-start`}>
                   {options.map((opt, optIdx) => {
                     let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 ${isTF ? 'justify-center' : 'justify-start'} `;
                     if (!answered) { 
