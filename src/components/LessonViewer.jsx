@@ -216,7 +216,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
       <Header />
       <div className="w-full text-center pt-10 pb-8 bg-transparent flex flex-col items-center px-4">
         <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-1">
-          {APP_DATA.headerTitle || APP_CONFIG.headerTitle}
+          {APP_DATA.headerTitle || APP_DATA.pageTitle || 'الدرس التفاعلي'}
         </h1>
       </div>
 
