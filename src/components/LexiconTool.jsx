@@ -109,7 +109,7 @@ const LexiconTool = () => {
   const tabs = [
     { id: 'meanings', label: 'المعاني', icon: BookOpen },
     { id: 'derivatives', label: 'المشتقات', icon: GitBranch },
-    { id: 'synonyms', label: 'مرادفات وأضداد', icon: ArrowLeftRight },
+    { id: 'synonyms', label: 'مترادفات', icon: ArrowLeftRight },
     { id: 'mizan', label: 'الميزان', icon: Scale },
   ];
 
@@ -120,6 +120,9 @@ const LexiconTool = () => {
           @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap');
           .font-naskh {
             font-family: 'Noto Naskh Arabic', serif;
+            font-size: 1.25em;
+            font-weight: 700;
+            line-height: 1.8;
           }
         `}
       </style>
@@ -230,14 +233,14 @@ const LexiconTool = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 min-w-0 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-6 py-3.5 md:py-4 font-bold text-sm md:text-base transition-all border-b-3 ${
+                    className={`flex-1 min-w-0 flex items-center justify-center gap-1 md:gap-2 px-1 md:px-6 py-3.5 md:py-4 font-bold text-xs md:text-base transition-all border-b-3 ${
                       activeTab === tab.id
                         ? 'text-emerald-700 border-emerald-500 bg-emerald-50/50'
                         : 'text-slate-400 border-transparent hover:text-slate-600 hover:bg-slate-50'
                     }`}
                   >
-                    <Icon className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                    <span className="truncate">{tab.label}</span>
+                    <Icon className="w-3.5 h-3.5 md:w-5 md:h-5 shrink-0" />
+                    <span className="whitespace-nowrap">{tab.label}</span>
                   </button>
                 );
               })}
