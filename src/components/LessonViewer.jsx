@@ -146,14 +146,15 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           const stickyTabs = document.getElementById('sticky-tabs-container');
           const contentArea = document.getElementById('main-content-area');
           if (contentArea) {
-            // هامش أمان إضافي (2px) لمنع تغطية الهيدر في Safari
-            const safetyMargin = 2;
+            // استخدام scrollIntoView الأصلي بدلاً من الحساب اليدوي
+            // هذا يحل مشكلة سفاري مع شريط العنوان الديناميكي الذي يتغير حجمه أثناء التمرير لأعلى
+            const safetyMargin = 15; // مساحة تنفس إضافية (15px) للراحة البصرية
             const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 80) + safetyMargin;
-            const elementPosition = contentArea.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            
+            contentArea.style.scrollMarginTop = `${headerOffset}px`;
+            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-        }, 30);
+        }, 50); // زيادة التأخير قليلاً لضمان استقرار DOM في الموبايل
     });
   };
 
