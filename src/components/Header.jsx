@@ -1,22 +1,17 @@
 import React from 'react';
-import { Menu } from 'lucide-react';
 import { APP_CONFIG } from '../constants/appConfig';
 
 const Header = () => {
   return (
-    <header className="w-full bg-transparent py-3 px-6 md:px-12 relative z-40">
-      <div className="max-w-7xl mx-auto flex justify-start items-center gap-3">
-        <button 
-          className="text-slate-500 hover:text-purple-900 transition-colors p-1 -mr-1"
-          title="القائمة"
-        >
-          <Menu size={24} />
-        </button>
+    <header className="w-full py-2.5 px-5 md:px-10 relative z-40">
+      <div className="max-w-7xl mx-auto flex justify-start items-center gap-2.5">
+        {/* Brand Mark — small colored dot as visual anchor */}
+        <div className="w-2 h-2 rounded-full bg-sky-500 shrink-0"></div>
         <a 
           href={APP_CONFIG.youtubeLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-purple-900 text-xl md:text-2xl font-bold tracking-tight hover:text-purple-700 transition-colors"
+          className="text-slate-800 text-base md:text-lg font-semibold tracking-tight hover:text-sky-600 transition-colors"
         >
           {APP_CONFIG.headerTitle}
         </a>
