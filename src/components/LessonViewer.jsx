@@ -147,14 +147,11 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           const contentArea = document.getElementById('main-content-area');
           
           if (contentArea) {
-            // نستخدم scrollMarginTop مع الحساب الدقيق للمسافة
-            const tabsHeight = stickyTabs ? stickyTabs.offsetHeight : 60;
+            // باستخدام الهيدر الشفاف، يمكننا العودة للطريقة البسيطة والآمنة
+            const safetyMargin = 2; // هامش أمان طفيف (2px)
+            const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 60) + safetyMargin;
             
-            // قمنا بإضافة mt-6 (24px) للمحتوى ليكون هناك مسافة فعلية في الـ DOM
-            // الآن نأمر المتصفح بأن يترك مسافة (tabsHeight + 19) من أعلى الشاشة
-            // هذا سيجعل المتصفح يمرر الشاشة للأسفل بمقدار أكبر بـ 5px، مما يُخفي الهيدر الأبيض تماماً!
-            // وفي نفس الوقت يترك 5px مساحة أمان للتبويبات لكي لا تغطي المحتوى.
-            contentArea.style.scrollMarginTop = `${tabsHeight + 19}px`;
+            contentArea.style.scrollMarginTop = `${headerOffset}px`;
             contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }, 50); // زيادة التأخير قليلاً لضمان استقرار DOM في الموبايل
@@ -259,7 +256,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
         </div>
       )}
 
-      <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh] mt-6 md:mt-8">
+      <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
         <div className="flex items-center justify-center gap-3 pt-6 mb-6 relative">
           <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
           {!isShareMode && lessonId && (
