@@ -117,9 +117,9 @@ const LexiconTool = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 flex flex-col" dir="rtl">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap');
-          .font-naskh {
-            font-family: 'Noto Naskh Arabic', serif;
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400..900&display=swap');
+          .font-noto-sans {
+            font-family: 'Noto Sans Arabic', sans-serif;
             font-size: 1.45em !important;
             font-weight: 700 !important;
             line-height: 2 !important;
@@ -269,7 +269,7 @@ const LexiconTool = () => {
                             <div className="flex items-start gap-2 bg-slate-50 rounded-xl p-3 md:p-4 border border-slate-100">
                               <MessageCircle className="w-4 h-4 text-emerald-400 mt-1 shrink-0" />
                               <div className="flex-1">
-                                <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium font-naskh">
+                                <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium font-noto-sans">
                                   {item.example}
                                 </p>
                                 <button
