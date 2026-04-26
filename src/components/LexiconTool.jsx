@@ -197,12 +197,18 @@ const LexiconTool = () => {
                   <Volume2 className="w-6 h-6" />
                 </button>
               </div>
-              <div className="flex items-center justify-center gap-4 md:gap-6 text-sm md:text-base flex-wrap">
+              <div className="flex items-center justify-center gap-4 md:gap-6 text-sm md:text-base flex-wrap mt-2">
                 {result.root && (
                   <span className="text-slate-500">الجذر: <strong className="text-emerald-700 text-lg">{result.root}</strong></span>
                 )}
                 {result.pattern && (
                   <span className="text-slate-500">الوزن: <strong className="text-emerald-700 text-lg">{result.pattern}</strong></span>
+                )}
+                {result.plural && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.plural.trim().toLowerCase()) && (
+                  <span className="text-slate-500">الجمع: <strong className="text-emerald-700 text-lg">{result.plural}</strong></span>
+                )}
+                {result.singular && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.singular.trim().toLowerCase()) && (
+                  <span className="text-slate-500">المفرد: <strong className="text-emerald-700 text-lg">{result.singular}</strong></span>
                 )}
               </div>
               <div className="flex items-center justify-center gap-2 mt-3">
