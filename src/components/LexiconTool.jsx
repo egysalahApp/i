@@ -142,7 +142,7 @@ const LexiconTool = () => {
             <BookOpen className="w-8 h-8 text-emerald-600" />
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">المعجم الذكي</h1>
-          <p className="text-lg text-slate-500">اكتب أي كلمة عربية واكتشف معانيها ومشتقاتها فوراً</p>
+          <p className="text-lg text-slate-500">اكتب أي كلمة عربية واكتشف معانيها ومشتقاتها فورًا</p>
         </div>
 
         {/* Search Box */}
@@ -430,14 +430,7 @@ const LexiconTool = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Scale className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                      <p className="text-slate-400 font-medium mb-4">التحليل الصرفي غير متوفر حالياً لهذه الكلمة</p>
-                      <button
-                        onClick={() => fetchMizan(result?.word || word)}
-                        className="px-6 py-2 bg-indigo-50 text-indigo-600 font-bold rounded-xl hover:bg-indigo-100 transition-colors flex items-center gap-2 mx-auto"
-                      >
-                        <Loader2 className={`w-4 h-4 ${mizanLoading ? 'animate-spin' : ''}`} />
-                        إعادة محاولة التحليل
-                      </button>
+                      <p className="text-slate-400 font-medium">التحليل الصرفي غير متوفر حاليًا لهذه الكلمة</p>
                     </div>
                   )}
                 </div>
