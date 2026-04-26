@@ -149,14 +149,21 @@ const MizanTool = () => {
             </div>
 
             {/* Letter Breakdown */}
-            {result.letterBreakdown && result.letterBreakdown.length > 0 && (
-              <div className="px-6 md:px-8 py-6 border-b border-slate-100">
-                <h3 className="text-center text-sm font-bold text-slate-400 mb-5 uppercase tracking-widest">تحليل الميزان</h3>
-                <div className="flex justify-center gap-1.5 md:gap-2.5">
+            {result.letterBreakdown && result.letterBreakdown.length > 0 && (() => {
+              const count = result.letterBreakdown.length;
+              const bx = count > 6 
+                ? 'w-8 h-8 text-sm md:w-12 md:h-12 md:text-xl' 
+                : count > 4 
+                  ? 'w-9 h-9 text-base md:w-13 md:h-13 md:text-xl' 
+                  : 'w-11 h-11 text-lg md:w-14 md:h-14 md:text-2xl';
+              return (
+              <div className="px-4 md:px-8 py-5 md:py-6 border-b border-slate-100">
+                <h3 className="text-center text-xs md:text-sm font-bold text-slate-400 mb-4 md:mb-5 uppercase tracking-widest">تحليل الميزان</h3>
+                <div className="flex justify-center gap-1 md:gap-2.5">
                   {result.letterBreakdown.map((item, i) => (
-                    <div key={i} className="flex flex-col items-center gap-2">
+                    <div key={i} className="flex flex-col items-center gap-1.5 md:gap-2">
                       {/* Word letter */}
-                      <div className={`w-11 h-11 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-black text-lg md:text-2xl border-2 ${
+                      <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-black border-2 ${
                         item.isRoot
                           ? 'bg-indigo-500 border-indigo-600 text-white shadow-md'
                           : 'bg-slate-100 border-slate-200 text-slate-500'
@@ -164,9 +171,9 @@ const MizanTool = () => {
                         {item.wordLetter}
                       </div>
                       {/* Connector */}
-                      <div className={`w-0.5 h-5 ${item.isRoot ? 'bg-indigo-300' : 'bg-slate-200'}`} />
+                      <div className={`w-0.5 h-3 md:h-5 ${item.isRoot ? 'bg-indigo-300' : 'bg-slate-200'}`} />
                       {/* Pattern letter */}
-                      <div className={`w-11 h-11 md:w-14 md:h-14 rounded-xl flex items-center justify-center font-bold text-lg md:text-2xl border-2 ${
+                      <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-bold border-2 ${
                         item.isRoot
                           ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
                           : 'bg-white border-slate-200 text-slate-400'
@@ -176,7 +183,7 @@ const MizanTool = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-center gap-6 mt-5 text-xs md:text-sm font-medium">
+                <div className="flex justify-center gap-4 md:gap-6 mt-4 md:mt-5 text-xs md:text-sm font-medium">
                   <div className="flex items-center gap-1.5">
                     <div className="w-3 h-3 rounded bg-indigo-500" />
                     <span className="text-slate-500">حروف أصلية (جذر)</span>
@@ -187,7 +194,8 @@ const MizanTool = () => {
                   </div>
                 </div>
               </div>
-            )}
+              );
+            })()}
 
             {/* Morphological Notes */}
             {result.morphNotes && (

@@ -81,20 +81,30 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
     }
   };
 
+  // Split Arabic text into letter clusters (base letter + diacritics together)
+  const splitArabic = (text) => {
+    if (!text) return [];
+    // Match: one base letter followed by zero or more combining marks (diacritics)
+    const matches = text.match(/[\u0621-\u064A\u0671-\u06D3][\u064B-\u065F\u0670\u0651]*/g);
+    return matches || [];
+  };
+
   // Build the letter-by-letter breakdown
   const getBreakdown = () => {
     if (!currentQuestion) return [];
-    const word = currentQuestion.word?.replace(/[\u064B-\u065F\u0670]/g, '') || ''; // strip tashkeel for letter count
-    const pattern = currentQuestion.pattern?.replace(/[\u064B-\u065F\u0670]/g, '') || '';
-    const rootLetters = ['ف', 'ع', 'ل'];
+    const wordLetters = splitArabic(currentQuestion.word || '');
+    const patternLetters = splitArabic(currentQuestion.pattern || '');
+    const rootLetters = ['فَ', 'فُ', 'فِ', 'فْ', 'ف', 'عَ', 'عُ', 'عِ', 'عْ', 'ع', 'لَ', 'لُ', 'لِ', 'لْ', 'ل', 'لّ'];
     
-    const maxLen = Math.max(word.length, pattern.length);
+    const maxLen = Math.max(wordLetters.length, patternLetters.length);
     const breakdown = [];
     
     for (let i = 0; i < maxLen; i++) {
-      const wChar = word[i] || '';
-      const pChar = pattern[i] || '';
-      const isRoot = rootLetters.includes(pChar);
+      const wChar = wordLetters[i] || '';
+      const pChar = patternLetters[i] || '';
+      // Check if the base letter (without diacritics) is a root letter
+      const pBase = pChar.replace(/[\u064B-\u065F\u0670\u0651]/g, '');
+      const isRoot = ['ف', 'ع', 'ل'].includes(pBase);
       breakdown.push({ wordLetter: wChar, patternLetter: pChar, isRoot });
     }
     return breakdown;
@@ -104,6 +114,15 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
 
   // Option colors
   const optionPalette = ['sky', 'emerald', 'amber', 'violet', 'rose', 'blue', 'orange', 'indigo'];
+
+  // Dynamic box size based on letter count
+  const breakdownData = showBreakdown ? getBreakdown() : [];
+  const letterCount = breakdownData.length;
+  const boxClass = letterCount > 6 
+    ? 'w-8 h-8 text-sm md:w-11 md:h-11 md:text-lg' 
+    : letterCount > 4 
+      ? 'w-9 h-9 text-base md:w-12 md:h-12 md:text-xl' 
+      : 'w-10 h-10 text-lg md:w-13 md:h-13 md:text-xl';
 
   return (
     <div className="max-w-3xl mx-auto pb-6 min-h-[500px]">
@@ -160,15 +179,15 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
               )}
             </div>
 
-            <div className="px-4 md:px-6 py-6">
+            <div className="px-3 md:px-6 py-5 md:py-6">
               {/* Word Display Card */}
-              <div className={`relative text-center p-8 md:p-10 rounded-2xl mb-6 border-2 transition-all duration-500 ${
+              <div className={`relative text-center p-6 md:p-10 rounded-2xl mb-5 border-2 transition-all duration-500 ${
                 isCorrect 
                   ? 'bg-emerald-50/50 border-emerald-200' 
                   : `bg-gradient-to-br from-${theme}-50 to-white border-${theme}-200`
               }`}>
                 <div className="flex items-center justify-center gap-3 mb-2">
-                  <span className="text-4xl md:text-5xl font-black text-slate-800 tracking-wider">
+                  <span className="text-3xl md:text-5xl font-black text-slate-800 tracking-wider">
                     {currentQuestion?.word}
                   </span>
                   <button
@@ -176,11 +195,11 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
                     className={`p-2 rounded-full transition-all active:scale-90 text-${theme}-400 md:hover:text-${theme}-600 md:hover:bg-${theme}-100`}
                     title="استمع للنطق"
                   >
-                    <Volume2 className="w-6 h-6" />
+                    <Volume2 className="w-5 h-5 md:w-6 md:h-6" />
                   </button>
                 </div>
                 {currentQuestion?.root && (
-                  <p className="text-base md:text-lg text-slate-400 font-medium">
+                  <p className="text-sm md:text-lg text-slate-400 font-medium">
                     الجذر: <span className={`font-bold text-${theme}-600`}>{currentQuestion.root}</span>
                   </p>
                 )}
@@ -188,16 +207,16 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
 
               {/* Letter-by-letter Breakdown (appears after correct answer) */}
               {showBreakdown && (
-                <div className="mb-6 smooth-expand">
-                  <div className="bg-slate-50 rounded-2xl p-5 md:p-6 border border-slate-200">
-                    <h4 className="text-center text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">تحليل الميزان</h4>
+                <div className="mb-5 smooth-expand">
+                  <div className="bg-slate-50 rounded-2xl p-4 md:p-6 border border-slate-200">
+                    <h4 className="text-center text-xs md:text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">تحليل الميزان</h4>
                     
                     {/* Scale visualization */}
                     <div className="flex justify-center gap-1 md:gap-2 mb-2">
-                      {getBreakdown().map((item, i) => (
-                        <div key={`w-${i}`} className="flex flex-col items-center gap-2">
+                      {breakdownData.map((item, i) => (
+                        <div key={`w-${i}`} className="flex flex-col items-center gap-1.5 md:gap-2">
                           {/* Word letter */}
-                          <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-lg md:text-xl border-2 transition-all duration-500 ${
+                          <div className={`${boxClass} rounded-lg md:rounded-xl flex items-center justify-center font-black border-2 transition-all duration-500 ${
                             item.isRoot
                               ? `bg-${theme}-500 border-${theme}-600 text-white`
                               : 'bg-slate-200 border-slate-300 text-slate-600'
@@ -206,10 +225,10 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
                           </div>
                           
                           {/* Connector */}
-                          <div className={`w-0.5 h-4 ${item.isRoot ? `bg-${theme}-300` : 'bg-slate-200'}`} />
+                          <div className={`w-0.5 h-3 md:h-4 ${item.isRoot ? `bg-${theme}-300` : 'bg-slate-200'}`} />
                           
                           {/* Pattern letter */}
-                          <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-bold text-lg md:text-xl border-2 ${
+                          <div className={`${boxClass} rounded-lg md:rounded-xl flex items-center justify-center font-bold border-2 ${
                             item.isRoot
                               ? `bg-${theme}-100 border-${theme}-300 text-${theme}-700`
                               : 'bg-white border-slate-200 text-slate-400'
@@ -220,7 +239,7 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
                       ))}
                     </div>
 
-                    <div className="flex justify-center gap-6 mt-4 text-xs md:text-sm font-medium">
+                    <div className="flex justify-center gap-4 md:gap-6 mt-3 md:mt-4 text-xs md:text-sm font-medium">
                       <div className="flex items-center gap-1.5">
                         <div className={`w-3 h-3 rounded bg-${theme}-500`} />
                         <span className="text-slate-500">حروف أصلية (جذر)</span>
