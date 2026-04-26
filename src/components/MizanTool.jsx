@@ -200,7 +200,7 @@ const MizanTool = () => {
             })()}
 
             {/* Morphological Notes */}
-            {result.morphNotes && (
+            {result.morphNotes && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.morphNotes.trim().toLowerCase()) && !result.morphNotes.includes('لا يوجد تغيير') && (
               <div className="px-6 md:px-8 py-4 bg-amber-50/50 border-b border-amber-100">
                 <div className="flex items-start gap-2">
                   <Sparkles className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />

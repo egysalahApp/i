@@ -9,6 +9,7 @@ const LexiconTool = () => {
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
   const [activeTab, setActiveTab] = useState('meanings');
+  const [mizanResult, setMizanResult] = useState(null);
 
   const handleAnalyze = async () => {
     const trimmed = word.trim();
@@ -19,20 +20,33 @@ const LexiconTool = () => {
     setResult(null);
 
     try {
-      const res = await fetch('/api/lexicon', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ word: trimmed }),
-      });
+      const [lexRes, mizRes] = await Promise.all([
+        fetch('/api/lexicon', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: trimmed }),
+        }),
+        fetch('/api/mizan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: trimmed }),
+        }).catch(() => null)
+      ]);
 
-      const data = await res.json();
+      const data = await lexRes.json();
 
-      if (!res.ok) {
+      if (!lexRes.ok) {
         setError(data.error || 'حدث خطأ أثناء التحليل');
         return;
       }
 
+      let mData = null;
+      if (mizRes && mizRes.ok) {
+        mData = await mizRes.json();
+      }
+
       setResult(data);
+      setMizanResult(mData);
       setActiveTab('meanings');
       setHistory(prev => {
         const filtered = prev.filter(h => h.word !== data.word);
@@ -62,6 +76,7 @@ const LexiconTool = () => {
   const handleHistoryClick = (item) => {
     setWord(item.word);
     setResult(item);
+    setMizanResult(item.mizanResult || null);
     setActiveTab('meanings');
   };
 
@@ -69,6 +84,7 @@ const LexiconTool = () => {
     { id: 'meanings', label: 'المعاني', icon: BookOpen },
     { id: 'derivatives', label: 'المشتقات', icon: GitBranch },
     { id: 'synonyms', label: 'مرادفات وأضداد', icon: ArrowLeftRight },
+    { id: 'mizan', label: 'الميزان الصرفي', icon: Scale },
   ];
 
   return (
@@ -161,15 +177,14 @@ const LexiconTool = () => {
                     {result.type}
                   </span>
                 )}
-                {/* Link to Mizan */}
-                <a
-                  href={`/mizan`}
-                  onClick={(e) => { e.preventDefault(); window.open(`/mizan`, '_blank'); }}
+                {/* Link to Mizan tab instead of new page */}
+                <button
+                  onClick={() => setActiveTab('mizan')}
                   className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 font-bold text-sm px-4 py-1.5 rounded-full hover:bg-indigo-100 transition-colors"
                 >
                   <Scale className="w-3.5 h-3.5" />
-                  الميزان الصرفي
-                </a>
+                  تحليل الميزان
+                </button>
               </div>
             </div>
 
@@ -312,10 +327,74 @@ const LexiconTool = () => {
                   </div>
                 </div>
               )}
+
+              {/* Mizan Tab */}
+              {activeTab === 'mizan' && (
+                <div className="space-y-6">
+                  {mizanResult ? (
+                    <div>
+                      {mizanResult.letterBreakdown && mizanResult.letterBreakdown.length > 0 && (() => {
+                        const count = mizanResult.letterBreakdown.length;
+                        const bx = count > 6 
+                          ? 'w-10 h-10 text-lg md:w-12 md:h-12 md:text-xl' 
+                          : 'w-12 h-12 text-xl md:w-14 md:h-14 md:text-2xl';
+                        return (
+                          <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                            <h4 className="text-center text-xs md:text-sm font-bold text-slate-400 mb-6 uppercase tracking-widest">تفكيك الأحرف</h4>
+                            <div className="flex justify-center gap-1 md:gap-2.5">
+                              {mizanResult.letterBreakdown.map((item, i) => (
+                                <div key={i} className="flex flex-col items-center gap-1.5 md:gap-2">
+                                  <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-black border-2 ${
+                                    item.isRoot
+                                      ? 'bg-indigo-500 border-indigo-600 text-white shadow-md'
+                                      : 'bg-white border-slate-200 text-slate-500'
+                                  }`}>
+                                    {item.wordLetter}
+                                  </div>
+                                  <div className={`w-0.5 h-3 md:h-5 ${item.isRoot ? 'bg-indigo-300' : 'bg-slate-200'}`} />
+                                  <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-bold border-2 ${
+                                    item.isRoot
+                                      ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
+                                      : 'bg-slate-100 border-slate-200 text-slate-400'
+                                  }`}>
+                                    {item.patternLetter}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex justify-center gap-4 md:gap-6 mt-6 text-xs md:text-sm font-medium">
+                              <div className="flex items-center gap-1.5">
+                                <div className="w-3 h-3 rounded bg-indigo-500" />
+                                <span className="text-slate-500">حروف أصلية (جذر)</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <div className="w-3 h-3 rounded bg-slate-200" />
+                                <span className="text-slate-500">حروف زائدة</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {mizanResult.morphNotes && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(mizanResult.morphNotes.trim().toLowerCase()) && !mizanResult.morphNotes.includes('لا يوجد تغيير') && (
+                        <div className="mt-6 flex items-start gap-2 bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                          <Sparkles className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+                          <p className="text-amber-800 text-base leading-relaxed font-medium">{mizanResult.morphNotes}</p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Scale className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+                      <p className="text-slate-400 font-medium">التحليل الصرفي غير متوفر لهذه الكلمة</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Usage Notes */}
-            {result.usage_notes && result.usage_notes.length > 0 && (
+            {result.usage_notes && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.usage_notes.trim().toLowerCase()) && (
               <div className="px-5 md:px-8 py-4 bg-amber-50/50 border-t border-amber-100">
                 <div className="flex items-start gap-2">
                   <Info className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
@@ -358,16 +437,6 @@ const LexiconTool = () => {
                   {example}
                 </button>
               ))}
-            </div>
-            {/* Link to Mizan */}
-            <div className="mt-8 pt-6 border-t border-slate-100">
-              <a
-                href="/mizan"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-indigo-50 text-indigo-600 font-bold text-base rounded-2xl hover:bg-indigo-100 transition-all active:scale-95"
-              >
-                <Scale className="w-5 h-5" />
-                جرّب الميزان الصرفي أيضاً
-              </a>
             </div>
           </div>
         )}
