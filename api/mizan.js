@@ -39,8 +39,11 @@ export default async function handler(req, res) {
 - أعد JSON صالحًا فقط بدون markdown أو backticks.`;
 
   try {
-    // Try multiple models in order of preference
-    const models = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
+    // Try multiple models - can be overridden via env var
+    const defaultModels = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
+    const models = process.env.GEMINI_MODEL 
+      ? [process.env.GEMINI_MODEL, ...defaultModels] 
+      : defaultModels;
     let response;
     let lastError = '';
 
