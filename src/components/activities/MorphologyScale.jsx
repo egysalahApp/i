@@ -119,10 +119,8 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
   const breakdownData = showBreakdown ? getBreakdown() : [];
   const letterCount = breakdownData.length;
   const boxClass = letterCount > 6 
-    ? 'w-8 h-8 text-sm md:w-11 md:h-11 md:text-lg' 
-    : letterCount > 4 
-      ? 'w-9 h-9 text-base md:w-12 md:h-12 md:text-xl' 
-      : 'w-10 h-10 text-lg md:w-13 md:h-13 md:text-xl';
+    ? 'w-10 h-10 text-lg md:w-11 md:h-11 md:text-xl' 
+    : 'w-11 h-11 text-xl md:w-12 md:h-12 md:text-xl';
 
   return (
     <div className="max-w-3xl mx-auto pb-6 min-h-[500px]">

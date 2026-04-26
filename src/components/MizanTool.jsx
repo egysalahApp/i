@@ -102,7 +102,7 @@ const MizanTool = () => {
             <button
               onClick={handleAnalyze}
               disabled={loading || !word.trim()}
-              className={`px-6 md:px-8 rounded-xl font-bold text-lg text-white transition-all active:scale-95 flex items-center gap-2 ${
+              className={`px-5 md:px-8 rounded-xl font-bold text-lg text-white transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 ${
                 loading || !word.trim()
                   ? 'bg-slate-300 cursor-not-allowed'
                   : 'bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg'
@@ -152,10 +152,8 @@ const MizanTool = () => {
             {result.letterBreakdown && result.letterBreakdown.length > 0 && (() => {
               const count = result.letterBreakdown.length;
               const bx = count > 6 
-                ? 'w-8 h-8 text-sm md:w-12 md:h-12 md:text-xl' 
-                : count > 4 
-                  ? 'w-9 h-9 text-base md:w-13 md:h-13 md:text-xl' 
-                  : 'w-11 h-11 text-lg md:w-14 md:h-14 md:text-2xl';
+                ? 'w-10 h-10 text-lg md:w-12 md:h-12 md:text-xl' 
+                : 'w-12 h-12 text-xl md:w-14 md:h-14 md:text-2xl';
               return (
               <div className="px-4 md:px-8 py-5 md:py-6 border-b border-slate-100">
                 <h3 className="text-center text-xs md:text-sm font-bold text-slate-400 mb-4 md:mb-5 uppercase tracking-widest">تحليل الميزان</h3>
