@@ -53,41 +53,12 @@ export default async function handler(req, res) {
 مهم جداً: أعد JSON خالصاً فقط. لا تكتب أي نص قبله أو بعده. لا تستخدم markdown.`;
 
   try {
-    // Auto-discover available flash models from the API
+    // استخدام النماذج السريعة مباشرة لتوفير وقت الاتصال الإضافي
     let models = [];
-    
     if (process.env.GEMINI_MODEL) {
       models.push(process.env.GEMINI_MODEL);
     }
-
-    try {
-      const listRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
-      );
-      if (listRes.ok) {
-        const listData = await listRes.json();
-        const flashModels = (listData.models || [])
-          .filter(m => 
-            m.name.includes('flash') && 
-            m.supportedGenerationMethods?.includes('generateContent')
-          )
-          .map(m => m.name.replace('models/', ''))
-          .sort((a, b) => {
-            // Prefer newer versions (higher numbers first)
-            const vA = a.match(/(\d+\.?\d*)/)?.[1] || '0';
-            const vB = b.match(/(\d+\.?\d*)/)?.[1] || '0';
-            return parseFloat(vB) - parseFloat(vA);
-          });
-        models.push(...flashModels);
-      }
-    } catch (e) {
-      console.warn('Could not auto-discover models, using fallbacks');
-    }
-
-    // Fallback if auto-discovery failed
-    if (models.length === 0) {
-      models = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
-    }
+    models.push('gemini-2.5-flash', 'gemini-1.5-flash');
     let response;
     let lastError = '';
 
