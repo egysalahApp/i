@@ -39,25 +39,35 @@ export default async function handler(req, res) {
 - أعد JSON صالحًا فقط بدون markdown أو backticks.`;
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 1024,
-          },
-        }),
-      }
-    );
+    // Try multiple models in order of preference
+    const models = ['gemini-2.0-flash-lite', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+    let response;
+    let lastError = '';
+
+    for (const model of models) {
+      response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 1024,
+            },
+          }),
+        }
+      );
+
+      if (response.ok) break;
+      lastError = await response.text();
+      console.error(`Model ${model} failed:`, lastError);
+    }
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('Gemini API error:', errText);
-      return res.status(502).json({ error: 'خطأ في الاتصال بخدمة التحليل' });
+      console.error('All models failed. Last error:', lastError);
+      return res.status(502).json({ error: 'خطأ في الاتصال بخدمة التحليل. جرّب مرة أخرى.' });
     }
 
     const data = await response.json();
