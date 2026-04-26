@@ -11,9 +11,14 @@ const LexiconTool = () => {
   const [activeTab, setActiveTab] = useState('meanings');
   const [mizanResult, setMizanResult] = useState(null);
 
-  const handleAnalyze = async () => {
-    const trimmed = word.trim();
+  const handleAnalyze = async (searchQuery) => {
+    const queryToUse = typeof searchQuery === 'string' ? searchQuery : word;
+    const trimmed = queryToUse.trim();
     if (!trimmed) return;
+
+    if (trimmed !== word) {
+      setWord(trimmed);
+    }
 
     setLoading(true);
     setError('');
@@ -256,7 +261,12 @@ const LexiconTool = () => {
                   {(result.derivatives || []).map((item, idx) => (
                     <div key={idx} className="flex items-center gap-4 bg-slate-50 rounded-xl p-4 border border-slate-100 hover:border-emerald-200 transition-colors">
                       <div className="text-center shrink-0">
-                        <span className="text-2xl md:text-3xl font-black text-slate-800">{item.word}</span>
+                        <button
+                          onClick={() => handleAnalyze(item.word)}
+                          className="text-2xl md:text-3xl font-black text-slate-800 hover:text-emerald-600 transition-colors text-right md:text-center block"
+                        >
+                          {item.word}
+                        </button>
                         <button
                           onClick={() => handleSpeak(item.word)}
                           className="block mx-auto mt-1 text-emerald-400 hover:text-emerald-600 transition-colors"
@@ -292,7 +302,7 @@ const LexiconTool = () => {
                       {(result.synonyms || []).map((syn, idx) => (
                         <button
                           key={idx}
-                          onClick={() => { setWord(syn); }}
+                          onClick={() => handleAnalyze(syn)}
                           className="px-4 py-2.5 bg-emerald-50 border-2 border-emerald-100 rounded-xl font-bold text-emerald-700 text-lg hover:bg-emerald-100 hover:border-emerald-200 transition-all active:scale-95"
                         >
                           {syn}
@@ -314,7 +324,7 @@ const LexiconTool = () => {
                       {(result.antonyms || []).map((ant, idx) => (
                         <button
                           key={idx}
-                          onClick={() => { setWord(ant); }}
+                          onClick={() => handleAnalyze(ant)}
                           className="px-4 py-2.5 bg-rose-50 border-2 border-rose-100 rounded-xl font-bold text-rose-700 text-lg hover:bg-rose-100 hover:border-rose-200 transition-all active:scale-95"
                         >
                           {ant}
@@ -431,7 +441,7 @@ const LexiconTool = () => {
               {['حرية', 'أدب', 'علم', 'قلب', 'نور', 'حياة', 'صبر', 'عدل'].map((example) => (
                 <button
                   key={example}
-                  onClick={() => { setWord(example); }}
+                  onClick={() => handleAnalyze(example)}
                   className="px-4 py-2 bg-white border-2 border-dashed border-slate-200 rounded-xl font-bold text-slate-500 hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50 transition-all active:scale-95 text-base"
                 >
                   {example}
