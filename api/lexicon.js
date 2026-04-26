@@ -142,7 +142,31 @@ export default async function handler(req, res) {
       cleanJson = jsonMatch[0];
     }
 
-    const result = JSON.parse(cleanJson);
+    let result = JSON.parse(cleanJson);
+
+    // Post-process: Apply Arabic Orthography Rules (Golden Rules)
+    const applyOrthographyRules = (text) => {
+      if (typeof text !== 'string') return text;
+      // 1. Move tanween fatha from Alef to the preceding letter (اً -> ًا)
+      let newText = text.replace(/\u0627\u064B/g, '\u064B\u0627');
+      // 2. Exception: Lam + Tanween + Alef -> Lam + Alef + Tanween (لًا -> لاً)
+      newText = newText.replace(/\u0644\u064B\u0627/g, '\u0644\u0627\u064B');
+      return newText;
+    };
+
+    const applyRulesToObject = (obj) => {
+      if (typeof obj === 'string') return applyOrthographyRules(obj);
+      if (Array.isArray(obj)) return obj.map(item => applyRulesToObject(item));
+      if (obj !== null && typeof obj === 'object') {
+        const newObj = {};
+        for (const key in obj) newObj[key] = applyRulesToObject(obj[key]);
+        return newObj;
+      }
+      return obj;
+    };
+
+    result = applyRulesToObject(result);
+
     return res.status(200).json(result);
   } catch (err) {
     console.error('Lexicon API error:', err.message, err.stack);
