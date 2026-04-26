@@ -270,6 +270,27 @@ const MorphologyScaleSchema = BaseSectionSchema.extend({
   questions: z.array(MorphologyQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
 });
 
+// Text Highlighter (البحث عن الكلمة في النص)
+const HighlighterWordSchema = z.union([
+  z.string(),
+  z.object({
+    text: z.string().min(1),
+    isTarget: z.boolean().optional(),
+  }),
+]);
+
+const HighlighterQuestionSchema = z.object({
+  text: z.string().min(1, "نص السؤال مطلوب"),
+  words: z.array(HighlighterWordSchema).min(3, "يجب وجود ٣ كلمات على الأقل"),
+  hint: z.string().optional(),
+  explanation: z.string().optional(),
+});
+
+const TextHighlighterSchema = BaseSectionSchema.extend({
+  type: z.literal('text_highlighter'),
+  questions: z.array(HighlighterQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
+});
+
 
 /**
  * Master Lesson Schema
@@ -294,6 +315,7 @@ const SectionSchema = z.discriminatedUnion('type', [
   SentenceBuilderSchema,
   WordBuilderSchema,
   MorphologyScaleSchema,
+  TextHighlighterSchema,
 ]);
 
 export const LessonSchema = z.object({
