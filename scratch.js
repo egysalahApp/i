@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 config({ path: '.env' });
-const word = "حرية";
+const word = "تَحِيَّة";
 const prompt = `أنت عالم لغوي متخصص في الصرف العربي والتحليل الصرفي. حلّل الكلمة التالية تحليلاً صرفيًا دقيقًا ومفصلاً.
 
 الكلمة: "${word.trim()}"
@@ -21,9 +21,10 @@ const prompt = `أنت عالم لغوي متخصص في الصرف العربي
 قواعد صارمة يجب اتباعها:
 1. راعِ جميع التغييرات الصرفية:
 2. التشكيل الكامل ضروري للكلمة والوزن.
-3. letterBreakdown: قاعدة ذهبية: كل عنصر يحتوي على حرف أساسي واحد فقط مع حركته (مثل: "مُ"). لا تدمج حرفين مختلفين أبداً في عنصر واحد (مثلاً "ري" أو "لي" خطأ، يجب فصلهما إلى عنصرين). الشدة (ّ) تبقى مع حرفها لأنها ليست حرفاً منفصلاً. isRoot = true فقط لحروف الجذر.
+3. letterBreakdown: قاعدة ذهبية: كل عنصر يحتوي على حرف أساسي واحد فقط مع حركته (مثل: "مُ"). لا تدمج حرفين مختلفين أبداً في عنصر واحد.
+   - الشدة (ّ) تبقى مع حرفها. إذا كانت الشدة نتيجة إدغام حرفين أصليين (مثل "رِّ" في "حُرِّيَّة" التي أصلها "ح ر ر")، فاكتب الحرفين المقابلين في الوزن (مثل "عْلِ").
    مثال صحيح لكلمة كَتَبَ: [{"wordLetter":"كَ","patternLetter":"فَ","isRoot":true},{"wordLetter":"تَ","patternLetter":"عَ","isRoot":true},{"wordLetter":"بَ","patternLetter":"لَ","isRoot":true}]
-   مثال صحيح لكلمة حُرِّيَّة: [{"wordLetter":"حُ","patternLetter":"فُ","isRoot":true},{"wordLetter":"رِّ","patternLetter":"عِّ","isRoot":true},{"wordLetter":"يَّ","patternLetter":"يَّ","isRoot":false},{"wordLetter":"ة","patternLetter":"ة","isRoot":false}]
+   مثال صحيح لكلمة حُرِّيَّة (وزنها فُعْلِيَّة والجذر ح ر ر): [{"wordLetter":"حُ","patternLetter":"فُ","isRoot":true},{"wordLetter":"رِّ","patternLetter":"عْلِ","isRoot":true},{"wordLetter":"يَّ","patternLetter":"يَّ","isRoot":false},{"wordLetter":"ة","patternLetter":"ة","isRoot":false}]
 4. morphNotes: اذكر أي تغيير صرفي حدث (إعلال/إبدال/حذف/إدغام). إن لم يوجد اكتب "لا يوجد".
 
 مهم جداً: أعد JSON خالصاً فقط. لا تكتب أي نص قبله أو بعده. لا تستخدم markdown.`;

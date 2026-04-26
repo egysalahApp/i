@@ -10,6 +10,8 @@ const LexiconTool = () => {
   const [history, setHistory] = useState([]);
   const [activeTab, setActiveTab] = useState('meanings');
   const [mizanResult, setMizanResult] = useState(null);
+  const [mizanLoading, setMizanLoading] = useState(false);
+  const [mizanError, setMizanError] = useState(false);
 
   const handleAnalyze = async (searchQuery) => {
     const queryToUse = typeof searchQuery === 'string' ? searchQuery : word;
@@ -20,47 +22,66 @@ const LexiconTool = () => {
       setWord(trimmed);
     }
 
+    // 1. Fetch Lexicon (Primary)
     setLoading(true);
     setError('');
     setResult(null);
+    setMizanResult(null);
+    setMizanError(false);
+    setMizanLoading(true);
 
     try {
-      const [lexRes, mizRes] = await Promise.all([
-        fetch('/api/lexicon', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ word: trimmed }),
-        }),
-        fetch('/api/mizan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ word: trimmed }),
-        }).catch(() => null)
-      ]);
+      const res = await fetch('/api/lexicon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word: trimmed }),
+      });
 
-      const data = await lexRes.json();
+      const data = await res.json();
 
-      if (!lexRes.ok) {
+      if (!res.ok) {
         setError(data.error || 'حدث خطأ أثناء التحليل');
+        setMizanLoading(false);
         return;
       }
 
-      let mData = null;
-      if (mizRes && mizRes.ok) {
-        mData = await mizRes.json();
-      }
-
       setResult(data);
-      setMizanResult(mData);
       setActiveTab('meanings');
       setHistory(prev => {
         const filtered = prev.filter(h => h.word !== data.word);
-        return [data, ...filtered].slice(0, 10);
+        return [{ ...data, mizanResult: null }, ...filtered].slice(0, 10);
       });
+
+      // 2. Fetch Mizan Independently (Background)
+      fetchMizan(trimmed);
+
     } catch (err) {
       setError('تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت.');
+      setMizanLoading(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchMizan = async (query) => {
+    setMizanLoading(true);
+    setMizanError(false);
+    try {
+      const res = await fetch('/api/mizan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word: query }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMizanResult(data);
+      } else {
+        setMizanError(true);
+      }
+    } catch (e) {
+      setMizanError(true);
+    } finally {
+      setMizanLoading(false);
     }
   };
 
@@ -349,7 +370,12 @@ const LexiconTool = () => {
               {/* Mizan Tab */}
               {activeTab === 'mizan' && (
                 <div className="space-y-6">
-                  {mizanResult ? (
+                  {mizanLoading ? (
+                    <div className="text-center py-12">
+                      <Loader2 className="w-12 h-12 text-indigo-400 animate-spin mx-auto mb-4" />
+                      <p className="text-slate-400 font-medium">جاري التحليل الصرفي...</p>
+                    </div>
+                  ) : mizanResult ? (
                     <div>
                       {mizanResult.letterBreakdown && mizanResult.letterBreakdown.length > 0 && (() => {
                         const count = mizanResult.letterBreakdown.length;
@@ -404,7 +430,14 @@ const LexiconTool = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Scale className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                      <p className="text-slate-400 font-medium">التحليل الصرفي غير متوفر لهذه الكلمة</p>
+                      <p className="text-slate-400 font-medium mb-4">التحليل الصرفي غير متوفر حالياً لهذه الكلمة</p>
+                      <button
+                        onClick={() => fetchMizan(result?.word || word)}
+                        className="px-6 py-2 bg-indigo-50 text-indigo-600 font-bold rounded-xl hover:bg-indigo-100 transition-colors flex items-center gap-2 mx-auto"
+                      >
+                        <Loader2 className={`w-4 h-4 ${mizanLoading ? 'animate-spin' : ''}`} />
+                        إعادة محاولة التحليل
+                      </button>
                     </div>
                   )}
                 </div>
