@@ -211,20 +211,22 @@ const LexiconTool = () => {
                     {result.type}
                   </span>
                 )}
-                {/* Link to Mizan tab instead of new page */}
-                <button
-                  onClick={() => setActiveTab('mizan')}
-                  className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 font-bold text-sm px-4 py-1.5 rounded-full hover:bg-indigo-100 transition-colors"
-                >
-                  <Scale className="w-3.5 h-3.5" />
-                  تحليل الميزان
-                </button>
+                {/* Link to Mizan tab instead of new page (only if pattern is available) */}
+                {result.pattern && (
+                  <button
+                    onClick={() => setActiveTab('mizan')}
+                    className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 font-bold text-sm px-4 py-1.5 rounded-full hover:bg-indigo-100 transition-colors"
+                  >
+                    <Scale className="w-3.5 h-3.5" />
+                    تحليل الميزان
+                  </button>
+                )}
               </div>
             </div>
 
             {/* Tabs */}
             <div className="flex border-b border-slate-100 overflow-x-auto scrollbar-hide">
-              {tabs.map(tab => {
+              {tabs.filter(t => t.id !== 'mizan' || result.pattern).map(tab => {
                 const Icon = tab.icon;
                 return (
                   <button
