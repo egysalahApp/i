@@ -214,8 +214,6 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
       <Header />
-      {/* هامش دقيق جداً لمنع تداخل التبويب النشط مع حدود الهيدر */}
-      <div className="w-full h-1.5 md:h-2 bg-transparent shrink-0"></div>
 
       {!isShareMode && (
         <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
@@ -231,7 +229,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   const activeClass = isActive ? `${activeBg} ${activeText} shadow-lg border-transparent` : "bg-white text-slate-600 border-slate-200";
                   
                   return (
-                    <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 active:scale-95 ${activeClass}`}>
+                    <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-6 py-2 rounded-full font-semibold text-lg md:text-xl border-2 transition-all flex items-center justify-center gap-2 ${activeClass}`}>
                       {section.title}
                       {isDone && !isActive && <span className="text-emerald-600">✓</span>}
                     </button>
