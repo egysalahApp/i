@@ -166,10 +166,10 @@ const LexiconTool = () => {
               className={`h-14 w-14 md:w-auto md:px-10 rounded-[1.5rem] font-bold text-lg text-white transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 ${
                 loading 
                   ? 'bg-emerald-500 shadow-lg shadow-emerald-100 animate-pulse'
-                  : result 
-                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-200'
-                    : !word.trim()
-                      ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                  : !word.trim()
+                    ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    : result && result.word === word.trim()
+                      ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-200'
                       : 'bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200'
               }`}
             >
