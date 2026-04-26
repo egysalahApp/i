@@ -16,7 +16,7 @@ const Header = () => {
           href={APP_CONFIG.youtubeLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-purple-900 text-lg font-bold tracking-tight hover:text-purple-700 transition-colors"
+          className="text-purple-900 text-xl md:text-2xl font-bold tracking-tight hover:text-purple-700 transition-colors"
         >
           {APP_CONFIG.headerTitle}
         </a>
