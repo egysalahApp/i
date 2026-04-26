@@ -216,7 +216,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
       <Header />
 
       {!isShareMode && (
-        <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
+        <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-200">
           <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-4 no-scrollbar scroll-smooth">
               <div className="flex items-center gap-3 py-3 flex-nowrap">
                 {APP_DATA.sections.map((section, idx) => {
