@@ -219,7 +219,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
       <Header />
 
       {!isShareMode && (
-        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu mt-2 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/80">
+        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/80">
           <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-3 md:px-4 no-scrollbar scroll-smooth">
               <div className="flex items-center gap-2 md:gap-2.5 py-2 flex-nowrap">
                 {APP_DATA.sections.map((section, idx) => {
