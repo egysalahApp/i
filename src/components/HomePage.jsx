@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
 import { APP_CONFIG } from '../constants/appConfig';
+import Header from './Header';
 
 const HomePage = () => {
   useEffect(() => {
@@ -9,18 +10,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 flex flex-col" dir="rtl">
-      {/* Header */}
-      <header className="text-center pt-12 pb-8 px-4">
-        <a 
-          href={APP_CONFIG.youtubeLink} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-3xl md:text-4xl font-bold text-purple-900 hover:text-purple-700 transition-colors mb-2"
-        >
-          {APP_CONFIG.headerTitle}
-        </a>
-        <p className="text-lg text-slate-500 font-medium">{APP_CONFIG.headerSubtitle}</p>
-      </header>
+      <Header />
 
       {/* Content */}
       <main className="flex-1 flex items-center justify-center p-4">
