@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Trophy, RefreshCw, Link2 } from 'lucide-react';
 import { toArabicNum } from '../utils';
 import { APP_CONFIG } from '../constants/appConfig';
+import Header from './Header';
 import Intro from './activities/Intro';
 import Radar from './activities/Radar';
 import StyleLab from './activities/StyleLab';
@@ -212,11 +213,11 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
 
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
-      <div className="w-full text-center py-6 bg-transparent flex flex-col items-center">
-        <a href={APP_DATA.youtubeLink || APP_CONFIG.youtubeLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 text-2xl font-bold text-purple-900 md:hover:text-purple-800 md:hover:scale-105 active:scale-95 transition-transform duration-300 mb-1">
-            <span>{APP_DATA.headerTitle || APP_CONFIG.headerTitle}</span>
-        </a>
-        <h2 className="text-lg font-bold text-slate-600 md:hover:text-slate-700 md:hover:-translate-x-1 transition-transform duration-300 cursor-default inline-block">{APP_DATA.headerSubtitle || APP_CONFIG.headerSubtitle}</h2>
+      <Header />
+      <div className="w-full text-center py-8 md:py-12 bg-transparent flex flex-col items-center px-4">
+        <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">
+          {APP_DATA.headerTitle || APP_CONFIG.headerTitle}
+        </h1>
       </div>
 
       {!isShareMode && (

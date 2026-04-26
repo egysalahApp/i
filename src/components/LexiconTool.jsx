@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, Volume2, Search, Loader2, Scale, Sparkles, ArrowLeftRight, GitBranch, MessageCircle, Info } from 'lucide-react';
 import { APP_CONFIG } from '../constants/appConfig';
+import Header from './Header';
 
 const LexiconTool = () => {
   const [word, setWord] = useState('');
@@ -115,6 +116,7 @@ const LexiconTool = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 flex flex-col" dir="rtl">
+      <Header />
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400..900&display=swap');
@@ -126,16 +128,7 @@ const LexiconTool = () => {
           }
         `}
       </style>
-      {/* Header */}
-      <header className="text-center pt-8 pb-4 px-4">
-        <a 
-          href="/"
-          className="inline-flex items-center gap-2 text-2xl md:text-3xl font-bold text-purple-900 hover:text-purple-700 transition-colors mb-1"
-        >
-          {APP_CONFIG.headerTitle}
-        </a>
-        <p className="text-sm text-slate-400 font-medium">{APP_CONFIG.headerSubtitle}</p>
-      </header>
+
 
       {/* Main */}
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pb-12">
