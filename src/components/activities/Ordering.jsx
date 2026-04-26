@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, ChevronUp, ChevronDown, CheckCircle2, XCircle, ArrowRight, RotateCcw } from 'lucide-react';
@@ -37,10 +37,8 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
   const [items, setItems] = useState(initItems);
   const [correctPositions, setCorrectPositions] = useState([]);
 
-  // Drag state
+  // Drag state (desktop only)
   const [dragIndex, setDragIndex] = useState(null);
-  const [touchStartY, setTouchStartY] = useState(null);
-  const itemRefs = useRef([]);
 
   // Reset items whenever the question index changes
   useEffect(() => {
@@ -111,35 +109,6 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
       setCurrentIndex(prev => prev + 1);
       setAnimatingOut(false);
     }, 400);
-  };
-
-  // Touch drag handlers
-  const handleTouchStart = (e, index) => {
-    if (checked) return;
-    setDragIndex(index);
-    setTouchStartY(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e) => {
-    if (dragIndex === null || checked) return;
-    e.preventDefault();
-  };
-
-  const handleTouchEnd = (e, index) => {
-    if (dragIndex === null || checked) return;
-    const touchEndY = e.changedTouches[0].clientY;
-    const diff = touchEndY - touchStartY;
-    const threshold = 40;
-
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        moveItem(index, 1);
-      } else {
-        moveItem(index, -1);
-      }
-    }
-    setDragIndex(null);
-    setTouchStartY(null);
   };
 
   // Desktop drag handlers
@@ -244,17 +213,14 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
             </div>
 
             {/* Sortable items */}
-            <div className="px-4 md:px-6 py-5 space-y-3" onTouchMove={handleTouchMove}>
+            <div className="px-4 md:px-6 py-5 space-y-3">
               {items.map((item, idx) => (
                 <div
                   key={`${item}-${idx}`}
-                  ref={el => itemRefs.current[idx] = el}
                   draggable={!checked}
                   onDragStart={(e) => handleDragStart(e, idx)}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, idx)}
-                  onTouchStart={(e) => handleTouchStart(e, idx)}
-                  onTouchEnd={(e) => handleTouchEnd(e, idx)}
                   className={`
                     flex items-center gap-3 md:gap-4 p-4 md:p-5 rounded-2xl transition-all duration-300 
                     ${getItemStyle(idx)}

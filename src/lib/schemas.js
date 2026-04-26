@@ -208,6 +208,24 @@ const OrderingSchema = BaseSectionSchema.extend({
   type: z.literal('ordering'),
   questions: z.array(OrderingQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
 });
+// Sentence Builder & Word Builder (shared schema, different types)
+const BuilderQuestionSchema = z.object({
+  text: z.string().min(1, "نص السؤال مطلوب"),
+  fragments: z.array(z.string()).min(2, "يجب إضافة قطعتين على الأقل"),
+  correctOrder: z.array(z.string()).min(2, "يجب تحديد الترتيب الصحيح"),
+  hint: z.string().optional(),
+  explanation: z.string().optional(),
+});
+
+const SentenceBuilderSchema = BaseSectionSchema.extend({
+  type: z.literal('sentence_builder'),
+  questions: z.array(BuilderQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
+});
+
+const WordBuilderSchema = BaseSectionSchema.extend({
+  type: z.literal('word_builder'),
+  questions: z.array(BuilderQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
+});
 
 // Style Lab
 const StyleExcerptSchema = z.object({
@@ -256,6 +274,8 @@ const SectionSchema = z.discriminatedUnion('type', [
   OrderingSchema,
   StyleLabSchema,
   GoldenEnvelopeSchema,
+  SentenceBuilderSchema,
+  WordBuilderSchema,
 ]);
 
 export const LessonSchema = z.object({

@@ -18,6 +18,7 @@ import Flashcards from './activities/Flashcards';
 import Sort from './activities/Sort';
 import Ordering from './activities/Ordering';
 import Matching from './activities/Matching';
+import SentenceBuilder from './activities/SentenceBuilder';
 
 import SectionFooter from './ui/SectionFooter';
 import ShareModal from './ui/ShareModal';
@@ -295,6 +296,8 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   {sectionWithTheme.type === 'sort' && <Sort sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'ordering' && <Ordering sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'sentence_builder' && <SentenceBuilder sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'word_builder' && <SentenceBuilder sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
 
                   {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}
                 </ErrorBoundary>
