@@ -148,23 +148,11 @@ export default async function handler(req, res) {
 
     const result = JSON.parse(cleanJson);
 
-    // Post-process: clean up hallucinatory empty elements and merge if necessary
+    // Post-process: remove fully empty entries only
     if (result.letterBreakdown && Array.isArray(result.letterBreakdown)) {
-      const diacriticsRegex = /^[\u064B-\u065F\u0670\u0651]+$/;
-      const merged = [];
-      for (let i = 0; i < result.letterBreakdown.length; i++) {
-        const item = result.letterBreakdown[i];
-        
-        // Skip purely empty items
-        if (!item.wordLetter && !item.patternLetter) continue;
-        
-        // If Gemini hallucinates an isolated shaddah (or other diacritic)
-        if ((diacriticsRegex.test(item.wordLetter) || !item.wordLetter) && (diacriticsRegex.test(item.patternLetter) || !item.patternLetter)) {
-           // Ignore to prevent double shaddahs
-           continue;
-        }
-        merged.push({ ...item });
-      }
+      const merged = result.letterBreakdown.filter(
+        item => item.wordLetter || item.patternLetter
+      );
 
       // Post-process: split any entry with multiple base letters (e.g. "ري" → "ر" + "ي")
       const baseLetterRegex = /[\u0621-\u064A\u0671-\u06D3]/g;
