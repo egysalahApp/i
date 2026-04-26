@@ -40,8 +40,9 @@ export default async function handler(req, res) {
    - الإدغام: شدّ أصلها شَدَدَ → فَعَلَ
    - الحذف: قاضٍ أصلها قاضِيٌ → فاعِلٌ
 2. التشكيل الكامل ضروري للكلمة والوزن.
-3. letterBreakdown: كل عنصر يحتوي على حرف أساسي واحد مع حركته ملتصقة به (مثال: "مُ" وليس "م" و"ُ" منفصلين). الحركة جزء من الحرف وليست عنصراً مستقلاً. isRoot = true فقط لحروف الجذر.
+3. letterBreakdown: قاعدة ذهبية: كل عنصر يحتوي على حرف أساسي واحد فقط مع حركته (مثل: "مُ"). لا تدمج حرفين مختلفين أبداً في عنصر واحد (مثلاً "ري" أو "لي" خطأ، يجب فصلهما إلى عنصرين). الشدة (ّ) تبقى مع حرفها لأنها ليست حرفاً منفصلاً. isRoot = true فقط لحروف الجذر.
    مثال صحيح لكلمة كَتَبَ: [{"wordLetter":"كَ","patternLetter":"فَ","isRoot":true},{"wordLetter":"تَ","patternLetter":"عَ","isRoot":true},{"wordLetter":"بَ","patternLetter":"لَ","isRoot":true}]
+   مثال صحيح لكلمة حُرِّيَّة: [{"wordLetter":"حُ","patternLetter":"فُ","isRoot":true},{"wordLetter":"رِّ","patternLetter":"عِّ","isRoot":true},{"wordLetter":"يَّ","patternLetter":"يَّ","isRoot":false},{"wordLetter":"ة","patternLetter":"ة","isRoot":false}]
 4. morphNotes: اذكر أي تغيير صرفي حدث (إعلال/إبدال/حذف/إدغام). إن لم يوجد اكتب "لا يوجد".
 5. type: حدد بدقة (فعل ثلاثي مجرد، فعل ثلاثي مزيد بالهمزة، اسم فاعل، اسم مفعول، مصدر، صفة مشبهة، اسم تفضيل، اسم زمان، اسم مكان، اسم آلة، صيغة مبالغة، فعل رباعي...).
 
@@ -162,7 +163,35 @@ export default async function handler(req, res) {
           merged.push({ ...item });
         }
       }
-      result.letterBreakdown = merged;
+
+      // Post-process: split any entry with multiple base letters (e.g. "ري" → "ر" + "ي")
+      const baseLetterRegex = /[\u0621-\u064A\u0671-\u06D3]/g;
+      const splitCluster = (text) => {
+        if (!text) return [];
+        const clusters = text.match(/[\u0621-\u064A\u0671-\u06D3][\u064B-\u065F\u0670\u0651]*/g);
+        return clusters || [text];
+      };
+
+      const finalBreakdown = [];
+      for (const item of merged) {
+        const wClusters = splitCluster(item.wordLetter);
+        const pClusters = splitCluster(item.patternLetter);
+        const maxLen = Math.max(wClusters.length, pClusters.length);
+        
+        if (maxLen <= 1) {
+          finalBreakdown.push(item);
+        } else {
+          // Split into separate entries
+          for (let j = 0; j < maxLen; j++) {
+            finalBreakdown.push({
+              wordLetter: wClusters[j] || '',
+              patternLetter: pClusters[j] || '',
+              isRoot: item.isRoot
+            });
+          }
+        }
+      }
+      result.letterBreakdown = finalBreakdown;
     }
 
     return res.status(200).json(result);

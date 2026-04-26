@@ -84,7 +84,7 @@ const LexiconTool = () => {
     { id: 'meanings', label: 'المعاني', icon: BookOpen },
     { id: 'derivatives', label: 'المشتقات', icon: GitBranch },
     { id: 'synonyms', label: 'مرادفات وأضداد', icon: ArrowLeftRight },
-    { id: 'mizan', label: 'الميزان الصرفي', icon: Scale },
+    { id: 'mizan', label: 'الميزان', icon: Scale },
   ];
 
   return (
