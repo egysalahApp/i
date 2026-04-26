@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Volume2, Search, Loader2, Sparkles, ArrowLeftRight, MessageCircle, Info } from 'lucide-react';
+import { BookOpen, Volume2, Search, Loader2, Sparkles, ArrowLeftRight, GitBranch, MessageCircle, Info } from 'lucide-react';
 import { APP_CONFIG } from '../constants/appConfig';
 import Header from './Header';
 
