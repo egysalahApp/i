@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   "pattern": "الوزن الصرفي مع التشكيل (مثل: فَعَلَ)",
   "type": "نوع الكلمة",
   "letterBreakdown": [
-    {"wordLetter": "حرف", "patternLetter": "حرف", "isRoot": true}
+    {"wordLetter": "حرف مع حركته", "patternLetter": "حرف مع حركته", "isRoot": true}
   ],
   "morphNotes": "ملاحظات صرفية",
   "explanation": "شرح مختصر"
@@ -40,7 +40,8 @@ export default async function handler(req, res) {
    - الإدغام: شدّ أصلها شَدَدَ → فَعَلَ
    - الحذف: قاضٍ أصلها قاضِيٌ → فاعِلٌ
 2. التشكيل الكامل ضروري للكلمة والوزن.
-3. letterBreakdown: حرف واحد لكل موضع. isRoot = true فقط لحروف الجذر.
+3. letterBreakdown: كل عنصر يحتوي على حرف أساسي واحد مع حركته ملتصقة به (مثال: "مُ" وليس "م" و"ُ" منفصلين). الحركة جزء من الحرف وليست عنصراً مستقلاً. isRoot = true فقط لحروف الجذر.
+   مثال صحيح لكلمة كَتَبَ: [{"wordLetter":"كَ","patternLetter":"فَ","isRoot":true},{"wordLetter":"تَ","patternLetter":"عَ","isRoot":true},{"wordLetter":"بَ","patternLetter":"لَ","isRoot":true}]
 4. morphNotes: اذكر أي تغيير صرفي حدث (إعلال/إبدال/حذف/إدغام). إن لم يوجد اكتب "لا يوجد".
 5. type: حدد بدقة (فعل ثلاثي مجرد، فعل ثلاثي مزيد بالهمزة، اسم فاعل، اسم مفعول، مصدر، صفة مشبهة، اسم تفضيل، اسم زمان، اسم مكان، اسم آلة، صيغة مبالغة، فعل رباعي...).
 
@@ -144,6 +145,26 @@ export default async function handler(req, res) {
     }
 
     const result = JSON.parse(cleanJson);
+
+    // Post-process: merge any split diacritics back with their base letter
+    if (result.letterBreakdown && Array.isArray(result.letterBreakdown)) {
+      const diacriticsRegex = /^[\u064B-\u065F\u0670\u0651]+$/;
+      const merged = [];
+      for (let i = 0; i < result.letterBreakdown.length; i++) {
+        const item = result.letterBreakdown[i];
+        // If this item's wordLetter is ONLY diacritics, merge with previous
+        if (diacriticsRegex.test(item.wordLetter) && merged.length > 0) {
+          merged[merged.length - 1].wordLetter += item.wordLetter;
+          merged[merged.length - 1].patternLetter += (item.patternLetter || '');
+        } else if (diacriticsRegex.test(item.patternLetter) && !item.wordLetter && merged.length > 0) {
+          merged[merged.length - 1].patternLetter += item.patternLetter;
+        } else {
+          merged.push({ ...item });
+        }
+      }
+      result.letterBreakdown = merged;
+    }
+
     return res.status(200).json(result);
   } catch (err) {
     console.error('Mizan API error:', err.message, err.stack);
