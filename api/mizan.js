@@ -146,7 +146,7 @@ export default async function handler(req, res) {
       cleanJson = jsonMatch[0];
     }
 
-    const result = JSON.parse(cleanJson);
+    let result = JSON.parse(cleanJson);
 
     // Post-process: remove fully empty entries only
     if (result.letterBreakdown && Array.isArray(result.letterBreakdown)) {
