@@ -378,9 +378,9 @@ const LexiconTool = () => {
                       <Loader2 className="w-12 h-12 text-indigo-400 animate-spin mx-auto mb-4" />
                       <p className="text-slate-400 font-medium">جاري التحليل الصرفي...</p>
                     </div>
-                  ) : mizanResult ? (
+                  ) : mizanResult && mizanResult.letterBreakdown && mizanResult.letterBreakdown.length > 0 ? (
                     <div>
-                      {mizanResult.letterBreakdown && mizanResult.letterBreakdown.length > 0 && (() => {
+                      {(() => {
                         const count = mizanResult.letterBreakdown.length;
                         const bx = count > 6 
                           ? 'w-10 h-10 text-lg md:w-12 md:h-12 md:text-xl' 
