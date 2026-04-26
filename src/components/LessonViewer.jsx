@@ -146,12 +146,14 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           const stickyTabs = document.getElementById('sticky-tabs-container');
           const contentArea = document.getElementById('main-content-area');
           if (contentArea) {
-            const headerOffset = stickyTabs ? stickyTabs.offsetHeight : 80;
+            // هامش أمان إضافي (2px) لمنع تغطية الهيدر في Safari
+            const safetyMargin = 2;
+            const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 80) + safetyMargin;
             const elementPosition = contentArea.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.scrollY - headerOffset;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
           }
-        }, 10);
+        }, 30);
     });
   };
 
