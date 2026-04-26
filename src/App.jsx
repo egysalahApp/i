@@ -10,6 +10,7 @@ import Login from './components/admin/Login';
 import Dashboard from './components/admin/Dashboard';
 import LessonEditor from './components/admin/LessonEditor';
 import HomePage from './components/HomePage';
+import MizanTool from './components/MizanTool';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -280,6 +281,7 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/share/:token" element={<ShareWrapper />} />
+        <Route path="/mizan" element={<MizanTool />} />
         <Route path="/:lessonId" element={<LessonWrapper />} />
         <Route path="/" element={<HomePage />} />
       </Routes>

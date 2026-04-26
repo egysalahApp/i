@@ -253,6 +253,23 @@ const GoldenEnvelopeSchema = BaseSectionSchema.extend({
   question: z.string(),
 });
 
+// Morphology Scale (الميزان الصرفي)
+const MorphologyQuestionSchema = z.object({
+  text: z.string().min(1, "نص السؤال مطلوب"),
+  word: z.string().min(1, "الكلمة مطلوبة"),
+  root: z.string().optional(),
+  pattern: z.string().min(1, "الوزن مطلوب"),
+  options: z.array(z.string()).min(2, "يجب وجود خيارين على الأقل"),
+  correct: z.number().int().min(0),
+  hint: z.string().optional(),
+  explanation: z.string().optional(),
+});
+
+const MorphologyScaleSchema = BaseSectionSchema.extend({
+  type: z.literal('morphology_scale'),
+  questions: z.array(MorphologyQuestionSchema).min(1, "يجب إضافة سؤال واحد على الأقل"),
+});
+
 
 /**
  * Master Lesson Schema
@@ -276,6 +293,7 @@ const SectionSchema = z.discriminatedUnion('type', [
   GoldenEnvelopeSchema,
   SentenceBuilderSchema,
   WordBuilderSchema,
+  MorphologyScaleSchema,
 ]);
 
 export const LessonSchema = z.object({

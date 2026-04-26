@@ -19,6 +19,7 @@ import Sort from './activities/Sort';
 import Ordering from './activities/Ordering';
 import Matching from './activities/Matching';
 import SentenceBuilder from './activities/SentenceBuilder';
+import MorphologyScale from './activities/MorphologyScale';
 
 import SectionFooter from './ui/SectionFooter';
 import ShareModal from './ui/ShareModal';
@@ -298,6 +299,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   {sectionWithTheme.type === 'matching' && <Matching sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'sentence_builder' && <SentenceBuilder sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
                   {sectionWithTheme.type === 'word_builder' && <SentenceBuilder sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
+                  {sectionWithTheme.type === 'morphology_scale' && <MorphologyScale sectionData={sectionWithTheme} progress={secProgress} onUpdateProgress={handleUpdateProgress} />}
 
                   {sectionWithTheme.type === 'golden_envelope' && <GoldenEnvelope sectionData={sectionWithTheme} />}
                 </ErrorBoundary>
