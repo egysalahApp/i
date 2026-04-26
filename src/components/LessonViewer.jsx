@@ -144,19 +144,18 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
     requestAnimationFrame(() => {
         setTimeout(() => {
           const stickyTabs = document.getElementById('sticky-tabs-container');
-          const anchor = document.getElementById('tab-scroll-anchor');
+          const contentArea = document.getElementById('main-content-area');
           
-          if (anchor) {
-            // الاستغناء تماماً عن scrollMarginTop بسبب مشاكلها المعقدة في سفاري الآيفون
-            // بدلاً من ذلك، نُحدث موضع عنصر وهمي (anchor) بناءً على ارتفاع التبويبات ثم نمرر إليه
+          if (contentArea) {
+            // نستخدم scrollMarginTop مع الحساب الدقيق للمسافة
             const tabsHeight = stickyTabs ? stickyTabs.offsetHeight : 60;
             
-            // حساب المسافة بدقة: بما أن المحتوى يبتعد 24px للأسفل (بسبب mb-6 للتبويبات)
-            // وضع العنصر الوهمي عند -(tabsHeight + 19) يضمن تمرير الشاشة بحيث يختفي الهيدر تماماً (بفارق 5px)
-            // وتستقر التبويبات الملصقة في الأعلى مع بقاء المحتوى أسفلها بأمان تام.
-            anchor.style.top = `-${tabsHeight + 19}px`;
-            
-            anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // قمنا بإضافة mt-6 (24px) للمحتوى ليكون هناك مسافة فعلية في الـ DOM
+            // الآن نأمر المتصفح بأن يترك مسافة (tabsHeight + 19) من أعلى الشاشة
+            // هذا سيجعل المتصفح يمرر الشاشة للأسفل بمقدار أكبر بـ 5px، مما يُخفي الهيدر الأبيض تماماً!
+            // وفي نفس الوقت يترك 5px مساحة أمان للتبويبات لكي لا تغطي المحتوى.
+            contentArea.style.scrollMarginTop = `${tabsHeight + 19}px`;
+            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }, 50); // زيادة التأخير قليلاً لضمان استقرار DOM في الموبايل
     });
@@ -223,7 +222,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
       <Header />
 
       {!isShareMode && (
-        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu mb-6 md:mb-8 bg-gradient-to-b from-white to-slate-50/80 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/60">
+        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu bg-gradient-to-b from-white to-slate-50/80 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/60">
           <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-3 md:px-4 no-scrollbar scroll-smooth">
               <div className="flex items-center gap-2 md:gap-2.5 py-2 flex-nowrap">
                 {APP_DATA.sections.map((section, idx) => {
@@ -260,8 +259,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
         </div>
       )}
 
-      <main id="main-content-area" className="relative container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
-        <div id="tab-scroll-anchor" className="absolute w-full h-px pointer-events-none opacity-0" style={{ top: '-100px' }}></div>
+      <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh] mt-6 md:mt-8">
         <div className="flex items-center justify-center gap-3 pt-6 mb-6 relative">
           <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
           {!isShareMode && lessonId && (
