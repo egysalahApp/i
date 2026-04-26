@@ -167,7 +167,7 @@ const LexiconTool = () => {
                 loading 
                   ? 'bg-emerald-500 shadow-lg shadow-emerald-100 animate-pulse'
                   : !word.trim()
-                    ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    ? 'bg-indigo-500 cursor-not-allowed shadow-md shadow-indigo-100'
                     : result && result.word === word.trim()
                       ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-200'
                       : 'bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200'
