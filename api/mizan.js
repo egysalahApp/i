@@ -14,29 +14,37 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'مفتاح API غير مُعدّ' });
   }
 
-  const prompt = `أنت عالم لغوي متخصص في الصرف العربي. حلّل الكلمة التالية تحليلاً صرفيًا دقيقًا.
+  const prompt = `أنت عالم لغوي متخصص في الصرف العربي والتحليل الصرفي. حلّل الكلمة التالية تحليلاً صرفيًا دقيقًا ومفصلاً.
 
 الكلمة: "${word.trim()}"
 
-أعد الإجابة بصيغة JSON فقط (بدون أي نص إضافي) وفق الهيكل التالي:
+أعد الإجابة بصيغة JSON فقط (بدون أي نص إضافي أو شرح خارج JSON) وفق الهيكل التالي بالضبط:
 {
   "word": "الكلمة مع التشكيل الكامل",
-  "root": "الجذر الثلاثي أو الرباعي (مثل: ك ت ب)",
+  "root": "الجذر الثلاثي أو الرباعي مفصولاً بمسافات (مثل: ك ت ب)",
   "pattern": "الوزن الصرفي مع التشكيل (مثل: فَعَلَ)",
-  "type": "نوع الكلمة (فعل ثلاثي مجرد / فعل ثلاثي مزيد / فعل رباعي / اسم فاعل / اسم مفعول / مصدر / صفة مشبهة / اسم تفضيل / اسم زمان / اسم مكان / اسم آلة / صيغة مبالغة / ...)",
+  "type": "نوع الكلمة",
   "letterBreakdown": [
-    {"wordLetter": "حرف من الكلمة", "patternLetter": "الحرف المقابل في الوزن", "isRoot": true أو false}
+    {"wordLetter": "حرف", "patternLetter": "حرف", "isRoot": true}
   ],
-  "morphNotes": "ملاحظات صرفية مثل الإعلال أو الإبدال أو الحذف أو الإدغام إن وجدت، وإلا اتركه فارغًا",
-  "explanation": "شرح مختصر وواضح للوزن ودلالته"
+  "morphNotes": "ملاحظات صرفية",
+  "explanation": "شرح مختصر"
 }
 
-قواعد مهمة:
-- راعِ الإعلال (مثل: قال ← قَوَلَ على وزن فَعَلَ) والإبدال والحذف والإدغام.
-- التشكيل الكامل ضروري للكلمة والوزن.
-- letterBreakdown يجب أن يحتوي على حرف واحد لكل موضع مع المقابل له في الوزن.
-- isRoot = true فقط للحروف الأصلية من الجذر (المقابلة لـ ف ع ل في الوزن).
-- أعد JSON صالحًا فقط بدون markdown أو backticks.`;
+قواعد صارمة يجب اتباعها:
+1. راعِ جميع التغييرات الصرفية:
+   - الإعلال بالقلب: قال أصلها قَوَلَ → فَعَلَ (الواو قُلبت ألفاً)
+   - الإعلال بالحذف: عِدْ أصلها وَعَدَ → فَعَلَ (حُذفت الواو)
+   - الإعلال بالنقل: يقول أصلها يَقْوُلُ → يَفْعُلُ
+   - الإبدال: اضطرب أصلها اضْتَرَبَ → افْتَعَلَ (التاء أُبدلت طاءً)
+   - الإدغام: شدّ أصلها شَدَدَ → فَعَلَ
+   - الحذف: قاضٍ أصلها قاضِيٌ → فاعِلٌ
+2. التشكيل الكامل ضروري للكلمة والوزن.
+3. letterBreakdown: حرف واحد لكل موضع. isRoot = true فقط لحروف الجذر.
+4. morphNotes: اذكر أي تغيير صرفي حدث (إعلال/إبدال/حذف/إدغام). إن لم يوجد اكتب "لا يوجد".
+5. type: حدد بدقة (فعل ثلاثي مجرد، فعل ثلاثي مزيد بالهمزة، اسم فاعل، اسم مفعول، مصدر، صفة مشبهة، اسم تفضيل، اسم زمان، اسم مكان، اسم آلة، صيغة مبالغة، فعل رباعي...).
+
+مهم جداً: أعد JSON خالصاً فقط. لا تكتب أي نص قبله أو بعده. لا تستخدم markdown.`;
 
   try {
     // Try multiple models - can be overridden via env var
@@ -57,7 +65,8 @@ export default async function handler(req, res) {
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: {
               temperature: 0.1,
-              maxOutputTokens: 1024,
+              maxOutputTokens: 2048,
+              responseMimeType: 'application/json',
             },
           }),
         }
@@ -74,19 +83,40 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!text) {
-      return res.status(502).json({ error: 'لم يتم الحصول على نتيجة' });
+    
+    // Handle thinking models: find the part with actual text (not thought)
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    let text = '';
+    for (const part of parts) {
+      if (part.text && !part.thought) {
+        text = part.text;
+        break;
+      }
+    }
+    // Fallback: take last part's text
+    if (!text && parts.length > 0) {
+      text = parts[parts.length - 1].text || '';
     }
 
-    // Parse the JSON response (strip any markdown code fences if present)
-    const cleanJson = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    const result = JSON.parse(cleanJson);
+    if (!text) {
+      console.error('No text in response:', JSON.stringify(data));
+      return res.status(502).json({ error: 'لم يتم الحصول على نتيجة. جرّب مرة أخرى.' });
+    }
 
+    // Robust JSON extraction
+    let cleanJson = text.trim();
+    // Remove markdown code fences
+    cleanJson = cleanJson.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    // Try to find JSON object if wrapped in extra text
+    const jsonMatch = cleanJson.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleanJson = jsonMatch[0];
+    }
+
+    const result = JSON.parse(cleanJson);
     return res.status(200).json(result);
   } catch (err) {
-    console.error('Mizan API error:', err);
-    return res.status(500).json({ error: 'حدث خطأ أثناء التحليل' });
+    console.error('Mizan API error:', err.message, err.stack);
+    return res.status(500).json({ error: 'حدث خطأ أثناء التحليل. جرّب كلمة أخرى.' });
   }
 }
