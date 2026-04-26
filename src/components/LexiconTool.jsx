@@ -120,9 +120,9 @@ const LexiconTool = () => {
           @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap');
           .font-naskh {
             font-family: 'Noto Naskh Arabic', serif;
-            font-size: 1.4em;
-            font-weight: 700;
-            line-height: 1.8;
+            font-size: 1.45em !important;
+            font-weight: 700 !important;
+            line-height: 2 !important;
           }
         `}
       </style>
