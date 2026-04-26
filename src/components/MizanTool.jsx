@@ -88,24 +88,24 @@ const MizanTool = () => {
         </div>
 
         {/* Search Box */}
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-4 md:p-6 mb-6">
-          <div className="flex gap-3">
+        <div className="relative mb-12">
+          <div className="flex items-center bg-white rounded-[2rem] shadow-xl shadow-indigo-100/50 border-2 border-slate-100 p-2 transition-all focus-within:border-indigo-400 focus-within:ring-8 focus-within:ring-indigo-50">
             <input
               type="text"
               value={word}
               onChange={(e) => setWord(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="اكتب كلمة مثل: استغفر، كاتب، مدرسة..."
-              className="flex-1 text-xl md:text-2xl font-bold text-slate-800 bg-slate-50 rounded-xl px-5 py-4 border-2 border-slate-200 focus:border-indigo-400 focus:bg-white focus:outline-none transition-all placeholder:text-slate-300 placeholder:font-medium"
+              placeholder="اكتب كلمة مثل: استغفر، مدرسة..."
+              className="flex-1 text-xl md:text-2xl font-bold text-slate-800 bg-transparent px-4 md:px-6 py-3 md:py-4 focus:outline-none placeholder:text-slate-300 placeholder:font-medium"
               dir="rtl"
             />
             <button
               onClick={handleAnalyze}
               disabled={loading || !word.trim()}
-              className={`px-5 md:px-8 rounded-xl font-bold text-lg text-white transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 ${
+              className={`h-14 w-14 md:w-auto md:px-10 rounded-[1.5rem] font-bold text-lg text-white transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 ${
                 loading || !word.trim()
-                  ? 'bg-slate-300 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg'
+                  ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-200'
               }`}
             >
               {loading ? (
@@ -113,11 +113,15 @@ const MizanTool = () => {
               ) : (
                 <Search className="w-6 h-6" />
               )}
-              <span className="hidden md:inline">حلّل</span>
+              <span className="hidden md:inline">حلّل الآن</span>
             </button>
           </div>
           {error && (
-            <p className="mt-3 text-rose-600 font-medium text-base bg-rose-50 p-3 rounded-xl">{error}</p>
+            <div className="absolute -bottom-10 left-0 right-0 flex justify-center">
+              <p className="text-rose-600 font-bold text-sm bg-rose-50 px-4 py-1.5 rounded-full border border-rose-100 shadow-sm animate-in fade-in slide-in-from-top-2">
+                {error}
+              </p>
+            </div>
           )}
         </div>
 
