@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Volume2, Search, Loader2, Scale, Sparkles, ArrowLeftRight, GitBranch, MessageCircle, Info } from 'lucide-react';
+import { BookOpen, Volume2, Search, Loader2, Sparkles, ArrowLeftRight, MessageCircle, Info } from 'lucide-react';
 import { APP_CONFIG } from '../constants/appConfig';
 import Header from './Header';
 
@@ -10,9 +10,6 @@ const LexiconTool = () => {
   const [error, setError] = useState('');
   const [history, setHistory] = useState([]);
   const [activeTab, setActiveTab] = useState('meanings');
-  const [mizanResult, setMizanResult] = useState(null);
-  const [mizanLoading, setMizanLoading] = useState(false);
-  const [mizanError, setMizanError] = useState(false);
 
   const handleAnalyze = async (searchQuery) => {
     const queryToUse = typeof searchQuery === 'string' ? searchQuery : word;
@@ -23,13 +20,9 @@ const LexiconTool = () => {
       setWord(trimmed);
     }
 
-    // 1. Fetch Lexicon (Primary)
     setLoading(true);
     setError('');
     setResult(null);
-    setMizanResult(null);
-    setMizanError(false);
-    setMizanLoading(true);
 
     try {
       const res = await fetch('/api/lexicon', {
@@ -42,7 +35,6 @@ const LexiconTool = () => {
 
       if (!res.ok) {
         setError(data.error || 'حدث خطأ أثناء التحليل');
-        setMizanLoading(false);
         return;
       }
 
@@ -50,39 +42,13 @@ const LexiconTool = () => {
       setActiveTab('meanings');
       setHistory(prev => {
         const filtered = prev.filter(h => h.word !== data.word);
-        return [{ ...data, mizanResult: null }, ...filtered].slice(0, 10);
+        return [data, ...filtered].slice(0, 10);
       });
-
-      // 2. Fetch Mizan Independently (Background)
-      fetchMizan(trimmed);
 
     } catch (err) {
       setError('تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت.');
-      setMizanLoading(false);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchMizan = async (query) => {
-    setMizanLoading(true);
-    setMizanError(false);
-    try {
-      const res = await fetch('/api/mizan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ word: query }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setMizanResult(data);
-      } else {
-        setMizanError(true);
-      }
-    } catch (e) {
-      setMizanError(true);
-    } finally {
-      setMizanLoading(false);
     }
   };
 
@@ -103,7 +69,6 @@ const LexiconTool = () => {
   const handleHistoryClick = (item) => {
     setWord(item.word);
     setResult(item);
-    setMizanResult(item.mizanResult || null);
     setActiveTab('meanings');
   };
 
@@ -111,7 +76,6 @@ const LexiconTool = () => {
     { id: 'meanings', label: 'المعاني', icon: BookOpen },
     { id: 'derivatives', label: 'المشتقات', icon: GitBranch },
     { id: 'synonyms', label: 'مترادفات', icon: ArrowLeftRight },
-    { id: 'mizan', label: 'الميزان', icon: Scale },
   ];
 
   return (
@@ -129,7 +93,6 @@ const LexiconTool = () => {
         `}
       </style>
 
-
       {/* Main */}
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-8 md:pt-12 pb-12">
         {/* Title Card */}
@@ -138,7 +101,7 @@ const LexiconTool = () => {
             <BookOpen className="w-8 h-8 text-emerald-600" />
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">المعجم الذكي</h1>
-          <p className="text-lg text-slate-500">اكتب أي كلمة عربية واكتشف معانيها ومشتقاتها فورًا</p>
+          <p className="text-lg text-slate-500">اكتشف معاني الكلمات ومشتقاتها فورًا</p>
         </div>
 
         {/* Search Box */}
@@ -201,9 +164,6 @@ const LexiconTool = () => {
                 {result.root && (
                   <span className="text-slate-500">الجذر: <strong className="text-emerald-700 text-lg">{result.root}</strong></span>
                 )}
-                {result.pattern && (
-                  <span className="text-slate-500">الوزن: <strong className="text-emerald-700 text-lg">{result.pattern}</strong></span>
-                )}
                 {result.plural && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.plural.trim().toLowerCase()) && (
                   <span className="text-slate-500">الجمع: <strong className="text-emerald-700 text-lg">{result.plural}</strong></span>
                 )}
@@ -217,22 +177,12 @@ const LexiconTool = () => {
                     {result.type}
                   </span>
                 )}
-                {/* Link to Mizan tab instead of new page (only if pattern is available) */}
-                {result.pattern && (
-                  <button
-                    onClick={() => setActiveTab('mizan')}
-                    className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 font-bold text-sm px-4 py-1.5 rounded-full hover:bg-indigo-100 transition-colors"
-                  >
-                    <Scale className="w-3.5 h-3.5" />
-                    تحليل الميزان
-                  </button>
-                )}
               </div>
             </div>
 
             {/* Tabs */}
             <div className="flex border-b border-slate-100 overflow-x-auto scrollbar-hide">
-              {tabs.filter(t => t.id !== 'mizan' || result.pattern).map(tab => {
+              {tabs.map(tab => {
                 const Icon = tab.icon;
                 return (
                   <button
@@ -372,75 +322,6 @@ const LexiconTool = () => {
                       )}
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* Mizan Tab */}
-              {activeTab === 'mizan' && (
-                <div className="space-y-6">
-                  {mizanLoading ? (
-                    <div className="text-center py-12">
-                      <Loader2 className="w-12 h-12 text-indigo-400 animate-spin mx-auto mb-4" />
-                      <p className="text-slate-400 font-medium">جاري التحليل الصرفي...</p>
-                    </div>
-                  ) : mizanResult && mizanResult.letterBreakdown && mizanResult.letterBreakdown.length > 0 ? (
-                    <div>
-                      {(() => {
-                        const count = mizanResult.letterBreakdown.length;
-                        const bx = count > 6 
-                          ? 'w-10 h-10 text-lg md:w-12 md:h-12 md:text-xl' 
-                          : 'w-12 h-12 text-xl md:w-14 md:h-14 md:text-2xl';
-                        return (
-                          <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                            <h4 className="text-center text-xs md:text-sm font-bold text-slate-400 mb-6 uppercase tracking-widest">تفكيك الأحرف</h4>
-                            <div className="flex justify-center gap-1 md:gap-2.5">
-                              {mizanResult.letterBreakdown.map((item, i) => (
-                                <div key={i} className="flex flex-col items-center gap-1.5 md:gap-2">
-                                  <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-black border-2 ${
-                                    item.isRoot
-                                      ? 'bg-indigo-500 border-indigo-600 text-white shadow-md'
-                                      : 'bg-white border-slate-200 text-slate-500'
-                                  }`}>
-                                    {item.wordLetter}
-                                  </div>
-                                  <div className={`w-0.5 h-3 md:h-5 ${item.isRoot ? 'bg-indigo-300' : 'bg-slate-200'}`} />
-                                  <div className={`${bx} rounded-lg md:rounded-xl flex items-center justify-center font-bold border-2 ${
-                                    item.isRoot
-                                      ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
-                                      : 'bg-slate-100 border-slate-200 text-slate-400'
-                                  }`}>
-                                    {item.patternLetter}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                            <div className="flex justify-center gap-4 md:gap-6 mt-6 text-xs md:text-sm font-medium">
-                              <div className="flex items-center gap-1.5">
-                                <div className="w-3 h-3 rounded bg-indigo-500" />
-                                <span className="text-slate-500">حروف أصلية (جذر)</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <div className="w-3 h-3 rounded bg-slate-200" />
-                                <span className="text-slate-500">حروف زائدة</span>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })()}
-
-                      {mizanResult.morphNotes && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(mizanResult.morphNotes.trim().toLowerCase()) && !mizanResult.morphNotes.includes('لا يوجد تغيير') && (
-                        <div className="mt-6 flex items-start gap-2 bg-amber-50/50 p-4 rounded-xl border border-amber-100">
-                          <Sparkles className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-                          <p className="text-amber-800 text-base leading-relaxed font-medium">{mizanResult.morphNotes}</p>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Scale className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                      <p className="text-slate-400 font-medium">التحليل الصرفي غير متوفر حاليًا لهذه الكلمة</p>
-                    </div>
-                  )}
                 </div>
               )}
             </div>

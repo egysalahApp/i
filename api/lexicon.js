@@ -23,7 +23,6 @@ export default async function handler(req, res) {
   "word": "الكلمة مع التشكيل الكامل",
   "root": "الجذر الثلاثي أو الرباعي مفصولاً بمسافات (مثل: ك ت ب)",
   "type": "نوع الكلمة نحوياً (اسم / فعل / حرف / صفة...)",
-  "pattern": "الوزن الصرفي مع التشكيل (مثل: فَعَلَ)",
   "plural": "جمع الكلمة مع التشكيل إذا كانت اسماً مفرداً (وإلا اتركها فارغة)",
   "singular": "مفرد الكلمة مع التشكيل إذا كانت جمعاً (وإلا اتركها فارغة)",
   "meanings": [
@@ -168,23 +167,6 @@ export default async function handler(req, res) {
     };
 
     result = applyRulesToObject(result);
-
-    // تجاهل الأوزان للكلمات المعقدة (المصادر الصناعية، الجموع الطويلة، إلخ)
-    const isComplex = (w) => {
-      if (!w) return false;
-      // إزالة التشكيل لمعرفة الطول الحقيقي
-      const clean = w.replace(/[\u064B-\u065F\u0670\u0651\u0654\u0655]/g, '').trim();
-      return (
-        (clean.endsWith('ية') && clean.length > 4) || // إنسانية، ديمقراطية (وليس حرية)
-        (clean.endsWith('يات') && clean.length > 5) || // إنسانيات
-        clean.length > 7 // الكلمات الطويلة جداً
-      );
-    };
-
-    // إذا كانت الكلمة معقدة، نحذف الوزن الصرفي
-    if (isComplex(result.word) || isComplex(word)) {
-      result.pattern = null;
-    }
 
     return res.status(200).json(result);
   } catch (err) {
