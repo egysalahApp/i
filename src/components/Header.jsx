@@ -3,7 +3,7 @@ import { APP_CONFIG } from '../constants/appConfig';
 
 const Header = () => {
   return (
-    <header className="w-full bg-indigo-700 py-3 px-6 md:px-12 shadow-sm z-[60]">
+    <header className="w-full bg-slate-900 py-3 px-6 md:px-12 z-[60]">
       <div className="max-w-7xl mx-auto flex justify-start items-center">
         <a 
           href={APP_CONFIG.youtubeLink}

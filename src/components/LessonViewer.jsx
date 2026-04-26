@@ -214,8 +214,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
       <Header />
-      {/* مساحة بيضاء فارغة للفصل بين الهيدر والتبويبات */}
-      <div className="w-full h-4 md:h-6 bg-transparent"></div>
+      {/* لم يعد هناك مساحة بيضاء بناءً على طلب المستخدم */}
 
       {!isShareMode && (
         <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
