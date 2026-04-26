@@ -214,11 +214,8 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
   return (
     <div className="flex-grow flex flex-col min-h-[100dvh]">
       <Header />
-      <div className="w-full text-center pt-10 pb-8 bg-transparent flex flex-col items-center px-4">
-        <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-1">
-          {APP_DATA.headerTitle || APP_DATA.pageTitle || 'الدرس التفاعلي'}
-        </h1>
-      </div>
+      {/* مساحة بيضاء فارغة للفصل بين الهيدر والتبويبات */}
+      <div className="w-full h-4 md:h-6 bg-transparent"></div>
 
       {!isShareMode && (
         <div id="sticky-tabs-container" className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
