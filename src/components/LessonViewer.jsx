@@ -148,7 +148,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           if (contentArea) {
             // استخدام scrollIntoView الأصلي بدلاً من الحساب اليدوي
             // هذا يحل مشكلة سفاري مع شريط العنوان الديناميكي الذي يتغير حجمه أثناء التمرير لأعلى
-            const safetyMargin = 15; // مساحة تنفس إضافية (15px) للراحة البصرية
+            const safetyMargin = 0; // إزالة مساحة التنفس الإضافية لمنع ظهور الهيدر
             const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 80) + safetyMargin;
             
             contentArea.style.scrollMarginTop = `${headerOffset}px`;
