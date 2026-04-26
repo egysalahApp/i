@@ -148,7 +148,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           if (contentArea) {
             // استخدام scrollIntoView الأصلي بدلاً من الحساب اليدوي
             // هذا يحل مشكلة سفاري مع شريط العنوان الديناميكي الذي يتغير حجمه أثناء التمرير لأعلى
-            const safetyMargin = 0; // إزالة مساحة التنفس الإضافية لمنع ظهور الهيدر
+            const safetyMargin = 15; // إضافة هامش أمان لمنع تغطية التبويب للمحتوى في سفاري
             const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 80) + safetyMargin;
             
             contentArea.style.scrollMarginTop = `${headerOffset}px`;
@@ -219,7 +219,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
       <Header />
 
       {!isShareMode && (
-        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu bg-gradient-to-b from-white to-slate-50/80 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/60">
+        <div id="sticky-tabs-container" className="sticky top-0 z-50 transform-gpu mb-6 md:mb-8 bg-gradient-to-b from-white to-slate-50/80 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.08)] border-b border-slate-200/60">
           <div id="tabs-scroll-container" className="mx-auto w-max max-w-full overflow-x-auto px-3 md:px-4 no-scrollbar scroll-smooth">
               <div className="flex items-center gap-2 md:gap-2.5 py-2 flex-nowrap">
                 {APP_DATA.sections.map((section, idx) => {
