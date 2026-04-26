@@ -120,7 +120,7 @@ const LexiconTool = () => {
           @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap');
           .font-naskh {
             font-family: 'Noto Naskh Arabic', serif;
-            font-size: 1.25em;
+            font-size: 1.4em;
             font-weight: 700;
             line-height: 1.8;
           }
@@ -164,9 +164,13 @@ const LexiconTool = () => {
               onClick={handleAnalyze}
               disabled={loading || !word.trim()}
               className={`h-14 w-14 md:w-auto md:px-10 rounded-[1.5rem] font-bold text-lg text-white transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 ${
-                loading || !word.trim()
-                  ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200'
+                loading 
+                  ? 'bg-emerald-500 shadow-lg shadow-emerald-100 animate-pulse'
+                  : result 
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-200'
+                    : !word.trim()
+                      ? 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                      : 'bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200'
               }`}
             >
               {loading ? (
