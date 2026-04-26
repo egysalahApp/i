@@ -144,15 +144,19 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
     requestAnimationFrame(() => {
         setTimeout(() => {
           const stickyTabs = document.getElementById('sticky-tabs-container');
-          const contentArea = document.getElementById('main-content-area');
-          if (contentArea) {
-            // استخدام scrollIntoView الأصلي بدلاً من الحساب اليدوي
-            // هذا يحل مشكلة سفاري مع شريط العنوان الديناميكي الذي يتغير حجمه أثناء التمرير لأعلى
-            const safetyMargin = 15; // إضافة هامش أمان لمنع تغطية التبويب للمحتوى في سفاري
-            const headerOffset = (stickyTabs ? stickyTabs.offsetHeight : 80) + safetyMargin;
+          const anchor = document.getElementById('tab-scroll-anchor');
+          
+          if (anchor) {
+            // الاستغناء تماماً عن scrollMarginTop بسبب مشاكلها المعقدة في سفاري الآيفون
+            // بدلاً من ذلك، نُحدث موضع عنصر وهمي (anchor) بناءً على ارتفاع التبويبات ثم نمرر إليه
+            const tabsHeight = stickyTabs ? stickyTabs.offsetHeight : 60;
             
-            contentArea.style.scrollMarginTop = `${headerOffset}px`;
-            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // حساب المسافة بدقة: بما أن المحتوى يبتعد 24px للأسفل (بسبب mb-6 للتبويبات)
+            // وضع العنصر الوهمي عند -(tabsHeight + 19) يضمن تمرير الشاشة بحيث يختفي الهيدر تماماً (بفارق 5px)
+            // وتستقر التبويبات الملصقة في الأعلى مع بقاء المحتوى أسفلها بأمان تام.
+            anchor.style.top = `-${tabsHeight + 19}px`;
+            
+            anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }, 50); // زيادة التأخير قليلاً لضمان استقرار DOM في الموبايل
     });
@@ -256,7 +260,8 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
         </div>
       )}
 
-      <main id="main-content-area" className="container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
+      <main id="main-content-area" className="relative container mx-auto px-4 pb-8 max-w-4xl flex-grow min-h-[85vh]">
+        <div id="tab-scroll-anchor" className="absolute w-full h-px pointer-events-none opacity-0" style={{ top: '-100px' }}></div>
         <div className="flex items-center justify-center gap-3 pt-6 mb-6 relative">
           <h1 className="text-center text-2xl md:text-3xl font-semibold text-slate-700 bg-transparent">{APP_DATA.pageTitle.split('|')[0]}</h1>
           {!isShareMode && lessonId && (
