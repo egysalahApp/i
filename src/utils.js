@@ -35,15 +35,16 @@ export const renderFormattedText = (text, theme) => {
   // Color map for mark classes
   const colorMap = {
     'rose': 'text-rose-600',
-    'amber': 'text-amber-600',
+    'orange': 'text-orange-600',
     'emerald': 'text-emerald-600',
     'sky': 'text-sky-600',
     'violet': 'text-violet-600',
     'indigo': 'text-indigo-600',
     'purple': 'text-purple-600',
     'cyan': 'text-cyan-600',
-    'orange': 'text-orange-600',
     'blue': 'text-blue-600',
+    'lime': 'text-lime-600',
+    'slate': 'text-slate-600',
   };
 
   let result = text;

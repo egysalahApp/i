@@ -35,7 +35,7 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, swapColumns, pairs });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
 
   return (
     <div className="bg-white p-4 md:p-6 rounded-xl border border-cyan-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">

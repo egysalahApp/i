@@ -328,10 +328,10 @@ const LexiconTool = () => {
 
             {/* Usage Notes */}
             {result.usage_notes && !['لا يوجد', 'لا توجد', 'لا شيء', 'فارغ', 'none', 'n/a'].includes(result.usage_notes.trim().toLowerCase()) && (
-              <div className="px-5 md:px-8 py-4 bg-amber-50/50 border-t border-amber-100">
+              <div className="px-5 md:px-8 py-4 bg-orange-50/50 border-t border-orange-100">
                 <div className="flex items-start gap-2">
-                  <Info className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
-                  <p className="text-amber-800 text-base md:text-lg leading-relaxed font-medium">{result.usage_notes}</p>
+                  <Info className="w-5 h-5 text-orange-500 mt-0.5 shrink-0" />
+                  <p className="text-orange-800 text-base md:text-lg leading-relaxed font-medium">{result.usage_notes}</p>
                 </div>
               </div>
             )}

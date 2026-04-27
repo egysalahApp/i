@@ -65,7 +65,7 @@ const VisualSpottingEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, questions });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
 
   return (
     <div className="bg-white p-4 md:p-6 rounded-xl border border-indigo-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
@@ -168,9 +168,9 @@ const VisualSpottingEditor = ({ section, onSave, onCancel }) => {
 
                 {/* Hint & Explanation */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
-                  <div className="bg-amber-50/30 p-3 rounded-xl border border-amber-100">
-                    <label className="block text-amber-700 text-[10px] font-bold uppercase mb-1 flex items-center gap-1"><Info size={12} /> تلميح (Hint)</label>
-                    <input type="text" value={q.hint || ''} onChange={(e) => handleQuestionChange(qIdx, 'hint', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-amber-100 outline-none text-sm bg-white" />
+                  <div className="bg-orange-50/30 p-3 rounded-xl border border-orange-100">
+                    <label className="block text-orange-700 text-[10px] font-bold uppercase mb-1 flex items-center gap-1"><Info size={12} /> تلميح (Hint)</label>
+                    <input type="text" value={q.hint || ''} onChange={(e) => handleQuestionChange(qIdx, 'hint', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-orange-100 outline-none text-sm bg-white" />
                   </div>
                   <div className="bg-emerald-50/30 p-3 rounded-xl border border-emerald-100">
                     <label className="block text-emerald-700 text-[10px] font-bold uppercase mb-1 flex items-center gap-1"><CheckCircle2 size={12} /> شرح (Explanation)</label>

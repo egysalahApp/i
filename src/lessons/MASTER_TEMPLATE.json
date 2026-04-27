@@ -53,7 +53,7 @@
       "description": "اسحب كل جملة وضعها في الصندوق المناسب لها.",
       "categories": [
         { "id": "cat_1", "label": "التصنيف الأول", "theme": "emerald" },
-        { "id": "cat_2", "label": "التصنيف الثاني", "theme": "amber" }
+        { "id": "cat_2", "label": "التصنيف الثاني", "theme": "orange" }
       ],
       "questions": [
         {

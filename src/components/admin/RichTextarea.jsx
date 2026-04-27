@@ -4,10 +4,11 @@ import { Bold, Highlighter, Type, Minus, RemoveFormatting, ChevronDown } from 'l
 const HIGHLIGHT_COLORS = [
   { id: 'indigo', label: 'نيلي', tailwind: 'bg-indigo-500' },
   { id: 'rose', label: 'وردي', tailwind: 'bg-rose-500' },
-  { id: 'amber', label: 'ذهبي', tailwind: 'bg-amber-500' },
+  { id: 'orange', label: 'برتقالي', tailwind: 'bg-orange-500' },
   { id: 'emerald', label: 'أخضر', tailwind: 'bg-emerald-500' },
   { id: 'sky', label: 'أزرق', tailwind: 'bg-sky-500' },
   { id: 'violet', label: 'بنفسجي', tailwind: 'bg-violet-500' },
+  { id: 'lime', label: 'ليموني', tailwind: 'bg-lime-500' },
 ];
 
 const RichTextarea = ({ value, onChange, className = '', rows = 3, placeholder = '', dir = 'rtl' }) => {
@@ -156,10 +157,11 @@ const RichTextarea = ({ value, onChange, className = '', rows = 3, placeholder =
       <style>{`
         .formatted-mark-default { color: #4f46e5; font-weight: 700; }
         .formatted-mark-rose { color: #e11d48; font-weight: 700; }
-        .formatted-mark-amber { color: #d97706; font-weight: 700; }
+        .formatted-mark-orange { color: #f97316; font-weight: 700; }
         .formatted-mark-emerald { color: #059669; font-weight: 700; }
         .formatted-mark-sky { color: #0284c7; font-weight: 700; }
         .formatted-mark-violet { color: #7c3aed; font-weight: 700; }
+        .formatted-mark-lime { color: #84cc16; font-weight: 700; }
       `}</style>
     </div>
   );

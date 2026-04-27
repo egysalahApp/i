@@ -72,7 +72,7 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, questions });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
 
   return (
     <div className="bg-white p-6 rounded-xl border border-cyan-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
@@ -193,8 +193,8 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
 
                 {/* Hint & Explanation */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                   <div className="bg-amber-50/30 p-4 rounded-xl border border-amber-100">
-                      <label className="block text-amber-700 text-xs font-bold mb-2 flex items-center gap-1">
+                   <div className="bg-orange-50/30 p-4 rounded-xl border border-orange-100">
+                      <label className="block text-orange-700 text-xs font-bold mb-2 flex items-center gap-1">
                         <Info size={14} /> التلميح (Hint)
                       </label>
                       <RichTextarea 

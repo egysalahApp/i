@@ -13,7 +13,7 @@ const VisualGoldenEnvelopeEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, quote, summary, question });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'amber', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
 
   return (
     <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">
@@ -50,17 +50,17 @@ const VisualGoldenEnvelopeEditor = ({ section, onSave, onCancel }) => {
 
         {/* Content Sections */}
         <div className="space-y-6">
-          <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100">
-            <label className="flex items-center gap-2 text-amber-800 font-bold mb-3">
+          <div className="bg-orange-50/50 p-6 rounded-2xl border border-orange-100">
+            <label className="flex items-center gap-2 text-orange-800 font-bold mb-3">
               <Quote size={20} /> الاقتباس (المقولة المركزية)
             </label>
             <textarea 
               value={quote} 
               onChange={(e) => setQuote(e.target.value)} 
-              className="w-full px-4 py-3 rounded-xl border border-white focus:border-amber-300 outline-none shadow-sm text-lg text-center leading-relaxed font-medium italic h-24"
+              className="w-full px-4 py-3 rounded-xl border border-white focus:border-orange-300 outline-none shadow-sm text-lg text-center leading-relaxed font-medium italic h-24"
               placeholder="اكتب اقتباساً ملهماً هنا..."
             ></textarea>
-            <p className="text-[10px] text-amber-600 mt-2">ملاحظة: يمكنك استخدام وسوم HTML مثل &lt;span class="font-bold"&gt; للتمييز.</p>
+            <p className="text-[10px] text-orange-600 mt-2">ملاحظة: يمكنك استخدام وسوم HTML مثل &lt;span class="font-bold"&gt; للتمييز.</p>
           </div>
 
           <div className="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100">
