@@ -241,7 +241,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
 
                   const activeClass = isActive 
                     ? `${activeBg} text-white shadow-lg shadow-${effectiveTheme}-500/25 border-transparent scale-[1.04]` 
-                    : `${inactiveBg} ${inactiveText} ${inactiveBorder} md:hover:bg-${effectiveTheme}-100 md:hover:border-${effectiveTheme}-300/60 md:hover:scale-[1.02]`;
+                    : `${inactiveBg} ${inactiveText} ${inactiveBorder} md:hover:bg-slate-50 md:hover:border-slate-300 md:hover:scale-[1.02]`;
                   
                   return (
                     <button key={section.id} id={`tab-${section.id}`} onClick={() => handleTabClick(section.id)} className={`shrink-0 whitespace-nowrap px-5 md:px-6 py-1.5 md:py-2 rounded-full font-semibold text-[15px] md:text-lg border-2 transition-all duration-200 flex items-center justify-center gap-2 ${activeClass}`}>
