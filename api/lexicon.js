@@ -50,68 +50,27 @@ export default async function handler(req, res) {
 مهم جداً: أعد JSON خالصاً فقط. لا تكتب أي نص قبله أو بعده. لا تستخدم markdown.`;
 
   try {
-    // Auto-discover available flash models from the API
-    let models = [];
-    
-    if (process.env.GEMINI_MODEL) {
-      models.push(process.env.GEMINI_MODEL);
-    }
+    const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
 
-    try {
-      const listRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
-      );
-      if (listRes.ok) {
-        const listData = await listRes.json();
-        const flashModels = (listData.models || [])
-          .filter(m => 
-            m.name.includes('flash') && 
-            m.supportedGenerationMethods?.includes('generateContent')
-          )
-          .map(m => m.name.replace('models/', ''))
-          .sort((a, b) => {
-            const vA = a.match(/(\d+\.?\d*)/)?.[1] || '0';
-            const vB = b.match(/(\d+\.?\d*)/)?.[1] || '0';
-            return parseFloat(vB) - parseFloat(vA);
-          });
-        models.push(...flashModels);
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 2048,
+            responseMimeType: 'application/json',
+          },
+        }),
       }
-    } catch (e) {
-      console.warn('Could not auto-discover models, using fallbacks');
-    }
-
-    // Fallback if auto-discovery failed
-    if (models.length === 0) {
-      models = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
-    }
-
-    let response;
-    let lastError = '';
-
-    for (const model of models) {
-      response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.2,
-              maxOutputTokens: 4096,
-              responseMimeType: 'application/json',
-            },
-          }),
-        }
-      );
-
-      if (response.ok) break;
-      lastError = await response.text();
-      console.error(`Model ${model} failed:`, lastError);
-    }
+    );
 
     if (!response.ok) {
-      console.error('All models failed. Last error:', lastError);
+      const errorText = await response.text();
+      console.error(`Model ${model} failed:`, errorText);
       return res.status(502).json({ error: 'خطأ في الاتصال بخدمة التحليل. جرّب مرة أخرى.' });
     }
 
