@@ -30,8 +30,11 @@ const VisualRadarEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeBranch = (index) => {
-    setBranches(branches.filter((_, i) => i !== index));
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      setBranches(branches.filter((_, i) => i !== index));
+
+    }
+};
 
   const moveBranch = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === branches.length - 1)) return;

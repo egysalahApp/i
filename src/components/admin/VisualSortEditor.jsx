@@ -32,19 +32,22 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeOption = (idx) => {
-    if (globalOptions.length <= 1) return;
-    const newOpts = globalOptions.filter((_, i) => i !== idx);
-    setGlobalOptions(newOpts);
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      if (globalOptions.length <= 1) return;
+      const newOpts = globalOptions.filter((_, i) => i !== idx);
+      setGlobalOptions(newOpts);
     
-    // Update all questions, resetting 'correct' if it was this option or fixing index
-    const newQuestions = questions.map(q => {
-      let newCorrect = q.correct;
-      if (q.correct === idx) newCorrect = 0;
-      else if (q.correct > idx) newCorrect -= 1;
-      return { ...q, options: newOpts, correct: newCorrect };
-    });
-    setQuestions(newQuestions);
-  };
+      // Update all questions, resetting 'correct' if it was this option or fixing index
+      const newQuestions = questions.map(q => {
+        let newCorrect = q.correct;
+        if (q.correct === idx) newCorrect = 0;
+        else if (q.correct > idx) newCorrect -= 1;
+        return { ...q, options: newOpts, correct: newCorrect };
+      });
+      setQuestions(newQuestions);
+
+    }
+};
 
   const handleQuestionChange = (idx, field, value) => {
     const newQuestions = [...questions];
@@ -63,8 +66,11 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (idx) => {
-    setQuestions(questions.filter((_, i) => i !== idx));
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      setQuestions(questions.filter((_, i) => i !== idx));
+
+    }
+};
 
   const moveQuestion = (idx, direction) => {
     if ((direction === -1 && idx === 0) || (direction === 1 && idx === questions.length - 1)) return;

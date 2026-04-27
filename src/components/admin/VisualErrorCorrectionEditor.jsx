@@ -29,8 +29,11 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (index) => {
-    setQuestions(questions.filter((_, i) => i !== index));
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      setQuestions(questions.filter((_, i) => i !== index));
+
+    }
+};
 
   const moveQuestion = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === questions.length - 1)) return;
@@ -53,16 +56,19 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeWord = (qIdx, wIdx) => {
-    const newQuestions = [...questions];
-    if (newQuestions[qIdx].words.length > 1) {
-      newQuestions[qIdx].words.splice(wIdx, 1);
-      // Adjust errorWordIndex if needed
-      if (newQuestions[qIdx].errorWordIndex >= newQuestions[qIdx].words.length) {
-        newQuestions[qIdx].errorWordIndex = newQuestions[qIdx].words.length - 1;
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      const newQuestions = [...questions];
+      if (newQuestions[qIdx].words.length > 1) {
+        newQuestions[qIdx].words.splice(wIdx, 1);
+        // Adjust errorWordIndex if needed
+        if (newQuestions[qIdx].errorWordIndex >= newQuestions[qIdx].words.length) {
+          newQuestions[qIdx].errorWordIndex = newQuestions[qIdx].words.length - 1;
+        }
+        setQuestions(newQuestions);
       }
-      setQuestions(newQuestions);
+
     }
-  };
+};
 
   const handleOptionChange = (qIdx, oIdx, value) => {
     const newQuestions = [...questions];
@@ -77,15 +83,18 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeOption = (qIdx, oIdx) => {
-    const newQuestions = [...questions];
-    if (newQuestions[qIdx].options.length > 1) {
-      newQuestions[qIdx].options.splice(oIdx, 1);
-      if (newQuestions[qIdx].correctOptionIndex >= newQuestions[qIdx].options.length) {
-        newQuestions[qIdx].correctOptionIndex = newQuestions[qIdx].options.length - 1;
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      const newQuestions = [...questions];
+      if (newQuestions[qIdx].options.length > 1) {
+        newQuestions[qIdx].options.splice(oIdx, 1);
+        if (newQuestions[qIdx].correctOptionIndex >= newQuestions[qIdx].options.length) {
+          newQuestions[qIdx].correctOptionIndex = newQuestions[qIdx].options.length - 1;
+        }
+        setQuestions(newQuestions);
       }
-      setQuestions(newQuestions);
+
     }
-  };
+};
 
   const handleSave = () => {
     onSave({ ...section, title, description, theme, questions });

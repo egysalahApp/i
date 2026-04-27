@@ -19,8 +19,11 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (index) => {
-    setQuestions(questions.filter((_, i) => i !== index));
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      setQuestions(questions.filter((_, i) => i !== index));
+
+    }
+};
 
   const moveQuestion = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === questions.length - 1)) return;
@@ -45,12 +48,15 @@ const VisualHotspotEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeParagraphPart = (qIdx, pIdx) => {
-    const newQuestions = [...questions];
-    const newPara = [...newQuestions[qIdx].paragraph];
-    newPara.splice(pIdx, 1);
-    newQuestions[qIdx] = { ...newQuestions[qIdx], paragraph: newPara };
-    setQuestions(newQuestions);
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      const newQuestions = [...questions];
+      const newPara = [...newQuestions[qIdx].paragraph];
+      newPara.splice(pIdx, 1);
+      newQuestions[qIdx] = { ...newQuestions[qIdx], paragraph: newPara };
+      setQuestions(newQuestions);
+
+    }
+};
 
   const toggleTarget = (qIdx, pIdx) => {
     const newQuestions = [...questions];

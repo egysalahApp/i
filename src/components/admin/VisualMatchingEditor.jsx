@@ -20,8 +20,11 @@ const VisualMatchingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removePair = (index) => {
-    setPairs(pairs.filter((_, i) => i !== index));
-  };
+    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+      setPairs(pairs.filter((_, i) => i !== index));
+
+    }
+};
 
   const movePair = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === pairs.length - 1)) return;
