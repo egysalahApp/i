@@ -18,7 +18,7 @@ const Radar = ({ sectionData }) => {
     blue: '#60a5fa',
     sky: '#38bdf8',
     emerald: '#34d399',
-    amber: '#fbbf24',
+    orange: '#fbbf24',
     rose: '#fb7185',
     indigo: '#818cf8',
     purple: '#a78bfa',

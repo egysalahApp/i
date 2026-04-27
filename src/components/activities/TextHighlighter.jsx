@@ -111,7 +111,7 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
     }
     if (word.isTarget && !isSelected) {
       // Missed target ⚠️
-      return 'bg-amber-100 text-amber-800 ring-2 ring-amber-300 border-dashed';
+      return 'bg-orange-100 text-orange-800 ring-2 ring-orange-300 border-dashed';
     }
     if (!word.isTarget && isSelected) {
       // Wrong selection ❌
@@ -166,7 +166,7 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
                   {currentQuestion?.hint && (
                     <button
                       onClick={() => setShowHint(!showHint)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm md:text-base font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm md:text-base font-bold transition-all active:scale-95 text-orange-500 md:hover:bg-orange-50"
                     >
                       <Lightbulb className="w-4 h-4 md:w-5 md:h-5" /> تلميح
                     </button>
@@ -214,7 +214,7 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
                   </div>
                   {missedTargets.length > 0 && (
                     <div className="flex items-center gap-1.5">
-                      <div className="w-3 h-3 rounded bg-amber-300 border border-dashed border-amber-500" />
+                      <div className="w-3 h-3 rounded bg-orange-300 border border-dashed border-orange-500" />
                       <span className="text-slate-500">فاتتك</span>
                     </div>
                   )}
@@ -273,7 +273,7 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
                 {checked && !isFullyCorrect && firstAttempt && (
                   <button
                     onClick={handleRetry}
-                    className="flex-1 max-w-sm py-4 rounded-2xl font-bold text-lg md:text-xl text-white bg-amber-500 md:hover:bg-amber-600 shadow-md transition-all active:scale-95"
+                    className="flex-1 max-w-sm py-4 rounded-2xl font-bold text-lg md:text-xl text-white bg-orange-500 md:hover:bg-orange-600 shadow-md transition-all active:scale-95"
                   >
                     حاول مرة أخرى
                   </button>

@@ -122,7 +122,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
               <div className={`col-start-1 row-start-1 w-full flex flex-col transition-opacity duration-500 ${isComplete || !currentQState ? 'opacity-0 pointer-events-none z-0' : 'opacity-100 z-10'}`}>
                 <div className="flex items-center justify-between mb-4">
                     <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>البطاقة {toArabicNum(isComplete ? questions.length : currentIndex + 1)}</span>
-                    <button onClick={toggleHint} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 hover:bg-amber-50">
+                    <button onClick={toggleHint} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-orange-500 hover:bg-orange-50">
                       💡 تلميح
                     </button>
                 </div>

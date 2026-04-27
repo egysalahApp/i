@@ -70,8 +70,10 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
           <div key={idx} className={`bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200 mb-8 relative transition-colors duration-300 flex flex-col justify-start ${ringClass}`}>
               <div className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-100 mb-6 w-full mx-auto">
                   <div className="flex items-center justify-between mb-4">
-                      <span className={`text-${sectionData.theme}-600 font-bold text-lg md:text-xl`}>المهمة {toArabicNum(idx + 1)}</span>
-                      <button onClick={() => toggleHint(idx)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50">
+                      <span className={`px-4 py-1.5 rounded-xl bg-${sectionData.theme}-100 text-${sectionData.theme}-700 font-bold text-lg md:text-xl shadow-sm border border-${sectionData.theme}-200/50`}>
+                        المهمة {toArabicNum(idx + 1)}
+                      </span>
+                      <button onClick={() => toggleHint(idx)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-orange-500 md:hover:bg-orange-50">
                         💡 تلميح
                       </button>
                   </div>

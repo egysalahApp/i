@@ -195,7 +195,7 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
                 {currentQuestion.hint && (
                   <button
                     onClick={() => setShowHint(!showHint)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm md:text-base font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm md:text-base font-bold transition-all active:scale-95 text-orange-500 md:hover:bg-orange-50"
                   >
                     <Lightbulb className="w-4 h-4 md:w-5 md:h-5" /> تلميح
                   </button>

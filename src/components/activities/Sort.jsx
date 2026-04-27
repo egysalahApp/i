@@ -102,7 +102,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
                   <span className={`text-${theme}-600 font-bold text-lg md:text-xl`}>البطاقة {toArabicNum(isComplete ? questions.length : currentIndex + 1)}</span>
                   <button 
                     onClick={() => setShowHint(!showHint)} 
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-amber-500 md:hover:bg-amber-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-lg md:text-xl font-bold transition-all active:scale-95 text-orange-500 md:hover:bg-orange-50"
                   >
                     <Lightbulb className="w-5 h-5" /> تلميح
                   </button>
