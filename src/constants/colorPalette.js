@@ -17,14 +17,14 @@
 // ═══════════════════════════════════════════
 
 export const ACTIVITY_COLORS = [
-  { name: 'sky',     bg: 'bg-sky-500',     active: 'bg-sky-600',     border: 'border-sky-600',     ring: 'ring-sky-300' },
-  { name: 'indigo',  bg: 'bg-indigo-500',  active: 'bg-indigo-600',  border: 'border-indigo-600',  ring: 'ring-indigo-300' },
-  { name: 'emerald', bg: 'bg-emerald-500', active: 'bg-emerald-600', border: 'border-emerald-600', ring: 'ring-emerald-300' },
-  { name: 'amber',   bg: 'bg-amber-500',   active: 'bg-amber-600',   border: 'border-amber-600',   ring: 'ring-amber-300' },
-  { name: 'violet',  bg: 'bg-violet-500',  active: 'bg-violet-600',  border: 'border-violet-600',  ring: 'ring-violet-300' },
-  { name: 'blue',    bg: 'bg-blue-500',    active: 'bg-blue-600',    border: 'border-blue-600',    ring: 'ring-blue-300' },
-  { name: 'rose',    bg: 'bg-rose-500',    active: 'bg-rose-600',    border: 'border-rose-600',    ring: 'ring-rose-300' },
-  { name: 'orange',  bg: 'bg-orange-400',  active: 'bg-orange-500',  border: 'border-orange-500',  ring: 'ring-orange-300' },
+  { name: 'sky',     bg: 'bg-sky-500',     active: 'bg-sky-600',     border: 'border-sky-500',     ring: 'ring-sky-300' },
+  { name: 'indigo',  bg: 'bg-indigo-500',  active: 'bg-indigo-600',  border: 'border-indigo-500',  ring: 'ring-indigo-300' },
+  { name: 'emerald', bg: 'bg-emerald-500', active: 'bg-emerald-600', border: 'border-emerald-500', ring: 'ring-emerald-300' },
+  { name: 'amber',   bg: 'bg-amber-500',   active: 'bg-amber-600',   border: 'border-amber-500',   ring: 'ring-amber-300' },
+  { name: 'violet',  bg: 'bg-violet-500',  active: 'bg-violet-600',  border: 'border-violet-500',  ring: 'ring-violet-300' },
+  { name: 'blue',    bg: 'bg-blue-500',    active: 'bg-blue-600',    border: 'border-blue-500',    ring: 'ring-blue-300' },
+  { name: 'rose',    bg: 'bg-rose-500',    active: 'bg-rose-600',    border: 'border-rose-500',    ring: 'ring-rose-300' },
+  { name: 'orange',  bg: 'bg-orange-400',  active: 'bg-orange-500',  border: 'border-orange-400',  ring: 'ring-orange-300' },
 ];
 
 // ═══════════════════════════════════════════
@@ -33,17 +33,17 @@ export const ACTIVITY_COLORS = [
 // ═══════════════════════════════════════════
 
 export const SATURATED_BY_THEME = {
-  'sky':     'bg-sky-500 border-sky-600',
-  'indigo':  'bg-indigo-500 border-indigo-600',
-  'emerald': 'bg-emerald-500 border-emerald-600',
-  'amber':   'bg-amber-500 border-amber-600',
-  'violet':  'bg-violet-500 border-violet-600',
-  'blue':    'bg-blue-500 border-blue-600',
-  'rose':    'bg-rose-500 border-rose-600',
-  'orange':  'bg-orange-400 border-orange-500',
-  'purple':  'bg-purple-500 border-purple-600',
-  'cyan':    'bg-cyan-500 border-cyan-600',
-  'slate':   'bg-slate-400 border-slate-500',
+  'sky':     'bg-sky-500 border-sky-500',
+  'indigo':  'bg-indigo-500 border-indigo-500',
+  'emerald': 'bg-emerald-500 border-emerald-500',
+  'amber':   'bg-amber-500 border-amber-500',
+  'violet':  'bg-violet-500 border-violet-500',
+  'blue':    'bg-blue-500 border-blue-500',
+  'rose':    'bg-rose-500 border-rose-500',
+  'orange':  'bg-orange-400 border-orange-400',
+  'purple':  'bg-purple-500 border-purple-500',
+  'cyan':    'bg-cyan-500 border-cyan-500',
+  'slate':   'bg-slate-400 border-slate-400',
 };
 
 // ═══════════════════════════════════════════
