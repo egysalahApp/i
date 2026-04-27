@@ -96,7 +96,7 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
                     const isSelectedCorrect = answered && isTarget;
                     const isShaking = shakeWordIndex === wIdx;
 
-                    let wordClass = "px-4 md:px-6 py-3 md:py-4 text-2xl md:text-3xl font-normal rounded-xl transition-all duration-300 select-none ";
+                    let wordClass = "px-4 md:px-6 py-3 md:py-4 text-lg md:text-xl font-medium rounded-xl transition-all duration-300 select-none ";
                     if (!answered) {
                         wordClass += `bg-white border-2 border-slate-200 text-slate-700 md:hover:border-${sectionData.theme}-300 md:hover:bg-${sectionData.theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer `;
                         if (isShaking) wordClass += "bg-rose-100 border-rose-400 text-rose-700 shake ";

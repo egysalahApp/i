@@ -110,7 +110,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
 
               <div className={`grid gap-3 mx-auto w-full ${isTF ? 'max-w-[280px]' : 'max-w-md md:max-w-2xl'} flex-grow grid-cols-1 content-start`}>
                   {options.map((opt, optIdx) => {
-                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 ${isTF ? 'justify-center' : 'justify-start'} `;
+                    let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-lg md:text-xl flex items-center gap-3 ${isTF ? 'justify-center' : 'justify-start'} `;
                     if (!answered) { 
                       btnClass += `border-slate-100 bg-slate-50/50 text-slate-700 active:scale-95 md:hover:bg-${sectionData.theme}-50/80 md:hover:border-${sectionData.theme}-200 md:hover:text-${sectionData.theme}-800 md:hover:shadow-sm cursor-pointer`; 
                     } else {
@@ -119,7 +119,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                         else btnClass += "bg-slate-50/50 border-slate-100 text-slate-400 opacity-50";
                         btnClass += " cursor-default";
                     }
-                    let numClass = `w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-xl md:text-2xl font-bold shrink-0 transition-all `;
+                    let numClass = `w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-lg md:text-xl font-bold shrink-0 transition-all `;
                     if (answered) numClass += opt.isCorrect ? 'bg-emerald-500 text-white shadow-sm' : (selectedOption === opt ? 'bg-rose-500 text-white shadow-sm' : 'bg-slate-100 text-slate-400 border border-slate-200');
                     else numClass += `bg-${sectionData.theme}-500 text-white shadow-md`;
                     
