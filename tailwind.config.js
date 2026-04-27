@@ -1,4 +1,4 @@
-const colors = ['sky', 'indigo', 'amber', 'emerald', 'purple', 'violet', 'slate', 'cyan', 'rose', 'orange', 'zinc', 'blue'];
+const colors = ['sky', 'indigo', 'lime', 'emerald', 'purple', 'violet', 'slate', 'cyan', 'rose', 'orange', 'zinc', 'blue'];
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -60,9 +60,12 @@ export default {
     ...colors.map(c => `md:hover:text-${c}-700`),
     ...colors.map(c => `shadow-${c}-100`),
     ...colors.map(c => `shadow-${c}-200`),
+    ...colors.map(c => `shadow-${c}-500/25`),
     ...colors.map(c => `bg-${c}-50/40`),
     ...colors.map(c => `bg-${c}-50/60`),
     ...colors.map(c => `bg-${c}-50/80`),
+    ...colors.map(c => `border-${c}-200/60`),
+    ...colors.map(c => `md:hover:border-${c}-300/60`),
   ],
   theme: {
     extend: {
