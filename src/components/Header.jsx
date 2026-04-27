@@ -11,7 +11,7 @@ const Header = () => {
           href={APP_CONFIG.youtubeLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-3 group"
+          className="flex items-center justify-center gap-3 group w-max mx-auto"
         >
           {/* Logo Mark */}
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-50 to-indigo-100 flex items-center justify-center group-hover:shadow-md transition-all duration-300 group-hover:-translate-y-0.5 border border-indigo-50">

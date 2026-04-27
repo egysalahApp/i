@@ -17,7 +17,7 @@ const GoldenEnvelope = ({ sectionData }) => {
             <h4 className="text-slate-500 font-bold text-lg md:text-xl mb-4 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-slate-200 text-slate-600 px-2 py-1 rounded text-xs">📌</span> اقتباس الدرس
             </h4>
-            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-xl md:text-2xl font-medium text-slate-800 leading-loose" />
+            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-2xl md:text-3xl font-medium text-slate-800 leading-loose" />
             <span className="absolute -bottom-10 left-4 text-5xl text-slate-300 font-bold leading-none select-none pointer-events-none">"</span>
           </div>
         </div>
