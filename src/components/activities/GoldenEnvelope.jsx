@@ -17,7 +17,7 @@ const GoldenEnvelope = ({ sectionData }) => {
             <h4 className="text-slate-500 font-bold text-lg md:text-xl mb-4 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-slate-200 text-slate-600 px-2 py-1 rounded text-xs">📌</span> اقتباس الدرس
             </h4>
-            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-xl md:text-2xl font-normal text-slate-800 leading-[2.8]" />
+            <p dangerouslySetInnerHTML={{ __html: sectionData.quote }} className="text-2xl md:text-3xl font-medium text-slate-800 leading-[2.2] md:leading-[2.4]" />
             <span className="absolute -bottom-10 left-4 text-5xl text-slate-300 font-bold leading-none select-none pointer-events-none">"</span>
           </div>
         </div>
@@ -26,14 +26,14 @@ const GoldenEnvelope = ({ sectionData }) => {
           <h4 className="text-slate-500 font-bold text-lg md:text-xl mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-slate-200 text-slate-600 px-2 py-1 rounded text-xs">💡</span> الخلاصة
           </h4>
-          <p dangerouslySetInnerHTML={{ __html: sectionData.summary }} className="text-lg md:text-xl font-normal text-slate-700 leading-[2.4]" />
+          <p dangerouslySetInnerHTML={{ __html: sectionData.summary }} className="text-xl md:text-2xl font-medium text-slate-700 leading-[2.2] md:leading-[2.4]" />
         </div>
 
         <div className="bg-gradient-to-br from-orange-50 to-white rounded-2xl p-6 md:p-8 border border-orange-100 shadow-sm transform transition-transform md:hover:-translate-y-1">
           <h4 className="text-orange-600 font-bold text-lg md:text-xl mb-3 uppercase tracking-wider flex items-center justify-center gap-2">
               <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded text-xs">🤔</span> سؤال للتأمل
           </h4>
-          <p dangerouslySetInnerHTML={{ __html: sectionData.question }} className="text-lg md:text-xl font-normal text-slate-800 leading-[2.4]" />
+          <p dangerouslySetInnerHTML={{ __html: sectionData.question }} className="text-xl md:text-2xl font-bold text-slate-800 leading-[2.2] md:leading-[2.4]" />
         </div>
 
       </div>

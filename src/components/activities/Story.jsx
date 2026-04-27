@@ -93,7 +93,7 @@ const Story = ({ sectionData, progress, onUpdateProgress }) => {
           <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-800 mb-6 z-0 px-6 md:px-12`}>
             {slide.title}
           </h3>
-          <p className="text-xl md:text-2xl font-medium text-slate-700 leading-relaxed z-0 px-6 md:px-16">
+          <p className="text-xl md:text-2xl font-medium leading-[2.8] md:leading-[3] text-slate-800 z-0 px-6 md:px-16">
             {slide.text}
           </p>
         </div>

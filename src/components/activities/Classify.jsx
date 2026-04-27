@@ -109,7 +109,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="fade-in mb-8 min-h-[500px]">
       {sectionData.description && (
         <div className="text-center w-full mb-6">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -131,7 +131,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
                 <div className="w-full flex flex-col transition-all duration-300">
                     <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2">
                       <h3 
-                        className="text-2xl md:text-3xl font-normal leading-[2.2] text-slate-800 text-center"
+                        className="text-2xl md:text-3xl font-semibold leading-relaxed text-slate-800 text-center"
                         dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQState?.originalQuestion.text || '', sectionData.theme) }}
                       />
                     </div>

@@ -36,7 +36,7 @@ const StyleLab = ({ sectionData }) => {
     <div className="max-w-4xl mx-auto fade-in">
       {sectionData.description && (
         <div className="text-center mb-8">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -50,7 +50,7 @@ const StyleLab = ({ sectionData }) => {
               </span>
           </div>
           
-          <div className="text-xl md:text-2xl leading-[2.2] md:leading-[2.5] text-right font-normal text-slate-800 mb-8 bg-slate-50 px-4 py-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
+          <div className="text-xl md:text-2xl font-medium leading-[2.8] md:leading-[3] text-right text-slate-800 mb-8 bg-slate-50 px-4 py-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
             {excerpt.segments.map((seg, i) => {
               if (seg.isHighlight) {
                 const isSelected = selectedId === seg.id;

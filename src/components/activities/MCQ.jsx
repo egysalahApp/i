@@ -76,7 +76,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="fade-in">
       {sectionData.description && (
         <div className="text-center mb-8">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -98,7 +98,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   <h3 
-                    className="text-2xl md:text-3xl font-normal text-slate-800 leading-loose whitespace-pre-line text-right"
+                    className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 whitespace-pre-line text-right"
                     dangerouslySetInnerHTML={{ __html: renderFormattedText(q.text, sectionData.theme) }}
                   />
                   {showHint && (
@@ -112,11 +112,11 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                   {options.map((opt, optIdx) => {
                     let btnClass = `w-full p-4 md:p-5 rounded-xl border-2 transition-all font-normal text-xl md:text-2xl flex items-center gap-3 ${isTF ? 'justify-center' : 'justify-start'} `;
                     if (!answered) { 
-                      btnClass += `border-slate-200 bg-white text-slate-600 active:scale-95 md:hover:bg-slate-50 cursor-pointer`; 
+                      btnClass += `border-slate-100 bg-slate-50/50 text-slate-700 active:scale-95 md:hover:bg-${sectionData.theme}-50/80 md:hover:border-${sectionData.theme}-200 md:hover:text-${sectionData.theme}-800 md:hover:shadow-sm cursor-pointer`; 
                     } else {
-                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm";
-                        else if (selectedOption === opt) btnClass += "bg-rose-50 border-rose-500 text-rose-800 shadow-sm";
-                        else btnClass += "bg-slate-50 border-slate-100 text-slate-400 opacity-60";
+                        if (opt.isCorrect) btnClass += "bg-emerald-50 border-emerald-400 text-emerald-800 shadow-sm";
+                        else if (selectedOption === opt) btnClass += "bg-rose-50 border-rose-400 text-rose-800 shadow-sm";
+                        else btnClass += "bg-slate-50/50 border-slate-100 text-slate-400 opacity-50";
                         btnClass += " cursor-default";
                     }
                     let numClass = `w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-xl md:text-2xl font-bold shrink-0 transition-all `;

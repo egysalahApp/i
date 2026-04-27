@@ -96,7 +96,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="fade-in">
       {sectionData.description && (
         <div className="text-center mb-8">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -132,7 +132,7 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
                     const isSelected = selectedWordIndex === wIdx;
                     const isShaking = shakeWordIndex === wIdx;
 
-                    let wordClass = "px-4 md:px-6 py-3 md:py-4 text-2xl md:text-3xl font-normal rounded-xl transition-all duration-300 select-none border-2 ";
+                    let wordClass = "px-4 md:px-6 py-3 md:py-4 text-2xl md:text-3xl font-medium rounded-xl transition-all duration-300 select-none border-2 ";
                     
                     if (step === 1) {
                         wordClass += `bg-white border-slate-200 text-slate-700 md:hover:border-${sectionData.theme}-300 md:hover:bg-${sectionData.theme}-50 md:hover:-translate-y-1 md:hover:shadow-md active:scale-95 cursor-pointer `;

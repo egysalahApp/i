@@ -56,7 +56,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="fade-in">
       {sectionData.description && (
         <div className="text-center mb-8">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -75,7 +75,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-normal text-slate-800 leading-relaxed whitespace-pre-line text-right mb-4">🎯 {q.task}</h3>
+                  <h3 className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 whitespace-pre-line text-right mb-4">🎯 {q.task}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />

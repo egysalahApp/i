@@ -47,7 +47,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="max-w-3xl mx-auto pb-12 fade-in flex flex-col items-center min-h-[500px]">
       {sectionData.description && (
         <div className="text-center mb-8 w-full px-4">
-          <p className={`text-lg md:text-xl text-${theme}-800 font-semibold bg-${theme}-50 bg-opacity-60 p-4 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${theme}-50/40 border border-${theme}-100 p-4 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>

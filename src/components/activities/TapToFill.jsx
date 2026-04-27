@@ -90,7 +90,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="fade-in">
       {sectionData.description && (
         <div className="text-center mb-8">
-          <p className={`text-lg md:text-xl text-${sectionData.theme}-800 font-semibold bg-${sectionData.theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${sectionData.theme}-50/40 border border-${sectionData.theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -116,7 +116,7 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   
-                  <div className="text-2xl md:text-[1.75rem] lg:text-3xl font-normal text-slate-800 whitespace-pre-wrap text-right mt-6" style={{ lineHeight: '2.5' }}>
+                  <div className="text-xl md:text-2xl font-medium leading-[2.8] md:leading-[3] text-slate-800 whitespace-pre-wrap text-right mt-6">
                       {textSegments.map((seg, sIdx) => (
                           <React.Fragment key={sIdx}>
                               <span className="align-middle">{seg}</span>

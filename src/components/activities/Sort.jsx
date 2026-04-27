@@ -84,7 +84,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
     <div className="max-w-4xl mx-auto pb-6 min-h-[500px]">
       {sectionData.description && (
         <div className="text-center mb-10 fade-in">
-          <p className={`text-lg md:text-xl text-${theme}-800 font-semibold bg-${theme}-50 bg-opacity-60 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full`}>
+          <p className={`text-lg md:text-xl text-slate-700 font-medium bg-${theme}-50/40 border border-${theme}-100 p-4 md:p-5 rounded-2xl shadow-sm inline-block w-full leading-relaxed`}>
             {sectionData.description}
           </p>
         </div>
@@ -112,7 +112,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
                 
                 <div style={{ minHeight: maxContentHeight }} className="w-full flex items-center justify-center mb-2 transition-all duration-300">
                   <h3 
-                    className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 text-center"
+                    className="text-2xl md:text-3xl font-semibold leading-relaxed text-slate-800 text-center"
                     dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQuestion.text, theme) }}
                   />
                 </div>
