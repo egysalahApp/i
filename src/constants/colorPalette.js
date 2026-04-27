@@ -69,4 +69,4 @@ export const AUTO_PALETTE = ['sky', 'emerald', 'indigo', 'orange', 'violet', 'bl
 // ═══════════════════════════════════════════
 
 export const FIRST_TAB_THEME = 'sky';
-export const TAB_PALETTE = ['indigo', 'emerald', 'orange', 'violet', 'blue', 'green', 'purple', 'slate'];
+export const TAB_PALETTE = ['indigo', 'emerald', 'orange', 'violet', 'green', 'purple', 'slate'];
