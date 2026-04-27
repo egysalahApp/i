@@ -8,22 +8,24 @@ const Radar = ({ sectionData }) => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const map = {
     ...sectionData.mapData,
-    branches: sectionData.mapData.branches.map((branch, idx) => ({
-      ...branch,
-      color: branch.color || branch.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length]
-    }))
+    branches: sectionData.mapData.branches.map((branch, idx) => {
+      let c = branch.color || branch.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length];
+      if (c === 'amber') c = 'orange';
+      return { ...branch, color: c };
+    })
   };
 
   const colorMap = {
     blue: '#60a5fa',
     sky: '#38bdf8',
     emerald: '#34d399',
-    orange: '#fbbf24',
+    orange: '#fb923c',
     rose: '#fb7185',
     indigo: '#818cf8',
     purple: '#a78bfa',
     violet: '#8b5cf6',
-    orange: '#fb923c'
+    lime: '#84cc16',
+    amber: '#fb923c' // Legacy support
   };
 
   useEffect(() => {
