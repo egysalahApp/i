@@ -235,7 +235,7 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   // Active: solid saturated color, elevated
                   // Inactive: subtle tint of section color for visual coherence
                   const activeBg = isSlate ? 'bg-slate-500' : `bg-${effectiveTheme}-500`;
-                  const inactiveBg = isSlate ? 'bg-slate-50' : `bg-${effectiveTheme}-50`;
+                  const inactiveBg = 'bg-transparent';
                   const inactiveText = isSlate ? 'text-slate-600' : `text-${effectiveTheme}-700`;
                   const inactiveBorder = isSlate ? 'border-slate-200' : `border-${effectiveTheme}-200/60`;
 
