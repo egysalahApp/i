@@ -75,7 +75,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                         💡 تلميح
                       </button>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-medium leading-loose text-slate-800 whitespace-pre-line text-right mb-4">🎯 {q.task}</h3>
+                  <h3 className="text-xl md:text-2xl font-bold leading-loose text-slate-800 whitespace-pre-line text-right mb-4">🎯 {q.task}</h3>
                   {showHint && (
                       <div className="mt-4 smooth-expand">
                           <HintBox hintText={q.hint} />
@@ -83,7 +83,7 @@ const Hotspot = ({ sectionData, progress, onUpdateProgress }) => {
                   )}
               </div>
               
-              <div className="bg-white border-2 border-slate-100 rounded-xl p-6 md:p-8 text-lg md:text-xl leading-relaxed md:leading-loose text-right text-slate-700 mx-auto w-full max-w-4xl shadow-inner whitespace-pre-wrap">
+              <div className="bg-white border-2 border-slate-100 rounded-xl p-6 md:p-8 text-xl md:text-2xl leading-[2.2] md:leading-[2.6] text-right text-slate-700 mx-auto w-full max-w-4xl shadow-inner whitespace-pre-wrap">
                   {q.paragraph.map((seg, sIdx) => {
                       if (!seg.isTarget && seg.text.length < 3) {
                           return <span key={sIdx} className="text-slate-800">{seg.text}</span>;
