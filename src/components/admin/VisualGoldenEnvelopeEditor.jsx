@@ -13,7 +13,7 @@ const VisualGoldenEnvelopeEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, quote, summary, question });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'lime', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'green', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
 
   return (
     <div className="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">

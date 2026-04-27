@@ -25,6 +25,7 @@ export const ACTIVITY_COLORS = [
   { name: 'blue',    bg: 'bg-blue-500',    active: 'bg-blue-600',    border: 'border-blue-500',    ring: 'ring-blue-300' },
   { name: 'rose',    bg: 'bg-rose-500',    active: 'bg-rose-600',    border: 'border-rose-500',    ring: 'ring-rose-300' },
   { name: 'orange',  bg: 'bg-orange-500',  active: 'bg-orange-600',  border: 'border-orange-500',  ring: 'ring-orange-300' },
+  { name: 'green',   bg: 'bg-green-500',   active: 'bg-green-600',   border: 'border-green-500',   ring: 'ring-green-300' },
 ];
 
 // ═══════════════════════════════════════════
@@ -44,6 +45,7 @@ export const SATURATED_BY_THEME = {
   'purple':  'bg-purple-500 border-purple-500',
   'cyan':    'bg-cyan-500 border-cyan-500',
   'slate':   'bg-slate-400 border-slate-400',
+  'green':   'bg-green-500 border-green-500',
 };
 
 // ═══════════════════════════════════════════
@@ -67,4 +69,4 @@ export const AUTO_PALETTE = ['sky', 'emerald', 'indigo', 'orange', 'violet', 'bl
 // ═══════════════════════════════════════════
 
 export const FIRST_TAB_THEME = 'sky';
-export const TAB_PALETTE = ['indigo', 'emerald', 'orange', 'violet', 'blue', 'lime', 'purple', 'slate'];
+export const TAB_PALETTE = ['indigo', 'emerald', 'orange', 'violet', 'blue', 'green', 'purple', 'slate'];

@@ -44,6 +44,7 @@ export const renderFormattedText = (text, theme) => {
     'cyan': 'text-cyan-600',
     'blue': 'text-blue-600',
     'lime': 'text-lime-600',
+    'green': 'text-green-600',
     'slate': 'text-slate-600',
     'amber': 'text-orange-600', // Handle legacy markup
   };
