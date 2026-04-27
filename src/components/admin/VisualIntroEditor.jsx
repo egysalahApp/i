@@ -22,12 +22,11 @@ const VisualIntroEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeCard = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه البطاقة؟')) {
       const newContent = content.filter((_, i) => i !== index);
       setContent(newContent);
-
     }
-};
+  };
 
   const moveCard = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === content.length - 1)) return;

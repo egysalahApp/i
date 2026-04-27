@@ -20,11 +20,10 @@ const VisualStoryEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeSlide = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه الشريحة؟')) {
       setSlides(slides.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const moveSlide = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === slides.length - 1)) return;

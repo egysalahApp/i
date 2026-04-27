@@ -18,11 +18,10 @@ const VisualFlashcardsEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeCard = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه البطاقة؟')) {
       setCards(cards.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const moveCard = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === cards.length - 1)) return;

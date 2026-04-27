@@ -27,11 +27,10 @@ const VisualSpottingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
       setQuestions(questions.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const moveQuestion = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === questions.length - 1)) return;
@@ -54,7 +53,7 @@ const VisualSpottingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeWord = (qIdx, wIdx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه الكلمة؟')) {
       const newQuestions = [...questions];
       if (newQuestions[qIdx].words.length > 1) {
         newQuestions[qIdx].words.splice(wIdx, 1);
@@ -63,9 +62,8 @@ const VisualSpottingEditor = ({ section, onSave, onCancel }) => {
         }
         setQuestions(newQuestions);
       }
-
     }
-};
+  };
 
   const handleSave = () => {
     onSave({ ...section, title, description, theme, questions });

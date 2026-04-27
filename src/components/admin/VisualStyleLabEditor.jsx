@@ -12,11 +12,10 @@ const VisualStyleLabEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeExcerpt = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا المقتطف؟')) {
       setExcerpts(excerpts.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const addSegment = (excerptIdx) => {
     const newExcerpts = [...excerpts];
@@ -27,15 +26,14 @@ const VisualStyleLabEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeSegment = (excerptIdx, segIdx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا الجزء؟')) {
       const newExcerpts = [...excerpts];
       const newSegments = [...newExcerpts[excerptIdx].segments];
       newSegments.splice(segIdx, 1);
       newExcerpts[excerptIdx] = { ...newExcerpts[excerptIdx], segments: newSegments };
       setExcerpts(newExcerpts);
-
     }
-};
+  };
 
   const moveSegment = (excerptIdx, segIdx, direction) => {
     const newExcerpts = [...excerpts];

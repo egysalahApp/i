@@ -20,11 +20,10 @@ const VisualOrderingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (qIndex) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
       setQuestions(questions.filter((_, i) => i !== qIndex));
-
     }
-};
+  };
 
   const addOrderItem = (qIndex) => {
     const newQuestions = [...questions];
@@ -33,13 +32,12 @@ const VisualOrderingEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeOrderItem = (qIndex, itemIndex) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
       const newQuestions = [...questions];
       newQuestions[qIndex].correctOrder = newQuestions[qIndex].correctOrder.filter((_, i) => i !== itemIndex);
       setQuestions(newQuestions);
-
     }
-};
+  };
 
   const moveOrderItem = (qIndex, itemIndex, direction) => {
     const newQuestions = [...questions];

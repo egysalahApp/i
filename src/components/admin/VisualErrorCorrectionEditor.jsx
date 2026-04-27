@@ -29,11 +29,10 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
       setQuestions(questions.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const moveQuestion = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === questions.length - 1)) return;
@@ -56,7 +55,7 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeWord = (qIdx, wIdx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه الكلمة؟')) {
       const newQuestions = [...questions];
       if (newQuestions[qIdx].words.length > 1) {
         newQuestions[qIdx].words.splice(wIdx, 1);
@@ -66,9 +65,8 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
         }
         setQuestions(newQuestions);
       }
-
     }
-};
+  };
 
   const handleOptionChange = (qIdx, oIdx, value) => {
     const newQuestions = [...questions];
@@ -83,7 +81,7 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeOption = (qIdx, oIdx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا الخيار؟')) {
       const newQuestions = [...questions];
       if (newQuestions[qIdx].options.length > 1) {
         newQuestions[qIdx].options.splice(oIdx, 1);
@@ -92,9 +90,8 @@ const VisualErrorCorrectionEditor = ({ section, onSave, onCancel }) => {
         }
         setQuestions(newQuestions);
       }
-
     }
-};
+  };
 
   const handleSave = () => {
     onSave({ ...section, title, description, theme, questions });

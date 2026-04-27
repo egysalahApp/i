@@ -32,7 +32,7 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeOption = (idx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا التصنيف؟')) {
       if (globalOptions.length <= 1) return;
       const newOpts = globalOptions.filter((_, i) => i !== idx);
       setGlobalOptions(newOpts);
@@ -45,9 +45,8 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
         return { ...q, options: newOpts, correct: newCorrect };
       });
       setQuestions(newQuestions);
-
     }
-};
+  };
 
   const handleQuestionChange = (idx, field, value) => {
     const newQuestions = [...questions];
@@ -66,11 +65,10 @@ const VisualSortEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (idx) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه البطاقة؟')) {
       setQuestions(questions.filter((_, i) => i !== idx));
-
     }
-};
+  };
 
   const moveQuestion = (idx, direction) => {
     if ((direction === -1 && idx === 0) || (direction === 1 && idx === questions.length - 1)) return;

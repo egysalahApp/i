@@ -21,15 +21,14 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeCategory = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذا التصنيف؟')) {
       const catId = categories[index].id;
       setCategories(categories.filter((_, i) => i !== index));
       // Also remove questions belonging to this category or reset them? 
       // Usually better to just keep them but the UI might break. 
       // For now, let's just remove the category.
-
     }
-};
+  };
 
   const handleQuestionChange = (index, field, value) => {
     const newQuestions = [...questions];
@@ -45,11 +44,10 @@ const VisualClassifyEditor = ({ section, onSave, onCancel }) => {
   };
 
   const removeQuestion = (index) => {
-    if (window.confirm('هل أنت متأكد من الحذف؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه البطاقة؟')) {
       setQuestions(questions.filter((_, i) => i !== index));
-
     }
-};
+  };
 
   const moveQuestion = (index, direction) => {
     if ((direction === -1 && index === 0) || (direction === 1 && index === questions.length - 1)) return;
