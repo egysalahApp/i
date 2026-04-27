@@ -51,8 +51,8 @@ export const SATURATED_BY_THEME = {
 // ═══════════════════════════════════════════
 
 export const CONTRAST_COLORS = {
-  right: { bg: 'bg-sky-500',  border: 'border-sky-600' },
-  left:  { bg: 'bg-rose-500', border: 'border-rose-600' },
+  right: { bg: 'bg-sky-50',  border: 'border-sky-200', text: 'text-sky-900' },
+  left:  { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-900' },
 };
 
 // ═══════════════════════════════════════════
