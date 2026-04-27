@@ -55,16 +55,16 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
     const themes = [];
     const pairs = {
       'emerald': 'violet',
-      'amber': 'indigo',
+      'orange': 'indigo',
       'violet': 'emerald',
-      'indigo': 'amber',
+      'indigo': 'orange',
       'blue': 'rose',
       'rose': 'blue',
-      'orange': 'indigo',
+      'lime': 'sky',
       'slate': 'sky',
-      'sky': 'indigo',
+      'sky': 'lime',
       'purple': 'emerald',
-      'cyan': 'amber',
+      'cyan': 'orange',
     };
 
     APP_DATA.sections.forEach((section, idx) => {
