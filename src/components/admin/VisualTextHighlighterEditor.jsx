@@ -70,7 +70,7 @@ const VisualTextHighlighterEditor = ({ section, onSave, onCancel }) => {
     onSave({ ...section, title, description, theme, questions });
   };
 
-  const themes = ['sky', 'indigo', 'emerald', 'lime', 'green', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan', 'slate'];
+  const themes = ['sky', 'indigo', 'emerald', 'lime', 'green', 'rose', 'violet', 'blue', 'purple', 'orange', 'cyan'];
 
   return (
     <div className="bg-white p-4 md:p-6 rounded-xl border border-lime-100 shadow-sm mt-4 animate-in fade-in slide-in-from-top-4 max-w-full">

@@ -26,6 +26,7 @@ export const ACTIVITY_COLORS = [
   { name: 'rose',    bg: 'bg-rose-500',    active: 'bg-rose-600',    border: 'border-rose-500',    ring: 'ring-rose-300' },
   { name: 'orange',  bg: 'bg-orange-500',  active: 'bg-orange-600',  border: 'border-orange-500',  ring: 'ring-orange-300' },
   { name: 'green',   bg: 'bg-green-500',   active: 'bg-green-600',   border: 'border-green-500',   ring: 'ring-green-300' },
+  { name: 'cyan',    bg: 'bg-cyan-500',    active: 'bg-cyan-600',    border: 'border-cyan-500',    ring: 'ring-cyan-300' },
 ];
 
 // ═══════════════════════════════════════════
@@ -61,7 +62,7 @@ export const CONTRAST_COLORS = {
 // باليت تلقائي للعناصر المتعددة (Intro cards, Radar branches)
 // ═══════════════════════════════════════════
 
-export const AUTO_PALETTE = ['sky', 'emerald', 'indigo', 'orange', 'violet', 'blue', 'rose', 'lime'];
+export const AUTO_PALETTE = ['sky', 'emerald', 'indigo', 'orange', 'violet', 'blue', 'rose', 'lime', 'cyan'];
 
 // ═══════════════════════════════════════════
 // ألوان التبويبات (الترتيب مهم — يتكرر دورياً)
