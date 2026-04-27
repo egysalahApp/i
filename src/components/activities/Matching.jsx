@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { ACTIVITY_COLORS } from '../../constants/colorPalette';
+import { useSound } from '../../contexts/SoundContext';
 
 // Use centralized palette
 const PAIR_COLORS = ACTIVITY_COLORS;
 
 const Matching = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
+
   const theme = sectionData.theme;
   const swap = sectionData.swapColumns || false;
   const isComplete = progress.total > 0 && progress.answered === progress.total;
@@ -58,8 +61,11 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
         });
 
         onUpdateProgress(sectionData.id, progress.answered + 1, progress.score + 1);
+        if (progress.answered + 1 === progress.total) playComplete();
+        else playCorrect();
       } else {
         // Mismatch!
+        playWrong();
         setWrongAttempt(true);
         setTimeout(() => {
           setSelectedRight(null);

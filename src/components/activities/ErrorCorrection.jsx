@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
+import { useSound } from '../../contexts/SoundContext';
 import { toArabicNum, shuffleArray } from '../../utils';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
+
   const [questions, setQuestions] = useState([]);
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
@@ -74,6 +77,13 @@ const ErrorCorrection = ({ sectionData, progress, onUpdateProgress }) => {
     const newAnswered = progress.answered + 1;
     const newScore = progress.score + (isCorrect ? 1 : 0);
     onUpdateProgress(sectionData.id, newAnswered, newScore);
+    
+    if (isCorrect) {
+      if (newAnswered === progress.total) playComplete();
+      else playCorrect();
+    } else {
+      playWrong();
+    }
     
     if (!isCorrect) {
         setTimeout(() => {

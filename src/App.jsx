@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase';
 import LessonViewer from './components/LessonViewer';
 import { validateLesson } from './lib/schemas';
 import { decodeShareToken } from './components/ui/ShareModal';
+import { SoundProvider } from './contexts/SoundContext';
 
 // Admin Components
 import Login from './components/admin/Login';
@@ -249,41 +250,43 @@ function ShareWrapper() {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<Login />} />
-        <Route 
-          path="/admin" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/admin/lessons" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/admin/lessons/:id" 
-          element={
-            <ProtectedRoute>
-              <LessonEditor />
-            </ProtectedRoute>
-          } 
-        />
+    <SoundProvider>
+      <Router>
+        <Routes>
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/lessons" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/lessons/:id" 
+            element={
+              <ProtectedRoute>
+                <LessonEditor />
+              </ProtectedRoute>
+            } 
+          />
 
-        {/* Public Routes */}
-        <Route path="/share/:token" element={<ShareWrapper />} />
-        <Route path="/:lessonId" element={<LessonWrapper />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </Router>
+          {/* Public Routes */}
+          <Route path="/share/:token" element={<ShareWrapper />} />
+          <Route path="/:lessonId" element={<LessonWrapper />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </Router>
+    </SoundProvider>
   );
 }
 

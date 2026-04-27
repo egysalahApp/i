@@ -4,8 +4,10 @@ import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, AlertTriangle, PartyPopper } from 'lucide-react';
 import { ACTIVITY_COLORS } from '../../constants/colorPalette';
+import { useSound } from '../../contexts/SoundContext';
 
 const Sort = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [status, setStatus] = useState('idle'); // 'idle', 'correct', 'incorrect'
   const [showHint, setShowHint] = useState(false);
@@ -60,6 +62,10 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
       
       setStatus('correct');
       const isLast = currentIndex === questions.length - 1;
+      
+      if (isLast) playComplete();
+      else playCorrect();
+      
       if (!isLast) setAnimatingOut(true);
 
       const newAnswered = progress.answered + 1;
@@ -73,6 +79,7 @@ const Sort = ({ sectionData, progress, onUpdateProgress }) => {
         setShowHint(false);
       }, isLast ? 300 : 500);
     } else {
+      playWrong();
       setStatus('incorrect');
     }
   };

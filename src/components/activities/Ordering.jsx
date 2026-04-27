@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, ChevronUp, ChevronDown, CheckCircle2, XCircle, ArrowRight, RotateCcw } from 'lucide-react';
+import { useSound } from '../../contexts/SoundContext';
 
 const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
   const theme = sectionData.theme || 'indigo';
   const questions = sectionData.questions || [];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,6 +62,7 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
     setItems(prev => {
       const newItems = [...prev];
       [newItems[fromIndex], newItems[toIndex]] = [newItems[toIndex], newItems[fromIndex]];
+      playClick();
       return newItems;
     });
   }, [checked, items.length]);
@@ -75,7 +78,13 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
     if (allCorrect) {
       const newAnswered = progress.answered + 1;
       const newScore = progress.score + (firstAttempt ? 1 : 0);
+      
+      if (newAnswered === progress.total) playComplete();
+      else playCorrect();
+      
       onUpdateProgress(sectionData.id, newAnswered, newScore);
+    } else {
+      playWrong();
     }
   };
 
@@ -132,6 +141,7 @@ const Ordering = ({ sectionData, progress, onUpdateProgress }) => {
       const newItems = [...prev];
       const [removed] = newItems.splice(dragIndex, 1);
       newItems.splice(targetIndex, 0, removed);
+      playClick();
       return newItems;
     });
     setDragIndex(null);

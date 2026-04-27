@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
+import { useSound } from '../../contexts/SoundContext';
 import { toArabicNum } from '../../utils';
 
 const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
+
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
   const [questions, setQuestions] = useState(() => {
@@ -35,7 +38,10 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
       setQuestions(newQuestions);
       
       onUpdateProgress(sectionData.id, progress.answered + 1, progress.score + 1);
+      if (progress.answered + 1 === progress.total) playComplete();
+      else playCorrect();
     } else {
+      playWrong();
       const newQuestions = [...questions];
       newQuestions[qIdx].shakeWordIndex = wIdx;
       setQuestions(newQuestions);

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
+import { useSound } from '../../contexts/SoundContext';
 import { toArabicNum, shuffleArray, renderFormattedText } from '../../utils';
 import { Inbox } from 'lucide-react';
 import { SATURATED_BY_THEME, AUTO_PALETTE } from '../../constants/colorPalette';
 
 const Classify = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [status, setStatus] = useState('idle'); // idle, correct, incorrect
@@ -75,6 +78,10 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
     if (isCorrect) {
       const isLast = currentIndex === questions.length - 1;
+      
+      if (isLast) playComplete();
+      else playCorrect();
+      
       if (!isLast) setAnimatingOut(true);
       
       const theme = categoriesWithTheme.find(c => c.id === catId).theme;
@@ -92,6 +99,7 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
         onUpdateProgress(sectionData.id, progress.answered + 1, progress.score + 1);
       }, isLast ? 300 : 600);
     } else {
+      playWrong();
       setStatus('incorrect');
     }
   };

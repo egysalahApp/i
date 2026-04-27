@@ -3,8 +3,10 @@ import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
 import { toArabicNum, shuffleArray, renderFormattedText } from '../../utils';
+import { useSound } from '../../contexts/SoundContext';
 
 const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playCorrect, playWrong, playComplete } = useSound();
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
   const [questions, setQuestions] = useState(() => {
@@ -52,6 +54,14 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
 
     const isCorrect = opt.isCorrect;
     const newAnswered = progress.answered + 1;
+    
+    if (isCorrect) {
+      if (newAnswered === progress.total) playComplete();
+      else playCorrect();
+    } else {
+      playWrong();
+    }
+
     const newScore = progress.score + (isCorrect ? 1 : 0);
     onUpdateProgress(sectionData.id, newAnswered, newScore);
 

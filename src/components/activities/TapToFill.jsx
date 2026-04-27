@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { FeedbackBox } from '../ui/FeedbackBox';
+import { useSound } from '../../contexts/SoundContext';
 import { toArabicNum, shuffleArray } from '../../utils';
 
 const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
+
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
   const [questions, setQuestions] = useState(() => {
@@ -64,6 +67,13 @@ const TapToFill = ({ sectionData, progress, onUpdateProgress }) => {
         const newAnswered = progress.answered + 1;
         const newScore = progress.score + (isCorrect ? 1 : 0);
         onUpdateProgress(sectionData.id, newAnswered, newScore);
+        
+        if (isCorrect) {
+          if (newAnswered === progress.total) playComplete();
+          else playCorrect();
+        } else {
+          playWrong();
+        }
       }, 0);
 
       if (!isCorrect) {
