@@ -76,6 +76,10 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
           sectionTheme = pairs[sectionTheme] || sectionTheme;
         }
       }
+      
+      // Handle legacy theme from database/JSON
+      if (sectionTheme === 'amber') sectionTheme = 'orange';
+      
       themes.push(sectionTheme);
     });
     return themes;

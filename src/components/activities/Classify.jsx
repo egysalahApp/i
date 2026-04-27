@@ -16,10 +16,11 @@ const Classify = ({ sectionData, progress, onUpdateProgress }) => {
 
   const isComplete = progress.total > 0 && progress.answered === progress.total;
 
-  const categoriesWithTheme = sectionData.categories.map((cat, idx) => ({
-    ...cat,
-    theme: cat.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length]
-  }));
+  const categoriesWithTheme = sectionData.categories.map((cat, idx) => {
+    let t = cat.theme || AUTO_PALETTE[idx % AUTO_PALETTE.length];
+    if (t === 'amber') t = 'orange';
+    return { ...cat, theme: t };
+  });
 
 
   useEffect(() => {

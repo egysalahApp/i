@@ -3,7 +3,7 @@ import { z } from 'zod';
 /**
  * Common Schemas
  */
-const ThemeSchema = z.enum(['emerald', 'orange', 'indigo', 'purple', 'violet', 'cyan', 'sky', 'rose', 'slate', 'lime', 'blue']);
+const ThemeSchema = z.enum(['emerald', 'orange', 'indigo', 'purple', 'violet', 'cyan', 'sky', 'rose', 'slate', 'lime', 'blue', 'amber']);
 
 // Base for all sections
 const BaseSectionSchema = z.object({
