@@ -125,7 +125,7 @@ const LexiconTool = () => {
                   : !word.trim()
                     ? 'bg-indigo-500 cursor-not-allowed shadow-md shadow-indigo-100'
                     : result && result.word === word.trim()
-                      ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-lg shadow-emerald-200'
+                      ? 'bg-gradient-to-r from-emerald-600 to-cyan-600 shadow-lg shadow-emerald-200'
                       : 'bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200'
               }`}
             >
@@ -150,7 +150,7 @@ const LexiconTool = () => {
         {result && (
           <div className="bg-white rounded-[2rem] shadow-lg border border-slate-100 overflow-hidden mb-6 smooth-expand">
             {/* Word Header */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 px-6 md:px-8 py-6 border-b border-emerald-100">
+            <div className="bg-gradient-to-br from-emerald-50 to-cyan-50 px-6 md:px-8 py-6 border-b border-emerald-100">
               <div className="flex items-center justify-center gap-4 mb-3">
                 <span className="text-4xl md:text-5xl font-black text-slate-800">{result.word}</span>
                 <button
