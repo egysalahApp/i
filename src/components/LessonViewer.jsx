@@ -236,8 +236,8 @@ function LessonViewer({ APP_DATA, singleSectionId, lessonId }) {
                   // Inactive: subtle tint of section color for visual coherence
                   const activeBg = isSlate ? 'bg-slate-500' : `bg-${effectiveTheme}-500`;
                   const inactiveBg = 'bg-transparent';
-                  const inactiveText = isSlate ? 'text-slate-600' : `text-${effectiveTheme}-700`;
-                  const inactiveBorder = isSlate ? 'border-slate-200' : `border-${effectiveTheme}-200/60`;
+                  const inactiveText = 'text-slate-500';
+                  const inactiveBorder = 'border-slate-200/80';
 
                   const activeClass = isActive 
                     ? `${activeBg} text-white shadow-lg shadow-${effectiveTheme}-500/25 border-transparent scale-[1.04]` 
