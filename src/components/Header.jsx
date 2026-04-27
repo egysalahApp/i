@@ -5,7 +5,7 @@ import { APP_CONFIG } from '../constants/appConfig';
 const Header = () => {
   return (
     <header className="w-full bg-transparent py-3 px-4 md:px-8 relative z-40">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <div className="max-w-7xl mx-auto flex justify-center items-center">
         {/* Brand Section */}
         <a 
           href={APP_CONFIG.youtubeLink}
