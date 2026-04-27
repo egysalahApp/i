@@ -79,7 +79,7 @@ const Spotting = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   {q.text && (
-                    <h3 className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 whitespace-pre-line text-right mb-4">
+                    <h3 className="text-xl md:text-2xl font-medium leading-loose text-slate-800 whitespace-pre-line text-right mb-4">
                       {q.text}
                     </h3>
                   )}

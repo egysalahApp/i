@@ -98,7 +98,7 @@ const MCQ = ({ sectionData, progress, onUpdateProgress }) => {
                       </button>
                   </div>
                   <h3 
-                    className="text-2xl md:text-3xl font-medium leading-[2.2] text-slate-800 whitespace-pre-line text-right"
+                    className="text-xl md:text-2xl font-medium leading-loose text-slate-800 whitespace-pre-line text-right"
                     dangerouslySetInnerHTML={{ __html: renderFormattedText(q.text, sectionData.theme) }}
                   />
                   {showHint && (

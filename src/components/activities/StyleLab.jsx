@@ -50,7 +50,7 @@ const StyleLab = ({ sectionData }) => {
               </span>
           </div>
           
-          <div className="text-xl md:text-2xl font-medium leading-[2.8] md:leading-[3] text-right text-slate-800 mb-8 bg-slate-50 px-4 py-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
+          <div className="text-xl md:text-2xl font-medium leading-[2.4] md:leading-[2.6] text-right text-slate-800 mb-8 bg-slate-50 px-4 py-6 md:p-8 rounded-2xl border border-slate-100 shadow-inner">
             {excerpt.segments.map((seg, i) => {
               if (seg.isHighlight) {
                 const isSelected = selectedId === seg.id;
