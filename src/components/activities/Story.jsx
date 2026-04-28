@@ -59,7 +59,7 @@ const Story = ({ sectionData, progress, onUpdateProgress }) => {
 
       {/* Main Slide Card */}
       <div 
-        className={`bg-white border-2 border-${theme}-200 rounded-[2.5rem] p-8 md:p-12 shadow-lg w-full flex flex-col items-center text-center relative min-h-[450px] justify-center transform transition-all duration-500 overflow-hidden select-none`}
+        className={`bg-white border-2 border-${theme}-200 rounded-[2.5rem] p-8 md:p-10 shadow-lg w-full flex flex-col items-center text-center relative min-h-[450px] justify-center transform transition-all duration-500 overflow-hidden select-none`}
         onTouchStart={handleSwipeStart}
         onTouchEnd={handleSwipeEnd}
       >
@@ -90,10 +90,10 @@ const Story = ({ sectionData, progress, onUpdateProgress }) => {
           <div className="text-7xl md:text-8xl mb-8 drop-shadow-md transition-transform hover:scale-110 z-0">
             {slide.icon}
           </div>
-          <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-800 mb-6 z-0 px-6 md:px-12`}>
+          <h3 className={`text-3xl md:text-4xl font-bold text-${theme}-800 mb-6 z-0 px-6 md:px-8`}>
             {slide.title}
           </h3>
-          <p className="text-xl md:text-2xl font-medium text-slate-700 leading-relaxed z-0 px-6 md:px-16">
+          <p className="text-xl md:text-2xl font-medium text-slate-700 leading-[1.8] z-0 px-4 md:px-10">
             {slide.text}
           </p>
         </div>
