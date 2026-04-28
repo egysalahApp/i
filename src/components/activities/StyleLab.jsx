@@ -6,9 +6,19 @@ const StyleLab = ({ sectionData }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
 
-  const excerpt = sectionData.excerpts[currentIdx];
-  const selectedSeg = excerpt.segments.find(s => s.id === selectedId);
-  const total = sectionData.excerpts.length;
+  const excerptsWithIds = React.useMemo(() => {
+    return (sectionData.excerpts || []).map((excerpt, eIdx) => ({
+      ...excerpt,
+      segments: (excerpt.segments || []).map((seg, sIdx) => ({
+        ...seg,
+        id: seg.id || `seg_${eIdx}_${sIdx}`
+      }))
+    }));
+  }, [sectionData.excerpts]);
+
+  const excerpt = excerptsWithIds[currentIdx];
+  const selectedSeg = excerpt?.segments.find(s => s.id === selectedId);
+  const total = excerptsWithIds.length;
 
   const scrollToContent = () => {
     setTimeout(() => {

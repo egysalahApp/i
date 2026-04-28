@@ -272,7 +272,7 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
                       key={optIdx}
                       onClick={() => handleAnswer(optIdx)}
                       disabled={answered}
-                      className={`p-4 md:p-5 rounded-2xl border-2 font-bold text-xl md:text-2xl transition-all duration-300 active:scale-95 ${optionClass}`}
+                      className={`p-4 md:p-5 rounded-2xl border-2 font-medium text-2xl md:text-3xl transition-all duration-300 active:scale-95 ${optionClass}`}
                     >
                       {option}
                     </button>

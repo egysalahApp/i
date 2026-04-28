@@ -17,24 +17,31 @@ const Matching = ({ sectionData, progress, onUpdateProgress }) => {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 
+  const pairsWithIds = React.useMemo(() => {
+    return (sectionData.pairs || []).map((pair, idx) => ({
+      ...pair,
+      id: pair.id || `pair_${idx}`
+    }));
+  }, [sectionData.pairs]);
+
   // Assign a stable color index to each pair based on original order synchronously
   const pairColorMap = React.useMemo(() => {
     const map = {};
-    (sectionData.pairs || []).forEach((pair, idx) => {
+    pairsWithIds.forEach((pair, idx) => {
       map[pair.id] = idx % PAIR_COLORS.length;
     });
     return map;
-  }, [sectionData.pairs]);
+  }, [pairsWithIds]);
 
-  const [rightItems, setRightItems] = useState(() => shuffle([...(sectionData.pairs || [])]));
-  const [leftItems, setLeftItems] = useState(() => shuffle([...(sectionData.pairs || [])]));
+  const [rightItems, setRightItems] = useState(() => shuffle([...pairsWithIds]));
+  const [leftItems, setLeftItems] = useState(() => shuffle([...pairsWithIds]));
   const [selectedRight, setSelectedRight] = useState(null);
   const [selectedLeft, setSelectedLeft] = useState(null);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [wrongAttempt, setWrongAttempt] = useState(false);
 
   // Calculate fixed height based on longest text in all pairs
-  const allTexts = (sectionData.pairs || []).flatMap(p => [p.right, p.left]);
+  const allTexts = pairsWithIds.flatMap(p => [p.right, p.left]);
   const maxChars = Math.max(...allTexts.map(t => t.length), 1);
   // Base height + extra per ~10 chars (accounts for text wrapping on mobile)
   const fixedHeight = maxChars > 30 ? 90 : maxChars > 20 ? 76 : maxChars > 10 ? 64 : 56;
