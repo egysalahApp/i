@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { RefreshCw, CheckCircle2, XCircle, Trophy } from 'lucide-react';
 import { toArabicNum } from '../../utils';
+import { useSound } from '../../contexts/SoundContext';
 
 const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animatingOut, setAnimatingOut] = useState(false);
@@ -13,6 +15,7 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
   const handleFlip = () => {
     if (isAnimating || animatingOut || isComplete) return;
     if (!flipped[currentIndex]) {
+      playClick();
       setIsAnimating(true);
       const newFlipped = [...flipped];
       newFlipped[currentIndex] = true;
@@ -28,7 +31,15 @@ const Flashcards = ({ sectionData, progress, onUpdateProgress }) => {
     if (isAnimating || animatingOut || isComplete) return;
     
     const newScore = progress.score + (knewIt ? 1 : 0);
-    onUpdateProgress(sectionData.id, Math.max(progress.answered, currentIndex + 1), newScore);
+    const newAnswered = Math.max(progress.answered, currentIndex + 1);
+    onUpdateProgress(sectionData.id, newAnswered, newScore);
+    
+    if (knewIt) {
+      if (currentIndex === sectionData.cards.length - 1) playComplete();
+      else playCorrect();
+    } else {
+      playWrong();
+    }
     
     if (currentIndex < sectionData.cards.length) {
       if (!isLast) setAnimatingOut(true);

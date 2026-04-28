@@ -4,8 +4,10 @@ import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, ArrowRight, CheckCircle2, XCircle, Search } from 'lucide-react';
 import { ACTIVITY_COLORS } from '../../constants/colorPalette';
+import { useSound } from '../../contexts/SoundContext';
 
 const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
   const theme = sectionData.theme || 'indigo';
   const questions = sectionData.questions || [];
   const isComplete = progress.total > 0 && progress.answered === progress.total;
@@ -44,6 +46,7 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
 
   const handleWordClick = (wordId) => {
     if (checked) return;
+    playClick();
     setSelectedWords(prev => {
       const next = new Set(prev);
       if (next.has(wordId)) {
@@ -68,16 +71,27 @@ const TextHighlighter = ({ sectionData, progress, onUpdateProgress }) => {
       const newAnswered = progress.answered + 1;
       const newScore = progress.score + (isCorrect && firstAttempt ? 1 : (isCorrect ? 0.5 : 0));
       onUpdateProgress(sectionData.id, newAnswered, newScore);
+      
+      if (isCorrect) {
+        if (newAnswered === progress.total) playComplete();
+        else playCorrect();
+      } else if (firstAttempt) {
+        playWrong();
+      }
+    } else {
+      playWrong();
     }
   };
 
   const handleRetry = () => {
+    playClick();
     setSelectedWords(new Set());
     setChecked(false);
     setFirstAttempt(false);
   };
 
   const handleNext = () => {
+    playClick();
     setAnimatingOut(true);
     setTimeout(() => {
       setCurrentIndex(prev => prev + 1);

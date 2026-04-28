@@ -3,8 +3,10 @@ import { ResultBox } from '../ui/ResultBox';
 import { HintBox } from '../ui/HintBox';
 import { toArabicNum, renderFormattedText } from '../../utils';
 import { Lightbulb, ArrowRight, CheckCircle2, XCircle, Volume2 } from 'lucide-react';
+import { useSound } from '../../contexts/SoundContext';
 
 const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
+  const { playClick, playCorrect, playWrong, playComplete } = useSound();
   const theme = sectionData.theme || 'indigo';
   const questions = sectionData.questions || [];
   const isComplete = progress.total > 0 && progress.answered === progress.total;
@@ -50,7 +52,11 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
       const newAnswered = progress.answered + 1;
       const newScore = progress.score + (firstAttempt ? 1 : 0);
       onUpdateProgress(sectionData.id, newAnswered, newScore);
+      
+      if (newAnswered === progress.total) playComplete();
+      else playCorrect();
     } else {
+      playWrong();
       setWrongAttempt(true);
       // Auto-reset after wrong answer
       setTimeout(() => {
@@ -63,6 +69,7 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
   };
 
   const handleNext = () => {
+    playClick();
     setAnimatingOut(true);
     setTimeout(() => {
       setCurrentIndex(prev => prev + 1);
@@ -72,6 +79,7 @@ const MorphologyScale = ({ sectionData, progress, onUpdateProgress }) => {
 
   // Pronounce the word using browser TTS
   const handleSpeak = (text) => {
+    playClick();
     if ('speechSynthesis' in window) {
       speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
