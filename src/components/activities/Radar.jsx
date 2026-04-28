@@ -171,7 +171,7 @@ const Radar = ({ sectionData }) => {
                 <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>
               </div>
               
-              <div className={`absolute -top-12 left-1/2 -translate-x-1/2 text-5xl md:text-7xl bg-white p-5 rounded-full shadow-xl border-4 border-white shrink-0 transform transition-transform duration-500 z-10`}>
+              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl md:text-5xl bg-white p-4 rounded-full shadow-xl border-4 border-white shrink-0 transform transition-transform duration-500 z-10`}>
                 {map.branches[activeBranch].icon}
               </div>
               
