@@ -96,13 +96,37 @@ export const SoundProvider = ({ children }) => {
   const playSfx = (soundKey, shouldDuck = true) => {
     const sound = soundsRef.current[soundKey];
     if (sound && !isMuted) {
+      // إيقاف الصوت إذا كان يعمل بالفعل لمنع التداخل المزعج للأصوات الطويلة
+      sound.stop();
+      // إعادة تعيين مستوى الصوت تحسباً لأي Fade Out سابق
+      sound.volume(VOLUMES.sfx);
+
       if (shouldDuck) {
         duckBGM();
-        // إزالة مستمع الحدث القديم لمنع التكرار
         sound.off('end'); 
         sound.once('end', () => unduckBGM());
       }
-      sound.play();
+      
+      const soundId = sound.play();
+
+      // قطع الصوت الطويل (ثانيتان) بنعومة بعد 600 ملي ثانية ليتناسب مع سرعة الواجهة
+      if (soundKey !== 'click') {
+        const MAX_DURATION = 600;
+        setTimeout(() => {
+          if (sound.playing(soundId)) {
+            sound.fade(VOLUMES.sfx, 0, 200, soundId); // تلاشي سريع
+            
+            setTimeout(() => {
+              sound.stop(soundId);
+              // إجبار الموسيقى الخلفية على العودة لطبيعتها في حال تم قطع المؤثر برمجياً
+              if (shouldDuck) {
+                 sound.off('end'); // إلغاء المستمع القديم حتى لا يتكرر
+                 unduckBGM();
+              }
+            }, 200);
+          }
+        }, MAX_DURATION);
+      }
     }
   };
 
