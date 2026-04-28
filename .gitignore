@@ -85,5 +85,9 @@ dist-ssr/
 # Internal Documentation & Scripts
 *.md
 !README.md
+!GUIDELINES.md
+!design_system.md
+!LESSON_STANDARDS.md
+!CLAUDE.md
 *.txt
 *.cjs
