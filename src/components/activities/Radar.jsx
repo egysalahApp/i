@@ -161,7 +161,7 @@ const Radar = ({ sectionData }) => {
       </div>
 
       {/* 3. DETAIL BOX (DESKTOP ONLY) */}
-      <div className={`hidden md:flex w-full items-center justify-center transition-all duration-700 ${isRevealed ? 'mt-4 mb-8 min-h-[16rem] opacity-100 fade-in' : 'h-0 opacity-0 overflow-hidden pointer-events-none'}`}>
+      <div className={`hidden md:flex w-full items-center justify-center transition-all duration-700 ${isRevealed ? 'mt-12 mb-8 min-h-[16rem] opacity-100 fade-in' : 'h-0 opacity-0 overflow-hidden pointer-events-none'}`}>
         {activeBranch !== null ? (
           <div className={`bg-white/60 backdrop-blur-xl border-[4px] border-${map.branches[activeBranch].color}-200/50 rounded-[3.5rem] p-8 md:p-14 shadow-2xl w-full max-w-4xl text-center fade-in flex flex-col items-center justify-center relative overflow-visible`}>
               
@@ -171,7 +171,7 @@ const Radar = ({ sectionData }) => {
                 <div className={`absolute -top-32 -left-32 w-80 h-80 bg-${map.branches[activeBranch].color}-100/20 rounded-full blur-[80px]`}></div>
               </div>
               
-              <div className={`absolute -top-10 left-1/2 -translate-x-1/2 text-4xl md:text-5xl bg-white p-4 rounded-full shadow-xl border-4 border-white shrink-0 transform transition-transform duration-500 z-10`}>
+              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 text-4xl md:text-5xl bg-white p-4 rounded-full shadow-xl border-4 border-white shrink-0 transform transition-transform duration-500 z-10`}>
                 {map.branches[activeBranch].icon}
               </div>
               
