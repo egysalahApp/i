@@ -194,7 +194,68 @@
       "pairs": [
         { "right": "مررتُ بـمساجدَ", "left": "مررتُ بـالمساجدِ", "desc": "الفرق بين النكرة والمعرفة في الممنوع من الصرف." }
       ]
-
+    },
+    {
+      "id": "ordering_example",
+      "type": "ordering",
+      "title": "ترتيب الأحداث",
+      "description": "اسحب العناصر لترتيبها بشكل صحيح حسب تسلسلها.",
+      "questions": [
+        {
+          "text": "رتب خطوات الوضوء:",
+          "correctOrder": ["النية", "غسل الوجه", "غسل اليدين", "مسح الرأس", "غسل الرجلين"],
+          "explanation": "الترتيب الصحيح هو ركن من أركان الوضوء."
+        }
+      ]
+    },
+    {
+      "id": "sentence_example",
+      "type": "sentence_builder",
+      "title": "بناء الجمل",
+      "description": "اختر الكلمات بالترتيب الصحيح لتكوين الجملة.",
+      "questions": [
+        {
+          "text": "كون الجملة التالية:",
+          "fragments": ["في", "يذهب", "الطالب", "المدرسة", "إلى", "الصباح"],
+          "correctOrder": ["يذهب", "الطالب", "إلى", "المدرسة", "في", "الصباح"],
+          "explanation": "الجملة الفعلية تبدأ بالفعل."
+        }
+      ]
+    },
+    {
+      "id": "morphology_example",
+      "type": "morphology_scale",
+      "title": "الميزان الصرفي",
+      "description": "زن الكلمات التالية بميزانها الصرفي الصحيح.",
+      "questions": [
+        {
+          "text": "ما وزن كلمة 'استخرج'؟",
+          "word": "استخرج",
+          "pattern": "استفعل",
+          "options": ["افعل", "استفعل", "تفاعل"],
+          "correct": 1,
+          "explanation": "استخرج على وزن استفعل بزيادة الهمزة والسين والتاء."
+        }
+      ]
+    },
+    {
+      "id": "highlighter_example",
+      "type": "text_highlighter",
+      "title": "صائد الكلمات",
+      "description": "انقر على الكلمات التي تمثل [القاعدة] في النص.",
+      "questions": [
+        {
+          "text": "حدد جميع الأفعال الماضية في النص:",
+          "words": [
+            { "text": "كتبَ", "isTarget": true },
+            { "text": " الطالبُ ", "isTarget": false },
+            { "text": "درسَهُ", "isTarget": false },
+            { "text": " ثم ", "isTarget": false },
+            { "text": "خرجَ", "isTarget": true }
+          ],
+          "explanation": "كتبَ وخرجَ أفعال ماضية مبنية على الفتح."
+        }
+      ]
     },
     {
       "id": "impact",
